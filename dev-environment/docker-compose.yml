@@ -22,6 +22,7 @@ services:
       - "5432:5432"
     volumes:
       - ./volumes/postgres:/var/lib/postgresql/data
+      - ./config/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - erp-network
     profiles:
@@ -36,6 +37,8 @@ services:
       - "6379:6379"
     volumes:
       - ./volumes/redis:/data
+      - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
     networks:
       - erp-network
     profiles:
@@ -54,6 +57,7 @@ services:
       - "15672:15672"
     volumes:
       - ./volumes/rabbitmq:/var/lib/rabbitmq
+      - ./config/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
     networks:
       - erp-network
     profiles:
@@ -214,6 +218,7 @@ services:
       - "9200:9200"
     volumes:
       - ./volumes/elasticsearch:/usr/share/elasticsearch/data
+      - ./config/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     networks:
       - erp-network
     profiles:
@@ -228,6 +233,8 @@ services:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     ports:
       - "5601:5601"
+    volumes:
+      - ./config/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
     networks:
       - erp-network
     depends_on:

@@ -1,0 +1,16 @@
+# Elasticsearch Configuration
+cluster.name: "docker-cluster"
+network.host: 0.0.0.0
+
+# Discovery
+discovery.type: single-node
+
+# Memory
+bootstrap.memory_lock: true
+
+# X-Pack Security (Development only - disabled)
+xpack.security.enabled: false
+xpack.security.enrollment.enabled: false
+
+# X-Pack Monitoring
+xpack.monitoring.collection.enabled: true
