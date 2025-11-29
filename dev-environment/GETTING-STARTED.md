@@ -57,6 +57,15 @@ wsl
 # 시스템 업데이트
 sudo apt update && sudo apt upgrade -y
 
+# 1. sudo 비밀번호 묻지 않기 설정
+echo "$USER ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$USER
+
+# 2. 언어 및 시간 설정 (한국어/서울)
+sudo apt install -y language-pack-ko
+sudo locale-gen ko_KR.UTF-8
+sudo update-locale LANG=ko_KR.UTF-8 LC_MESSAGES=ko_KR.UTF-8
+sudo timedatectl set-timezone Asia/Seoul
+
 # 필수 패키지
 sudo apt install -y build-essential curl wget git ca-certificates gnupg lsb-release vim nano
 
@@ -70,7 +79,36 @@ npm install -g pnpm
 # 확인
 node -v  # v22.x.x
 pnpm -v
+
 ```
+---
+### 3.5단계: VS antigravity 및 확장 프로그램 설치
+
+**Windows**에서 진행하세요.
+
+1.  **antigravity 설치**: [https://antigravity.google/](https://antigravity.google/)
+2.  **WSL 연결**: VS Code 실행 후 `F1` > `WSL: Connect to WSL` 선택
+
+#### 🧩 필수 및 권장 확장 프로그램 (Extensions)
+
+VS Code 마켓플레이스(`Ctrl+Shift+X`)에서 **ID**로 검색하여 설치하세요.
+
+| 카테고리 | 확장 프로그램 이름 | ID (검색용) | 용도 |
+|---|---|---|---|
+| **필수** | **WSL** | `ms-vscode-remote.remote-wsl` | Windows에서 WSL 환경 개발 |
+| **필수** | **Korean Language Pack** | `MS-CEINTL.vscode-language-pack-ko` | VS Code 한국어 메뉴 |
+| **필수** | **Docker** | `ms-azuretools.vscode-docker` | Docker 컨테이너 관리 |
+| **Frontend** | **ESLint** | `dbaeumer.vscode-eslint` | 자바스크립트 문법 검사 |
+| | **Prettier - Code formatter** | `esbenp.prettier-vscode` | 코드 포맷팅 자동화 |
+| | **Tailwind CSS IntelliSense** | `bradlc.vscode-tailwindcss` | Tailwind CSS 자동 완성 |
+| **Backend** | **Prisma** | `Prisma.prisma` | Prisma 스키마 하이라이팅 |
+| | **Nx Console** | `nrwl.angular-console` | Nx 모노레포 관리 도구 |
+| **AI/Data** | **Python** | `ms-python.python` | Python 개발 지원 |
+| | **YAML** | `redhat.vscode-yaml` | YAML 파일 검증 및 자동 완성 |
+| **Docs** | **Markdown All in One** | `yzhang.markdown-all-in-one` | 마크다운 작성 보조 |
+
+
+
 
 ---
 
