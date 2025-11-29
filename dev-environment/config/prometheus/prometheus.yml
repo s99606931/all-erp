@@ -1,0 +1,49 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# Alertmanager 설정
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+# 스크레이핑 대상 설정
+scrape_configs:
+  # Prometheus 자체 모니터링
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # PostgreSQL Exporter
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'erp-postgres'
+
+  # Redis Exporter
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'erp-redis'
+
+  # Node Exporter (시스템 메트릭)
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # Docker 컨테이너 메트릭
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  # Backend 서비스 (추후 추가)
+  # - job_name: 'auth-service'
+  #   static_configs:
+  #     - targets: ['erp-auth:3001']

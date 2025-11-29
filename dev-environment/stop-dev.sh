@@ -1,0 +1,22 @@
+#!/bin/bash
+# ALL-ERP 개발 환경 중지
+
+echo "=================================================="
+echo " ALL-ERP 개발 환경 중지"
+echo "=================================================="
+echo ""
+
+# 모든 서비스 중지
+echo "서비스 중지 중..."
+docker compose down
+
+if [ $? -eq 0 ]; then
+    echo "✅ 모든 서비스가 중지되었습니다."
+else
+    echo "❌ 중지 중 오류가 발생했습니다."
+fi
+
+echo ""
+echo "📌 옵션:"
+echo "  데이터까지 삭제: docker compose down -v"
+echo ""
