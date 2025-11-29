@@ -18,17 +18,30 @@ graph TB
 
 ## 🚀 단계별 가이드
 
-### 1단계: Windows 초기 설정
+### 1단계: antigravity 및 확장 프로그램 설치
 
-**PowerShell (관리자 권한)**에서 실행:
+1.  **antigravity 설치**: [https://antigravity.google/](https://antigravity.google/)
+2.  **WSL 연결**: VS Code 실행 후 `F1` > `WSL: Connect to WSL` 선택
 
-```powershell
-# WSL 설치
-wsl --install
+#### 🧩 필수 및 권장 확장 프로그램 (Extensions)
 
-# 재부팅
-Restart-Computer
-```
+VS Code 마켓플레이스(`Ctrl+Shift+X`)에서 **ID**로 검색하여 설치하세요.
+
+| 카테고리     | 확장 프로그램 이름            | ID (검색용)                         | 용도                        |
+| ------------ | ----------------------------- | ----------------------------------- | --------------------------- |
+| **필수**     | **WSL**                       | `ms-vscode-remote.remote-wsl`       | Windows에서 WSL 환경 개발   |
+| **필수**     | **Korean Language Pack**      | `MS-CEINTL.vscode-language-pack-ko` | VS Code 한국어 메뉴         |
+| **필수**     | **Docker**                    | `ms-azuretools.vscode-docker`       | Docker 컨테이너 관리        |
+| **Frontend** | **ESLint**                    | `dbaeumer.vscode-eslint`            | 자바스크립트 문법 검사      |
+|              | **Prettier - Code formatter** | `esbenp.prettier-vscode`            | 코드 포맷팅 자동화          |
+|              | **Tailwind CSS IntelliSense** | `bradlc.vscode-tailwindcss`         | Tailwind CSS 자동 완성      |
+| **Backend**  | **Prisma**                    | `Prisma.prisma`                     | Prisma 스키마 하이라이팅    |
+|              | **Nx Console**                | `nrwl.angular-console`              | Nx 모노레포 관리 도구       |
+| **AI/Data**  | **Python**                    | `ms-python.python`                  | Python 개발 지원            |
+|              | **YAML**                      | `redhat.vscode-yaml`                | YAML 파일 검증 및 자동 완성 |
+| **Docs**     | **Markdown All in One**       | `yzhang.markdown-all-in-one`        | 마크다운 작성 보조          |
+
+
 
 ---
 
@@ -73,42 +86,15 @@ sudo apt install -y build-essential curl wget git ca-certificates gnupg lsb-rele
 curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt install -y nodejs
 
+sudo npm install -g npm
 # pnpm
-npm install -g pnpm
+sudo npm install -g pnpm
 
 # 확인
 node -v  # v22.x.x
 pnpm -v
 
 ```
----
-### 3.5단계: VS antigravity 및 확장 프로그램 설치
-
-**Windows**에서 진행하세요.
-
-1.  **antigravity 설치**: [https://antigravity.google/](https://antigravity.google/)
-2.  **WSL 연결**: VS Code 실행 후 `F1` > `WSL: Connect to WSL` 선택
-
-#### 🧩 필수 및 권장 확장 프로그램 (Extensions)
-
-VS Code 마켓플레이스(`Ctrl+Shift+X`)에서 **ID**로 검색하여 설치하세요.
-
-| 카테고리 | 확장 프로그램 이름 | ID (검색용) | 용도 |
-|---|---|---|---|
-| **필수** | **WSL** | `ms-vscode-remote.remote-wsl` | Windows에서 WSL 환경 개발 |
-| **필수** | **Korean Language Pack** | `MS-CEINTL.vscode-language-pack-ko` | VS Code 한국어 메뉴 |
-| **필수** | **Docker** | `ms-azuretools.vscode-docker` | Docker 컨테이너 관리 |
-| **Frontend** | **ESLint** | `dbaeumer.vscode-eslint` | 자바스크립트 문법 검사 |
-| | **Prettier - Code formatter** | `esbenp.prettier-vscode` | 코드 포맷팅 자동화 |
-| | **Tailwind CSS IntelliSense** | `bradlc.vscode-tailwindcss` | Tailwind CSS 자동 완성 |
-| **Backend** | **Prisma** | `Prisma.prisma` | Prisma 스키마 하이라이팅 |
-| | **Nx Console** | `nrwl.angular-console` | Nx 모노레포 관리 도구 |
-| **AI/Data** | **Python** | `ms-python.python` | Python 개발 지원 |
-| | **YAML** | `redhat.vscode-yaml` | YAML 파일 검증 및 자동 완성 |
-| **Docs** | **Markdown All in One** | `yzhang.markdown-all-in-one` | 마크다운 작성 보조 |
-
-
-
 
 ---
 
@@ -171,8 +157,8 @@ mkdir -p /data/allsharp
 cd /data/allsharp
 
 # Git 설정
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
+git config --global user.name "s99606931"
+git config --global user.email "s99606931@gmail.com"
 git config --global core.autocrlf input
 git config --global core.eol lf
 ```
