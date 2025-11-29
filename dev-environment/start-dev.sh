@@ -26,7 +26,7 @@ echo "      ✅ Docker 실행 중"
 
 # 3. 인프라 서비스 시작
 echo "[3/5] 기본 인프라 서비스 시작..."
-docker compose --profile infra up -d
+docker compose --profile all up -d
 
 if [ $? -eq 0 ]; then
     echo "[4/5] ✅ 시작 완료"
@@ -52,13 +52,7 @@ echo "     cd .."
 echo "     pnpm install"
 echo "     pnpm nx serve auth-service"
 echo ""
-echo "  2️⃣  DevOps 도구 추가:"
-echo "     docker compose --profile devops up -d"
-echo ""
-echo "  3️⃣  전체 서비스 실행:"
-echo "     docker compose --profile all up -d"
-echo ""
-echo "  4️⃣  서비스 중지:"
+echo "  2️⃣  서비스 중지:"
 echo "     ./stop-dev.sh"
 echo ""
 echo "🔗 접속 주소:"

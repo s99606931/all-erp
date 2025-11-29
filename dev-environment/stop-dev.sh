@@ -16,7 +16,3 @@ else
     echo "❌ 중지 중 오류가 발생했습니다."
 fi
 
-echo ""
-echo "📌 옵션:"
-echo "  데이터까지 삭제: docker compose down -v"
-echo ""

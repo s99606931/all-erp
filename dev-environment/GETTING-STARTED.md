@@ -157,8 +157,8 @@ mkdir -p /data/allsharp
 cd /data/allsharp
 
 # Git 설정
-git config --global user.name "s99606931"
-git config --global user.email "s99606931@gmail.com"
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
 git config --global core.autocrlf input
 git config --global core.eol lf
 ```
@@ -195,6 +195,11 @@ chmod +x start-dev.sh stop-dev.sh
 
 # 인프라 서비스 시작
 ./start-dev.sh
+
+# (선택) 권한 문제로 서비스가 시작되지 않는 경우 실행
+sudo chown -R 1000:1000 volumes/elasticsearch volumes/logstash volumes/kibana
+sudo chown -R 472:472 volumes/grafana
+sudo chown -R 65534:65534 volumes/prometheus
 ```
 
 ---
@@ -310,6 +315,22 @@ processors=4
 ```powershell
 wsl --shutdown
 wsl
+```
+
+### Milvus 컨테이너 재시작 문제
+`docker-compose.yml`에 실행 명령어가 누락된 경우 발생합니다.
+```yaml
+milvus:
+  command: milvus run standalone
+```
+
+### Nginx Gateway 시작 실패
+연결된 백엔드 서비스(`erp-auth` 등)가 실행 중이지 않으면 Nginx가 시작되지 않을 수 있습니다.
+이를 방지하려면 `nginx.conf`에서 `upstream` 블록 대신 변수와 `resolver`를 사용해야 합니다.
+```nginx
+resolver 127.0.0.11 valid=30s;
+set $upstream_endpoint http://erp-auth:3001;
+proxy_pass $upstream_endpoint;
 ```
 
 ---

@@ -1,10 +1,3 @@
-version: '3.8'
-
-# ALL-ERP 통합 개발 환경
-# docker compose --profile infra up -d (기본 인프라만)
-# docker compose --profile devops up -d (DevOps 도구만)
-# docker compose --profile all up -d (전체)
-
 services:
   # ============================================
   # 기본 인프라 서비스
@@ -115,6 +108,7 @@ services:
       - "9091:9091"
     volumes:
       - ./volumes/milvus:/var/lib/milvus
+    command: milvus run standalone
     depends_on:
       - etcd
       - minio
@@ -278,3 +272,8 @@ networks:
     ipam:
       config:
         - subnet: 172.20.0.0/16
+
+# ALL-ERP 통합 개발 환경
+# docker compose --profile infra up -d (기본 인프라만)
+# docker compose --profile devops up -d (DevOps 도구만)
+# docker compose --profile all up -d (전체)
