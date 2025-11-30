@@ -1,26 +1,31 @@
-# ALL-ERP 개발 환경 (WSL2 Ubuntu)
+# ALL-ERP 개발 환경
 
-> 💡 **WSL2 Ubuntu 환경에서 개발합니다**  
-> `docker-compose.yml` 하나로 모든 서비스를 관리합니다.
+> 💡 **Docker Compose 기반 개발 환경**  
+> 모든 개발, 테스트, 운영이 Docker Compose로 통일되어 환경 간 일관성을 보장합니다.
 
-## 🚀 시작하기
+## 🚀 빠른 시작
 
-**상세 구축 가이드는 👉 [GETTING-STARTED.md](./GETTING-STARTED.md) 문서를 참고하세요.**
-
-### ⚡ 빠른 실행 (기존 사용자)
+### ⚡ 개발 환경 시작
 
 ```bash
-# 1. WSL 접속
-wsl
+# 1. dev-environment 디렉토리로 이동
+cd dev-environment
 
-# 2. 작업 폴더 이동
-cd /data/allsharp/dev-environment
-
-# 3. 인프라 시작
+# 2. 개발 환경 시작 (인프라 + 애플리케이션)
 ./start-dev.sh
 
-# 4. 개발 시작
-cd .. && pnpm nx serve auth-service
+# 또는 수동 실행
+docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml up -d
+```
+
+### 🛑 개발 환경 중지
+
+```bash
+# 스크립트 사용 (선택 가능)
+./stop-dev.sh
+
+# 또는 수동 중지
+docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml stop
 ```
 
 ---
@@ -29,67 +34,82 @@ cd .. && pnpm nx serve auth-service
 
 ```
 dev-environment/
-├── docker-compose.yml     # 통합 Docker Compose 파일
-├── config/                # 서비스 설정 (Git 관리)
-├── volumes/               # 데이터 저장소 (Git 제외)
-├── envs/                  # 환경별 설정 템플릿
-├── .env.example           # 기본 환경 변수 템플릿
-├── start-dev.sh           # 시작 스크립트
-├── stop-dev.sh            # 중지 스크립트
-└── GETTING-STARTED.md     # ⭐ 전체 구축 가이드
+├── docker-compose.infra.yml   # 인프라 (PostgreSQL, Redis 등)
+├── docker-compose.devops.yml  # DevOps 도구 (GitLab, Grafana 등)
+├── docker-compose.dev.yml     # 개발 환경 (애플리케이션)
+├── docker-compose.prod.yml    # 운영 환경 (빌드된 이미지)
+├── config/                    # 서비스 설정 (Git 관리)
+├── volumes/                   # 데이터 저장소 (Git 제외)
+├── start-dev.sh               # 시작 스크립트
+├── stop-dev.sh                # 중지 스크립트
+└── GETTING-STARTED.md         # ⭐ 전체 구축 가이드
 ```
 
 ---
 
-## 🎯 실행 모드 (Docker Compose Profiles)
+## 🎯 Compose 파일 역할
 
-`docker-compose.yml`은 **Profiles** 기능을 사용하여 필요한 서비스만 선택적으로 실행합니다.
+### 1. `docker-compose.infra.yml` - 인프라 (필수)
 
-### 1. 기본 인프라 (`infra`) - 권장
-
-일상적인 애플리케이션 개발에 필요한 최소한의 서비스입니다.
+모든 환경의 기반이 되는 인프라 서비스
 
 ```bash
-./start-dev.sh
-# 또는
-docker compose --profile infra up -d
+docker compose -f docker-compose.infra.yml up -d
 ```
 
-- **포함**: PostgreSQL, Redis, RabbitMQ, Milvus, etcd, MinIO
+**포함 서비스**:
+- PostgreSQL (DB)
+- Redis (캐시)
+- RabbitMQ (메시지 큐)
+- Milvus, etcd, MinIO (Vector DB)
 
-### 2. DevOps 도구 (`devops`)
 
-모니터링, 로깅, CI/CD 도구가 필요할 때 실행합니다.
+### 2. `docker-compose.devops.yml` - DevOps 도구 (선택)
+
+모니터링, 로깅, CI/CD 도구
 
 ```bash
-docker compose --profile devops up -d
+docker compose -f docker-compose.devops.yml up -d
 ```
 
-- **포함**: GitLab, Prometheus, Grafana, ELK Stack, Jaeger, Nginx Gateway
+**포함 서비스**:
+- GitLab (Git 저장소 + CI/CD)
+- Prometheus + Grafana (모니터링)
+- ELK Stack (로깅)
+- Jaeger (분산 추적)
 
-### 3. 전체 실행 (`all`)
+### 3. `docker-compose.dev.yml` - 개발 환경 (일상 사용)
 
-시스템 전체를 통합 테스트할 때 사용합니다.
+애플리케이션 서비스 (볼륨 마운트 + Hot Reload)
 
 ```bash
-docker compose --profile all up -d
+docker compose -f docker-compose.dev.yml up -d
 ```
+
+**포함 서비스**:
+- auth-service, system-service, tenant-service
+
+### 4. `docker-compose.prod.yml` - 운영 환경
+
+빌드된 이미지로 실행 (최적화)
 
 ---
 
 ## 🔧 주요 서비스 접속 정보
 
-| 카테고리 | 서비스 | 접속 주소 | 계정 (ID/PW) |
+| 카테고리 | 서비스 | 접속 주소 | 계정 |
 |---|---|---|---|
-| **Infra** | PostgreSQL | `localhost:5432` | `postgres` / `devpassword123` |
-| | Redis | `localhost:6379` | - |
-| | RabbitMQ | `http://localhost:15672` | `admin` / `admin` |
-| | MinIO | `http://localhost:9001` | `minioadmin` / `minioadmin` |
-| **DevOps** | GitLab | `http://localhost:8980` | `root` / `changeme123!` |
-| | Grafana | `http://localhost:3000` | `admin` / `admin` |
-| | Prometheus | `http://localhost:9090` | - |
-| | Kibana | `http://localhost:5601` | - |
-| | Jaeger | `http://localhost:16686` | - |
+| **인프라** | PostgreSQL | localhost:5432 | postgres / devpassword123 |
+| | Redis | localhost:6379 | - |
+| | RabbitMQ | http://localhost:15672 | admin / admin |
+| | MinIO | http://localhost:9001 | minioadmin / minioadmin |
+| **애플리케이션** | Auth Service | http://localhost:3001 | - |
+| | System Service | http://localhost:3002 | - |
+| | Tenant Service | http://localhost:3006 | - |
+| **DevOps** | GitLab | http://localhost:8980 | root / changeme123! |
+| | Grafana | http://localhost:3000 | admin / admin |
+| | Prometheus | http://localhost:9090 | - |
+| | Kibana | http://localhost:5601 | - |
 
 ---
 
@@ -97,7 +117,18 @@ docker compose --profile all up -d
 
 ```bash
 # 상태 확인
-docker compose ps
+docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml ps
+
+# 로그 확인
+docker compose -f docker-compose.dev.yml logs -f auth-service
+
+# 특정 서비스 재시작
+docker compose -f docker-compose.dev.yml restart auth-service
+
+# 전체 중지
+./stop-dev.sh
+# 또는
+docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml stop
 
 # 전체 중지
 ./stop-dev.sh

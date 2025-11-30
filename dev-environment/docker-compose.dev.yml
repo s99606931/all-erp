@@ -1,0 +1,100 @@
+version: '3.8'
+
+# 개발 환경 - 애플리케이션 서비스만 포함
+# 인프라는 docker-compose.infra.yml 먼저 실행 필요
+# 사용: docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml up -d
+
+services:
+  # Auth Service (인증/인가)
+  auth-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-auth-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      JWT_SECRET: ${JWT_SECRET:-super_secret_key_change_me}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-1h}
+    ports:
+      - "${AUTH_SERVICE_PORT:-3001}:3001"
+      - "9229:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules  # node_modules는 컨테이너 내부 것 사용
+    command: pnpm nx serve auth-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+  # System Service (시스템/공통)
+  system-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-system-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - "${SYSTEM_SERVICE_PORT:-3002}:3002"
+      - "9230:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve system-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+  # Tenant Service (테넌트/구독 관리)
+  tenant-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-tenant-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - "${TENANT_SERVICE_PORT:-3006}:3006"
+      - "9231:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve tenant-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+networks:
+  all-erp-network:
+    name: all-erp-network
+    external: true  # infra.yml에서 생성한 네트워크 사용

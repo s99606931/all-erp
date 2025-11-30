@@ -1,0 +1,20 @@
+FROM node:22-alpine
+
+# 작업 디렉토리 설정
+WORKDIR /workspace
+
+# pnpm 설치
+RUN npm install -g pnpm
+
+# 의존성 파일만 먼저 복사 (캐싱 최적화)
+COPY package.json pnpm-lock.yaml ./
+COPY nx.json tsconfig.base.json ./
+
+# 의존성 설치
+RUN pnpm install
+
+# 소스 코드는 볼륨 마운트로 제공됨
+# Hot Reload를 위해 watch 모드로 실행
+
+# 개발 서버 실행 (각 서비스별로 CMD 오버라이드)
+CMD ["pnpm", "nx", "serve"]
