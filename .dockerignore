@@ -20,7 +20,7 @@
 node_modules
 npm-debug.log
 yarn-error.log
-pnpm-lock.yaml
+
 
 # ============================================
 # 빌드 결과물 (Docker 내부에서 생성)

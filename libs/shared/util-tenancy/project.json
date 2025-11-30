@@ -1,0 +1,19 @@
+{
+  "name": "util-tenancy",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/util-tenancy/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/util-tenancy",
+        "main": "libs/shared/util-tenancy/src/index.ts",
+        "tsConfig": "libs/shared/util-tenancy/tsconfig.lib.json",
+        "assets": ["libs/shared/util-tenancy/*.md"]
+      }
+    }
+  }
+}

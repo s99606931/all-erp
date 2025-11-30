@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@all-erp/shared/config": ["libs/shared/config/src/index.ts"]
+      "@all-erp/shared/config": ["libs/shared/config/src/index.ts"],
+      "util-tenancy": ["libs/shared/util-tenancy/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
