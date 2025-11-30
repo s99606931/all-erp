@@ -1,8 +1,7 @@
-version: '3.8'
-
 # 개발 환경 - 애플리케이션 서비스만 포함
 # 인프라는 docker-compose.infra.yml 먼저 실행 필요
 # 사용: docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml up -d
+
 
 services:
   # Auth Service (인증/인가)

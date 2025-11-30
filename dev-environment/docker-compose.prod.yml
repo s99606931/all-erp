@@ -1,6 +1,4 @@
-version: '3.8'
-
-# 운영 환경 - 애플리케이션 서비스 (빌드된 이미지)
+# 운영 환경 - 빌드된 이미지 사용
 # 인프라는 docker-compose.infra.yml 먼저 실행 필요
 # 사용: docker compose -f docker-compose.infra.yml -f docker-compose.prod.yml up -d
 

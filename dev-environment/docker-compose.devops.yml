@@ -1,4 +1,3 @@
-version: '3.8'
 
 # DevOps 도구 (GitLab, Prometheus, Grafana, ELK, Jaeger)
 # 필요시에만 실행
@@ -33,9 +32,9 @@ services:
       - "8922:22"
       - "5050:5050"
     volumes:
-      - gitlab-config:/etc/gitlab
-      - gitlab-logs:/var/log/gitlab
-      - gitlab-data:/var/opt/gitlab
+      - ./volumes/gitlab/config:/etc/gitlab
+      - ./volumes/gitlab/logs:/var/log/gitlab
+      - ./volumes/gitlab/data:/var/opt/gitlab
     networks:
       - all-erp-network
     shm_size: '256m'
@@ -51,7 +50,7 @@ services:
       - "9090:9090"
     volumes:
       - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - prometheus-data:/prometheus
+      - ./volumes/prometheus:/prometheus
     networks:
       - all-erp-network
 
@@ -65,7 +64,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - grafana-data:/var/lib/grafana
+      - ./volumes/grafana:/var/lib/grafana
       - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
     networks:
       - all-erp-network
@@ -81,7 +80,7 @@ services:
     ports:
       - "9200:9200"
     volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
+      - ./volumes/elasticsearch:/usr/share/elasticsearch/data
       - ./config/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     networks:
       - all-erp-network
@@ -129,10 +128,3 @@ networks:
     name: all-erp-network
     external: true
 
-volumes:
-  gitlab-config:
-  gitlab-logs:
-  gitlab-data:
-  prometheus-data:
-  grafana-data:
-  elasticsearch-data:
