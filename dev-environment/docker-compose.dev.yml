@@ -180,6 +180,93 @@ services:
       - all-erp-network
     restart: unless-stopped
 
+  # Budget Service (예산 관리)
+  budget-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-budget-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - "${BUDGET_SERVICE_PORT:-3021}:3021"
+      - "9235:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve budget-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+  # Accounting Service (회계 관리)
+  accounting-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-accounting-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - "${ACCOUNTING_SERVICE_PORT:-3022}:3022"
+      - "9236:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve accounting-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+  # Settlement Service (결산 관리)
+  settlement-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-settlement-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - "${SETTLEMENT_SERVICE_PORT:-3023}:3023"
+      - "9237:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve settlement-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
 networks:
   all-erp-network:
     name: all-erp-network

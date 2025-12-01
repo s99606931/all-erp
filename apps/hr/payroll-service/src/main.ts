@@ -8,12 +8,20 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 
+/**
+ * Payroll Service 부트스트랩 함수
+ * 애플리케이션을 초기화하고 실행합니다.
+ */
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
+  // API 전역 접두사 설정 (예: /api/...)
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
 
-  // Validation
+  // 전역 유효성 검사 파이프 설정
+  // whitelist: DTO에 없는 속성 제거
+  // transform: 페이로드를 DTO 인스턴스로 변환
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -21,7 +29,7 @@ async function bootstrap() {
     })
   );
 
-  // Swagger
+  // Swagger API 문서 설정
   const config = new DocumentBuilder()
     .setTitle('Payroll Service')
     .setDescription('급여 계산 및 관리 API')
@@ -31,6 +39,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(globalPrefix, app, document);
 
+  // 포트 설정 (기본값: 3012)
   const port = process.env.PORT || 3012;
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);

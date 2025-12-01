@@ -1,0 +1,17 @@
+{
+  "name": "accounting-service-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "implicitDependencies": ["accounting-service"],
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "options": {
+        "jestConfig": "apps/finance/accounting-service-e2e/jest.config.cts",
+        "passWithNoTests": true
+      },
+      "dependsOn": ["accounting-service:build", "accounting-service:serve"]
+    }
+  }
+}
