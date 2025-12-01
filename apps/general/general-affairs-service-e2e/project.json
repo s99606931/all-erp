@@ -1,0 +1,17 @@
+{
+  "name": "general-affairs-service-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "implicitDependencies": ["general-affairs-service"],
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "options": {
+        "jestConfig": "apps/general/general-affairs-service-e2e/jest.config.cts",
+        "passWithNoTests": true
+      },
+      "dependsOn": ["general-affairs-service:build", "general-affairs-service:serve"]
+    }
+  }
+}
