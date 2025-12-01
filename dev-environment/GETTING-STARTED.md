@@ -121,9 +121,6 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin d
 sudo usermod -aG docker $USER
 newgrp docker
 
-# systemd 활성화
-echo -e "[boot]\nsystemd=true" | sudo tee -a /etc/wsl.conf
-
 # WSL 재시작
 exit
 ```
@@ -153,12 +150,12 @@ sudo mkdir -p /data
 sudo chown -R $USER:$USER /data
 
 # 프로젝트 디렉토리
-mkdir -p /data/allsharp
-cd /data/allsharp
+mkdir -p /data/allerp
+cd /data/allerp
 
 # Git 설정
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
+git config --global user.name "s99606931"
+git config --global user.email "99606931@gmail.com"
 git config --global core.autocrlf input
 git config --global core.eol lf
 ```
@@ -166,12 +163,6 @@ git config --global core.eol lf
 ---
 
 ### 6단계: 프로젝트 복사
-
-**Windows에서 복사한 경우**:
-```bash
-cp -r /mnt/d/all-erp/* /data/allsharp/
-cd /data/allsharp
-```
 
 **Git 클론**:
 ```bash
