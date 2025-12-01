@@ -166,8 +166,8 @@ git config --global core.eol lf
 
 **Git 클론**:
 ```bash
-git clone <repository-url> /data/allsharp
-cd /data/allsharp
+git clone https://github.com/s99606931/all-erp.git /data/allerp
+cd /data/allerp
 ```
 
 ---
