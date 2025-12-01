@@ -63,7 +63,10 @@
       "exclude": [
         "apps/system/auth-service-e2e/**/*",
         "apps/system/system-service-e2e/**/*",
-        "apps/system/tenant-service-e2e/**/*"
+        "apps/system/tenant-service-e2e/**/*",
+        "apps/hr/personnel-service-e2e/**/*",
+        "apps/hr/payroll-service-e2e/**/*",
+        "apps/hr/attendance-service-e2e/**/*"
       ]
     },
     {

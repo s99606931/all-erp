@@ -1,0 +1,17 @@
+{
+  "name": "personnel-service-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "implicitDependencies": ["personnel-service"],
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "options": {
+        "jestConfig": "apps/hr/personnel-service-e2e/jest.config.cts",
+        "passWithNoTests": true
+      },
+      "dependsOn": ["personnel-service:build", "personnel-service:serve"]
+    }
+  }
+}

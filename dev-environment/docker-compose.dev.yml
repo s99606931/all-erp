@@ -93,7 +93,95 @@ services:
       - all-erp-network
     restart: unless-stopped
 
+  # Personnel Service (인사 정보 관리)
+  personnel-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-personnel-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - "${PERSONNEL_SERVICE_PORT:-3011}:3011"
+      - "9232:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve personnel-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+  # Payroll Service (급여 계산 및 관리)
+  payroll-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-payroll-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - "${PAYROLL_SERVICE_PORT:-3012}:3012"
+      - "9233:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve payroll-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+  # Attendance Service (근태 관리)
+  attendance-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-attendance-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - "${ATTENDANCE_SERVICE_PORT:-3013}:3013"
+      - "9234:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve attendance-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
 networks:
   all-erp-network:
     name: all-erp-network
     external: true  # infra.yml에서 생성한 네트워크 사용
+
