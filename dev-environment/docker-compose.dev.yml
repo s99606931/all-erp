@@ -1,11 +1,25 @@
 # 개발 환경 - 애플리케이션 서비스만 포함
 # 인프라는 docker-compose.infra.yml 먼저 실행 필요
-# 사용: docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml up -d
+# 
+# 사용 예시:
+# 1. 전체 서비스 실행:
+#    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml up -d
+# 
+# 2. 특정 도메인만 실행 (프로필 사용):
+#    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml --profile system up -d
+#    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml --profile hr up -d
+#    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml --profile finance up -d
+#    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml --profile general up -d
+#    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml --profile ai up -d
+# 
+# 3. 여러 도메인 동시 실행:
+#    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml --profile system --profile hr up -d
 
 
 services:
   # Auth Service (인증/인가)
   auth-service:
+    profiles: ["system"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -37,6 +51,7 @@ services:
 
   # System Service (시스템/공통)
   system-service:
+    profiles: ["system"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -66,6 +81,7 @@ services:
 
   # Tenant Service (테넌트/구독 관리)
   tenant-service:
+    profiles: ["system"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -95,6 +111,7 @@ services:
 
   # Personnel Service (인사 정보 관리)
   personnel-service:
+    profiles: ["hr"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -124,6 +141,7 @@ services:
 
   # Payroll Service (급여 계산 및 관리)
   payroll-service:
+    profiles: ["hr"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -153,6 +171,7 @@ services:
 
   # Attendance Service (근태 관리)
   attendance-service:
+    profiles: ["hr"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -182,6 +201,7 @@ services:
 
   # Budget Service (예산 관리)
   budget-service:
+    profiles: ["finance"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -211,6 +231,7 @@ services:
 
   # Accounting Service (회계 관리)
   accounting-service:
+    profiles: ["finance"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -240,6 +261,7 @@ services:
 
   # Settlement Service (결산 관리)
   settlement-service:
+    profiles: ["finance"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -269,6 +291,7 @@ services:
 
   # Asset Service (자산 관리)
   asset-service:
+    profiles: ["general"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -298,6 +321,7 @@ services:
 
   # Supply Service (비품 관리)
   supply-service:
+    profiles: ["general"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -327,6 +351,7 @@ services:
 
   # General Affairs Service (총무 관리)
   general-affairs-service:
+    profiles: ["general"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -356,6 +381,7 @@ services:
 
   # AI Service (AI 기능 및 LLM 연동)
   ai-service:
+    profiles: ["ai"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -388,6 +414,7 @@ services:
 
   # Web Admin (관리자 웹 콘솔)
   web-admin:
+    profiles: ["ai"]
     build:
       context: ..
       dockerfile: Dockerfile.dev
