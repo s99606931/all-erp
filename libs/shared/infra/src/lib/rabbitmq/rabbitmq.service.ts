@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit, OnModuleDestroy, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as amqp from 'amqplib';
+import { Connection, Channel, connect, Options } from 'amqplib';
 
 /**
  * RabbitMQ 연결 및 메시지 통신 서비스
@@ -15,8 +15,8 @@ import * as amqp from 'amqplib';
 @Injectable()
 export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(RabbitMQService.name);
-  private connection: amqp.Connection | null = null;
-  private channel: amqp.Channel | null = null;
+  private connection: Connection | null = null;
+  private channel: Channel | null = null;
   private reconnectAttempts = 0;
   private readonly maxReconnectAttempts = 10;
   private readonly reconnectDelay = 5000; // 5초
@@ -47,8 +47,10 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
       
       this.logger.log(`Connecting to RabbitMQ at ${rabbitmqUrl}...`);
       
-      this.connection = await amqp.connect(rabbitmqUrl);
-      this.channel = await this.connection.createChannel();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.connection = await connect(rabbitmqUrl) as any;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.channel = await (this.connection as any).createChannel();
       
       this.reconnectAttempts = 0;
       this.logger.log('Successfully connected to RabbitMQ');
@@ -97,7 +99,8 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
         this.channel = null;
       }
       if (this.connection) {
-        await this.connection.close();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (this.connection as any).close();
         this.connection = null;
       }
       this.logger.log('Disconnected from RabbitMQ');
@@ -115,7 +118,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
   async assertExchange(
     exchangeName: string,
     exchangeType: 'direct' | 'topic' | 'fanout' | 'headers' = 'topic',
-    options?: amqp.Options.AssertExchange
+    options?: Options.AssertExchange
   ): Promise<void> {
     if (!this.channel) {
       throw new Error('RabbitMQ channel is not available');
@@ -134,7 +137,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
    * @param queueName Queue 이름
    * @param options Queue 옵션
    */
-  async assertQueue(queueName: string, options?: amqp.Options.AssertQueue): Promise<void> {
+  async assertQueue(queueName: string, options?: Options.AssertQueue): Promise<void> {
     if (!this.channel) {
       throw new Error('RabbitMQ channel is not available');
     }
@@ -173,7 +176,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
     exchangeName: string,
     routingKey: string,
     message: unknown,
-    options?: amqp.Options.Publish
+    options?: Options.Publish
   ): Promise<boolean> {
     if (!this.channel) {
       this.logger.error('Cannot publish: RabbitMQ channel is not available');
@@ -211,7 +214,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
   async subscribe(
     queueName: string,
     callback: (message: unknown) => Promise<void>,
-    options?: amqp.Options.Consume
+    options?: Options.Consume
   ): Promise<void> {
     if (!this.channel) {
       throw new Error('RabbitMQ channel is not available');

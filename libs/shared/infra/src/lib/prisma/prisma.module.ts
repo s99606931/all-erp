@@ -48,7 +48,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     // 모든 쿼리에 tenantId 필터를 자동으로 추가합니다
     // 주의: 이 기능을 사용하려면 각 모델에 tenantId 필드가 있어야 합니다
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.$use(async (params: any, next: any) => {
+    (this as any).$use(async (params: any, next: any) => {
       // tenantId가 설정된 경우에만 필터 추가
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const tenantId = (global as any).currentTenantId;

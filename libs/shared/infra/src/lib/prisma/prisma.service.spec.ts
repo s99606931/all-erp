@@ -10,9 +10,17 @@ const mockPrismaClient = {
   $on: jest.fn(),
 };
 
-jest.mock('@prisma/client', () => ({
-  PrismaClient: jest.fn(() => mockPrismaClient),
-}));
+jest.mock('@prisma/client', () => {
+  return {
+    PrismaClient: class {
+      $connect = mockPrismaClient.$connect;
+      $disconnect = mockPrismaClient.$disconnect;
+      $queryRaw = mockPrismaClient.$queryRaw;
+      $use = mockPrismaClient.$use;
+      $on = mockPrismaClient.$on;
+    },
+  };
+});
 
 describe('PrismaService', () => {
   let service: PrismaService;
