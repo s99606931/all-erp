@@ -16,7 +16,10 @@
     "baseUrl": ".",
     "paths": {
       "@all-erp/shared/config": ["libs/shared/config/src/index.ts"],
-      "util-tenancy": ["libs/shared/util-tenancy/src/index.ts"]
+      "@all-erp/shared/tenancy": ["libs/shared/util-tenancy/src/index.ts"],
+      "@all-erp/shared/util": ["libs/shared/util/src/index.ts"],
+      "@all-erp/shared/domain": ["libs/shared/domain/src/index.ts"],
+      "@all-erp/shared/infra": ["libs/shared/infra/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

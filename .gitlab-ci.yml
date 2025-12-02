@@ -111,7 +111,7 @@ push-image:
     - docker push $IMAGE_TAG
     - docker push $LATEST_TAG
     - echo "✅ 이미지가 Container Registry에 푸시되었습니다."
-    - echo "📦 Image: $IMAGE_TAG"
+    - echo "📦 Image = $IMAGE_TAG"
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
   needs:

@@ -1,0 +1,15 @@
+datasource db {
+    provider = "postgresql"
+    // url      = env("DATABASE_URL") // Prisma 7: url is removed from schema
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+// 예시 모델 (필요시 추가)
+model Example {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
