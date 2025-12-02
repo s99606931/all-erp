@@ -4,8 +4,9 @@ stages:
   - setup
   - test
   - build
+  - push
 
-# 캐시 설정
+# 캐시 설정 (pnpm 및 Nx 캐시)
 cache:
   key:
     files:
@@ -13,6 +14,7 @@ cache:
   paths:
     - .pnpm-store
     - node_modules/
+    - .nx/cache
 
 # 전역 변수 설정
 variables:
@@ -21,6 +23,9 @@ variables:
   NX_BASE: $CI_MERGE_REQUEST_DIFF_BASE_SHA
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
+  # Docker Compose 네트워크 내 서비스 참조
+  DATABASE_URL: "postgresql://postgres:devpassword123@all-erp-postgres:5432/erp_dev"
+  REDIS_URL: "redis://all-erp-redis:6379"
 
 # 기본 스크립트 (pnpm 설치)
 before_script:
@@ -41,14 +46,20 @@ setup:
       - .pnpm-store
       - node_modules/
     policy: pull-push
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour
 
-# 2. Test Stage: Lint & Test (Merge Request)
+# 2. Test Stage: Lint & Test (Merge Request 시)
 lint:
   stage: test
   script:
     - pnpm nx affected:lint --base=${NX_BASE:-origin/main} --head=${NX_HEAD:-HEAD} --parallel=3
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  needs:
+    - setup
 
 test:
   stage: test
@@ -56,8 +67,10 @@ test:
     - pnpm nx affected:test --base=${NX_BASE:-origin/main} --head=${NX_HEAD:-HEAD} --parallel=3 --configuration=ci
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  needs:
+    - setup
 
-# 3. Build Stage: Docker Build & Push (Main Branch)
+# 3. Build Stage: Docker Image 빌드
 docker-build:
   stage: build
   image: docker:latest
@@ -69,11 +82,37 @@ docker-build:
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    # Dockerfile.dev를 사용하여 빌드 (개발 환경용)
-    # 운영 환경용 Dockerfile.prod가 있다면 그것을 사용해야 함
-    - docker build -f Dockerfile.dev -t $IMAGE_TAG .
+    # Dockerfile.prod를 사용하여 빌드 (운영 환경용)
+    - docker build -f Dockerfile.prod -t $IMAGE_TAG .
+    - docker tag $IMAGE_TAG $LATEST_TAG
+  after_script:
+    # 빌드된 이미지를 다음 단계로 전달 (Registry에 push하지 않고 로컬에 유지)
+    - docker images | grep $CI_REGISTRY_IMAGE || true
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  needs:
+    - setup
+
+# 4. Push Stage: Container Registry에 이미지 푸시
+push-image:
+  stage: push
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    LATEST_TAG: $CI_REGISTRY_IMAGE:latest
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    # 이전 단계에서 빌드한 이미지 로드 (필요시 재빌드)
+    - docker build -f Dockerfile.prod -t $IMAGE_TAG .
     - docker tag $IMAGE_TAG $LATEST_TAG
     - docker push $IMAGE_TAG
     - docker push $LATEST_TAG
+    - echo "✅ 이미지가 Container Registry에 푸시되었습니다."
+    - echo "📦 Image: $IMAGE_TAG"
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
+  needs:
+    - docker-build
