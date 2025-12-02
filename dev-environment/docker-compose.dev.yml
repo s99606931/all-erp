@@ -267,6 +267,145 @@ services:
       - all-erp-network
     restart: unless-stopped
 
+  # Asset Service (자산 관리)
+  asset-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-asset-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - "${ASSET_SERVICE_PORT:-3031}:3031"
+      - "9238:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve asset-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+  # Supply Service (비품 관리)
+  supply-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-supply-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - "${SUPPLY_SERVICE_PORT:-3032}:3032"
+      - "9239:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve supply-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+  # General Affairs Service (총무 관리)
+  general-affairs-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-general-affairs-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - "${GENERAL_AFFAIRS_SERVICE_PORT:-3033}:3033"
+      - "9240:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve general-affairs-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+  # AI Service (AI 기능 및 LLM 연동)
+  ai-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-ai-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      # Vector DB (Milvus) 설정
+      MILVUS_HOST: milvus
+      MILVUS_PORT: 19530
+    ports:
+      - "${AI_SERVICE_PORT:-3007}:3007"
+      - "9241:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve ai-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+  # Web Admin (관리자 웹 콘솔)
+  web-admin:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-web-admin-dev
+    environment:
+      NODE_ENV: development
+    ports:
+      - "${WEB_ADMIN_PORT:-4200}:4200"
+      - "9242:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve web-admin --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
 networks:
   all-erp-network:
     name: all-erp-network

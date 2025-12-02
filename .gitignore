@@ -59,3 +59,6 @@ dev-environment/volumes/
 dev-environment/*.log
 dev-environment/.env
 
+# Next.js
+.next
+out

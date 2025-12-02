@@ -61,6 +61,29 @@ pnpm nx serve auth-service
 2. **README**: 해당 서비스의 `README.md`에 실행 방법, 환경 변수 설명 추가
 3. **Task 체크**: `task.md` 아티팩트에서 완료한 항목 체크 (`[x]`)
 
+### Step 6: 결과 보고서 작성 📝
+모든 작업이 완료되면, 작업 결과를 정리하여 보고서를 작성합니다.
+
+#### 6.1 파일명 규칙
+- `docs/tasks/phaseN-xxx/[Task ID]_result.md`
+- 예: `docs/tasks/phase1-init/1.6_scaffolding_finance_result.md`
+
+#### 6.2 필수 포함 항목
+보고서는 `1.6_scaffolding_finance_result.md` 수준의 품질을 유지해야 하며, 다음 항목을 반드시 포함합니다:
+
+1.  **작업 개요 (Summary)**: 무엇을 했는지 요약
+2.  **수행 내용 (Details)**: 주요 변경 사항 및 기능 설명
+3.  **기술 스택 및 아키텍처 (Architecture)**:
+    - **Mermaid 다이어그램 필수 포함**
+    - 시스템 구조, 데이터 흐름 등을 시각화
+4.  **검증 결과 (Verification)**:
+    - 테스트 실행 결과 (스크린샷 또는 로그)
+    - Swagger UI, Health Check 확인 결과
+5.  **승인 기준 달성 여부**: PRD의 승인 기준 대비 달성 현황
+6.  **Why This Matters**: 이 작업이 프로젝트에 왜 중요한지 설명
+
+> **참고**: [`docs/tasks/phase1-init/1.6_scaffolding_finance_result.md`](../tasks/phase1-init/1.6_scaffolding_finance_result.md) 문서를 템플릿으로 활용하세요.
+
 ---
 
 ## 2. PRD 문서 구조 이해
@@ -134,6 +157,9 @@ A: PRD의 "승인 기준"에 테스트가 명시되어 있으면 **필수**. 명
 - [ ] Swagger 문서가 갱신되었는가?
 - [ ] README가 업데이트되었는가?
 - [ ] `task.md`에서 완료 항목을 체크했는가?
+- [ ] **결과 보고서(`_result.md`)가 작성되었는가?**
+    - [ ] Mermaid 아키텍처 다이어그램이 포함되었는가?
+    - [ ] 검증 결과가 상세히 기록되었는가?
 
 ---
 
