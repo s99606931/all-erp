@@ -175,7 +175,7 @@ cd /data/allerp
 ### 7단계: 개발 환경 실행
 
 ```bash
-cd /data/allsharp/dev-environment
+cd /data/all-erp/dev-environment
 
 # 환경 변수 설정
 cp .env.example .env
@@ -198,7 +198,7 @@ sudo chown -R 65534:65534 volumes/prometheus
 ### 8단계: 애플리케이션 개발 시작
 
 ```bash
-cd /data/allsharp
+cd /data/all-erp
 
 # 의존성 설치
 pnpm install
@@ -219,14 +219,14 @@ pnpm nx serve auth-service
 
 **PowerShell (관리자 권한)**:
 ```powershell
-New-Item -ItemType SymbolicLink -Path "D:\wsl-allsharp" -Target "\\wsl$\Ubuntu-24.04\data\allsharp"
+New-Item -ItemType SymbolicLink -Path "D:\wsl-all-erp" -Target "\\wsl$\Ubuntu-24.04\data\all-erp"
 ```
 
 ### 방법 2: 직접 UNC 경로
 
 Windows 탐색기 주소창:
 ```
-\\wsl$\Ubuntu-24.04\data\allsharp
+\\wsl$\Ubuntu-24.04\data\all-erp
 ```
 
 ---
@@ -237,7 +237,7 @@ Windows 탐색기 주소창:
 
 ```bash
 wsl                                   # WSL 실행
-cd /data/allsharp/dev-environment     # 디렉토리 이동
+cd /data/all-erp/dev-environment     # 디렉토리 이동
 ./start-dev.sh                        # 인프라 시작
 cd .. && pnpm nx serve auth-service   # 개발 시작
 ```
@@ -245,7 +245,7 @@ cd .. && pnpm nx serve auth-service   # 개발 시작
 ### 종료 시
 
 ```bash
-cd /data/allsharp/dev-environment
+cd /data/all-erp/dev-environment
 ./stop-dev.sh
 ```
 
