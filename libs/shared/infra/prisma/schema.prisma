@@ -156,3 +156,64 @@ model PayrollItem {
 
     @@index([payrollId])
 }
+
+model Budget {
+    id           String   @id @default(uuid())
+    tenantId     String
+    departmentId String?
+    category     String // 예산 항목 (인건비, 운영비 등)
+    fiscalYear   Int // 회계연도
+    amount       Decimal  @db.Decimal(15, 2)
+    spent        Decimal  @default(0) @db.Decimal(15, 2)
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    @@unique([tenantId, departmentId, category, fiscalYear])
+    @@index([tenantId])
+    @@index([fiscalYear])
+}
+
+model ChartOfAccounts {
+    id          String            @id @default(uuid())
+    tenantId    String
+    accountCode String // 계정과목 코드 (예: 1010, 2010)
+    accountName String // 계정과목명
+    accountType String // ASSET, LIABILITY, EQUITY, REVENUE, EXPENSE
+    parentId    String?
+    parent      ChartOfAccounts?  @relation("AccountHierarchy", fields: [parentId], references: [id])
+    children    ChartOfAccounts[] @relation("AccountHierarchy")
+    createdAt   DateTime          @default(now())
+    updatedAt   DateTime          @updatedAt
+
+    journalEntryLines JournalEntryLine[]
+
+    @@unique([tenantId, accountCode])
+    @@index([tenantId])
+}
+
+model JournalEntry {
+    id          String   @id @default(uuid())
+    tenantId    String
+    entryDate   DateTime @db.Date
+    description String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    lines JournalEntryLine[]
+
+    @@index([tenantId])
+    @@index([entryDate])
+}
+
+model JournalEntryLine {
+    id             String          @id @default(uuid())
+    journalEntryId String
+    journalEntry   JournalEntry    @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
+    accountId      String
+    account        ChartOfAccounts @relation(fields: [accountId], references: [id])
+    debit          Decimal         @default(0) @db.Decimal(15, 2)
+    credit         Decimal         @default(0) @db.Decimal(15, 2)
+
+    @@index([journalEntryId])
+    @@index([accountId])
+}

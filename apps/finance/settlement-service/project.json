@@ -59,6 +59,13 @@
           "buildTarget": "settlement-service:build:production"
         }
       }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/finance/settlement-service/jest.config.ts"
+      }
     }
   },
   "tags": []
