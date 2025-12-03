@@ -56,7 +56,7 @@ case $choice in
   5)
     echo ""
     echo "전체 환경 중지 중..."
-    docker compose -f docker-compose.dev.yml  --profile system --profile hr --profile finance --profile general --profile  down
+    docker compose -f docker-compose.dev.yml --profile system --profile hr --profile finance --profile general --profile ai down
     docker compose -f docker-compose.infra.yml down
     docker compose -f docker-compose.devops.yml down
     echo "✅ 모든 서비스가 중지되었습니다."
