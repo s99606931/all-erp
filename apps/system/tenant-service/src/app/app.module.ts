@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { validateConfig } from '@all-erp/shared/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { TenantModule } from './tenant/tenant.module';
 
 /**
  * 애플리케이션의 루트 모듈
@@ -14,6 +15,7 @@ import { AppService } from './app.service';
       isGlobal: true,
       validate: validateConfig,
     }),
+    TenantModule,
   ],
   controllers: [AppController],
   providers: [AppService],

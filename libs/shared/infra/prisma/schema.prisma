@@ -37,3 +37,38 @@ model RefreshToken {
     createdAt DateTime @default(now())
     revoked   Boolean  @default(false)
 }
+
+model Tenant {
+    id               String   @id @default(uuid())
+    name             String
+    subdomain        String   @unique
+    subscriptionPlan String   @default("FREE") // FREE, BASIC, PRO, ENTERPRISE
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+}
+
+model CommonCode {
+    id        String   @id @default(uuid())
+    groupCode String
+    code      String
+    value     String
+    tenantId  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([tenantId, groupCode, code])
+    @@index([tenantId])
+}
+
+model Department {
+    id        String       @id @default(uuid())
+    name      String
+    parentId  String?
+    parent    Department?  @relation("DepartmentHierarchy", fields: [parentId], references: [id])
+    children  Department[] @relation("DepartmentHierarchy")
+    tenantId  String
+    createdAt DateTime     @default(now())
+    updatedAt DateTime     @updatedAt
+
+    @@index([tenantId])
+}
