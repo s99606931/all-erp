@@ -59,6 +59,13 @@
           "buildTarget": "payroll-service:build:production"
         }
       }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/hr/payroll-service/jest.config.ts"
+      }
     }
   },
   "tags": []

@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AttendanceModule } from './attendance/attendance.module';
+import { LeaveModule } from './leave/leave.module';
 
 /**
  * 애플리케이션의 루트 모듈
@@ -12,6 +14,8 @@ import { AppService } from './app.service';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    AttendanceModule,
+    LeaveModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -24,6 +24,7 @@ model User {
     updatedAt DateTime @updatedAt
 
     refreshTokens RefreshToken[]
+    employee      Employee?
 
     @@index([tenantId])
 }
@@ -69,6 +70,89 @@ model Department {
     tenantId  String
     createdAt DateTime     @default(now())
     updatedAt DateTime     @updatedAt
+    employees Employee[]
 
     @@index([tenantId])
+}
+
+model Employee {
+    id           String      @id @default(uuid())
+    userId       String      @unique
+    user         User        @relation(fields: [userId], references: [id])
+    departmentId String?
+    department   Department? @relation(fields: [departmentId], references: [id])
+    tenantId     String
+    position     String? // 직급 (CommonCode)
+    salary       Decimal     @default(0) @db.Decimal(15, 2)
+    joinDate     DateTime
+    createdAt    DateTime    @default(now())
+    updatedAt    DateTime    @updatedAt
+    deletedAt    DateTime?
+
+    attendances   Attendance[]
+    leaveRequests LeaveRequest[]
+    payrolls      Payroll[]
+
+    @@index([tenantId])
+}
+
+model Attendance {
+    id         String    @id @default(uuid())
+    employeeId String
+    employee   Employee  @relation(fields: [employeeId], references: [id])
+    tenantId   String
+    date       DateTime  @db.Date
+    checkIn    DateTime?
+    checkOut   DateTime?
+    status     String // PRESENT, LATE, ABSENT, LEAVE
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
+
+    @@unique([employeeId, date])
+    @@index([tenantId])
+    @@index([employeeId])
+}
+
+model LeaveRequest {
+    id         String   @id @default(uuid())
+    employeeId String
+    employee   Employee @relation(fields: [employeeId], references: [id])
+    tenantId   String
+    type       String // ANNUAL, SICK, ETC
+    startDate  DateTime @db.Date
+    endDate    DateTime @db.Date
+    reason     String?
+    status     String   @default("PENDING") // PENDING, APPROVED, REJECTED
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@index([tenantId])
+    @@index([employeeId])
+}
+
+model Payroll {
+    id          String        @id @default(uuid())
+    employeeId  String
+    employee    Employee      @relation(fields: [employeeId], references: [id])
+    tenantId    String
+    period      String // YYYY-MM
+    totalAmount Decimal       @db.Decimal(15, 2)
+    status      String        @default("DRAFT") // DRAFT, CONFIRMED, PAID
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
+    items       PayrollItem[]
+
+    @@unique([employeeId, period])
+    @@index([tenantId])
+    @@index([employeeId])
+}
+
+model PayrollItem {
+    id        String  @id @default(uuid())
+    payrollId String
+    payroll   Payroll @relation(fields: [payrollId], references: [id], onDelete: Cascade)
+    type      String // BASE_SALARY, BONUS, TAX, INSURANCE
+    amount    Decimal @db.Decimal(15, 2)
+
+    @@index([payrollId])
 }
