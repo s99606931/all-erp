@@ -36,7 +36,52 @@ echo "      ✅ 인프라 시작 완료"
 
 # 4. 개발 환경 시작
 echo "[4/6] 개발 환경 시작 (애플리케이션 서비스)..."
-docker compose -f docker-compose.dev.yml up -d
+echo ""
+echo "실행할 서비스 프로필을 선택하세요:"
+echo "  1) 전체 (system + hr + finance + general + ai)"
+echo "  2) System (인증, 시스템, 테넌트)"
+echo "  3) HR (인사, 급여, 근태)"
+echo "  4) Finance (예산, 회계, 결산)"
+echo "  5) General (자산, 비품, 총무)"
+echo "  6) AI (AI 서비스, Web Admin)"
+echo "  7) 프로필을 직접 입력"
+echo ""
+read -p "선택 (1-7, Enter=전체): " profile_choice
+
+case ${profile_choice:-1} in
+  1)
+    PROFILES="--profile system --profile hr --profile finance --profile general --profile ai"
+    ;;
+  2)
+    PROFILES="--profile system"
+    ;;
+  3)
+    PROFILES="--profile hr"
+    ;;
+  4)
+    PROFILES="--profile finance"
+    ;;
+  5)
+    PROFILES="--profile general"
+    ;;
+  6)
+    PROFILES="--profile ai"
+    ;;
+  7)
+    read -p "프로필 입력 (예: system hr): " custom_profiles
+    PROFILES=""
+    for p in $custom_profiles; do
+      PROFILES="$PROFILES --profile $p"
+    done
+    ;;
+  *)
+    echo "      ⚠️  잘못된 선택입니다. 전체 프로필로 실행합니다."
+    PROFILES="--profile system --profile hr --profile finance --profile general --profile ai"
+    ;;
+esac
+
+echo "      선택된 프로필: $PROFILES"
+docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml $PROFILES up -d
 
 if [ $? -ne 0 ]; then
     echo "      ❌ 개발 환경 시작 실패!"
@@ -57,7 +102,10 @@ fi
 # 6. 서비스 상태 확인
 echo "[6/6] 서비스 상태 확인 (10초 대기)..."
 sleep 10
-docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml -f docker-compose.devops.yml ps
+docker compose -f docker-compose.infra.yml ps
+echo ""
+echo "애플리케이션 서비스:"
+docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml $PROFILES ps
 
 echo ""
 echo "=================================================="
