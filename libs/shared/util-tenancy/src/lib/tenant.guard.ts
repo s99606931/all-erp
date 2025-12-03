@@ -1,9 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, Injectable, UnauthorizedException } from '@nestjs/common';
 import { tenantContext } from './tenant.middleware';
 
 @Injectable()
 export class TenantGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
+  canActivate(): boolean {
     const tenantId = tenantContext.getStore();
 
     if (!tenantId) {
