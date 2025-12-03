@@ -204,8 +204,8 @@ cd /data/all-erp
 pnpm install
 
 # Prisma 설정
-pnpm prisma generate
-pnpm prisma migrate dev
+pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma
+pnpm prisma migrate dev --schema=libs/shared/infra/prisma/schema.prisma
 
 # 서비스 실행
 pnpm nx serve auth-service
