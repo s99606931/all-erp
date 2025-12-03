@@ -150,8 +150,8 @@ sudo mkdir -p /data
 sudo chown -R $USER:$USER /data
 
 # 프로젝트 디렉토리
-mkdir -p /data/allerp
-cd /data/allerp
+mkdir -p /data/all-erp
+cd /data/all-erp
 
 # Git 설정
 git config --global user.name "s99606931"
@@ -166,8 +166,8 @@ git config --global core.eol lf
 
 **Git 클론**:
 ```bash
-git clone https://github.com/s99606931/all-erp.git /data/allerp
-cd /data/allerp
+git clone https://github.com/s99606931/all-erp.git /data/all-erp
+cd /data/all-erp
 ```
 
 ---
