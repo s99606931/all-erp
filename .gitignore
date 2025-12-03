@@ -75,20 +75,20 @@ tsconfig.json 수정 NX가 자동으로 추가한 include 경로를 확인하고
 
 json
 {
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+"include": [
+"next-env.d.ts",
+"**/*.ts",
+"**/*.tsx"
+]
 }
 next.config.js에서 빌드 오류 무시 (임시) 근본 원인을 찾는 동안 빌드가 막히지 않도록 ignoreBuildErrors 옵션을 켜둘 수 있습니다:
 
 js
 // next.config.js
 module.exports = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+typescript: {
+ignoreBuildErrors: true,
+},
 }
 App Router/Pages 구조 확인 프로젝트가 app/ 디렉토리를 쓰는지 pages/ 디렉토리를 쓰는지 확인하고, NX 설정(project.json)과 일치시켜야 합니다.
 
@@ -106,3 +106,4 @@ tsconfig.json에서 잘못된 include 경로를 수정하고, next.config.js에�
 최종적으로는 React/Next.js 버전 호환성과 App Router/Pages 구조 일치를 확인해야 안정적으로 해결됩니다.
 
 Sources: Stack Overflow – NX Build fails with NextJS and App Folder
+vite.config.*.timestamp*

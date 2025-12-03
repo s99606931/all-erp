@@ -8,7 +8,7 @@ RUN npm install -g pnpm
 
 # 의존성 파일만 먼저 복사 (캐싱 최적화)
 COPY package.json pnpm-lock.yaml ./
-COPY nx.json tsconfig.base.json ./
+COPY nx.json tsconfig.base.json eslint.config.mjs ./
 
 # 의존성 설치
 RUN pnpm install
