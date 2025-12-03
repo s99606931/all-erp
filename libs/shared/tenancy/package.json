@@ -1,5 +1,5 @@
 {
-  "name": "util-tenancy",
+  "name": "tenancy",
   "version": "0.0.1",
   "private": true,
   "type": "commonjs",
