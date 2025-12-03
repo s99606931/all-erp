@@ -22,7 +22,7 @@ case $choice in
     if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
       echo ""
       echo "전체 환경 제거 중..."
-      docker compose -f docker-compose.dev.yml down
+      docker compose -f docker-compose.dev.yml --profile system --profile hr --profile finance --profile general --profile ai down
       docker compose -f docker-compose.infra.yml down
       docker compose -f docker-compose.devops.yml down
       echo "✅ 모든 컨테이너와 네트워크가 제거되었습니다."
@@ -37,28 +37,28 @@ case $choice in
   2)
     echo ""
     echo "개발 환경만 중지 중..."
-    docker compose -f docker-compose.dev.yml stop
+    docker compose -f docker-compose.dev.yml --profile system --profile hr --profile finance --profile general --profile ai down
     echo "✅ 개발 환경이 중지되었습니다. (인프라는 계속 실행 중)"
     ;;
   3)
     echo ""
     echo "개발 + 인프라 환경 중지 중..."
-    docker compose -f docker-compose.dev.yml stop
-    docker compose -f docker-compose.infra.yml stop
+    docker compose -f docker-compose.dev.yml --profile system --profile hr --profile finance --profile general --profile ai down
+    docker compose -f docker-compose.infra.yml down
     echo "✅ 개발 환경과 인프라가 중지되었습니다."
     ;;
   4)
     echo ""
     echo "DevOps 도구 중지 중..."
-    docker compose -f docker-compose.devops.yml stop
+    docker compose -f docker-compose.devops.yml down
     echo "✅ DevOps 도구가 중지되었습니다."
     ;;
   5)
     echo ""
     echo "전체 환경 중지 중..."
-    docker compose -f docker-compose.dev.yml stop
-    docker compose -f docker-compose.infra.yml stop
-    docker compose -f docker-compose.devops.yml stop
+    docker compose -f docker-compose.dev.yml  --profile system --profile hr --profile finance --profile general --profile  down
+    docker compose -f docker-compose.infra.yml down
+    docker compose -f docker-compose.devops.yml down
     echo "✅ 모든 서비스가 중지되었습니다."
     ;;
   *)

@@ -1,6 +1,5 @@
 import { Injectable, NestMiddleware, BadRequestException, Logger } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import '../types/express'; // Express Request 타입 확장
 
 /**
  * 테넌트 미들웨어
@@ -15,18 +14,12 @@ import '../types/express'; // Express Request 타입 확장
  * - requireTenantId: true이면 테넌트 ID가 없을 경우 400 에러 발생
  */
 
-/**
- * 테넌트 미들웨어
- * 
- * 모든 HTTP 요청에서 테넌트 ID를 추출하여 요청 객체에 설정합니다.
- * 
- * 테넌트 ID 추출 방법:
- * 1. HTTP 헤더: X-Tenant-ID
- * 2. Subdomain: tenantA.erp.com → "tenantA"
- * 
- * 설정 옵션:
- * - requireTenantId: true이면 테넌트 ID가 없을 경우 400 에러 발생
- */
+// Express Request 객체 확장
+declare module 'express' {
+  export interface Request {
+    tenantId?: string;
+  }
+}
 @Injectable()
 export class TenantMiddleware implements NestMiddleware {
   private readonly logger = new Logger(TenantMiddleware.name);
