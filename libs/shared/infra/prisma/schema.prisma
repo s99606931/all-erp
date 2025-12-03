@@ -217,3 +217,90 @@ model JournalEntryLine {
     @@index([journalEntryId])
     @@index([accountId])
 }
+
+model Asset {
+    id               String   @id @default(uuid())
+    tenantId         String
+    assetNumber      String // 자동 생성 자산번호
+    name             String
+    category         String
+    acquisitionDate  DateTime @db.Date
+    acquisitionValue Decimal  @db.Decimal(15, 2)
+    currentValue     Decimal  @db.Decimal(15, 2)
+    status           String   @default("ACTIVE") // ACTIVE, TRANSFERRED, DISPOSED
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+
+    history AssetHistory[]
+
+    @@unique([tenantId, assetNumber])
+    @@index([tenantId])
+}
+
+model AssetHistory {
+    id          String   @id @default(uuid())
+    assetId     String
+    asset       Asset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+    changeType  String // ACQUIRED, TRANSFERRED, DEPRECIATED, DISPOSED
+    description String
+    changedAt   DateTime @default(now())
+
+    @@index([assetId])
+}
+
+model Inventory {
+    id          String   @id @default(uuid())
+    tenantId    String
+    itemName    String
+    quantity    Decimal  @default(0) @db.Decimal(15, 2)
+    minQuantity Decimal  @default(0) @db.Decimal(15, 2)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    transactions InventoryTransaction[]
+
+    @@unique([tenantId, itemName])
+    @@index([tenantId])
+}
+
+model InventoryTransaction {
+    id          String    @id @default(uuid())
+    inventoryId String
+    inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+    type        String // IN, OUT
+    quantity    Decimal   @db.Decimal(15, 2)
+    date        DateTime  @db.Date
+    description String?
+    createdAt   DateTime  @default(now())
+
+    @@index([inventoryId])
+}
+
+model Vehicle {
+    id           String   @id @default(uuid())
+    tenantId     String
+    licensePlate String
+    model        String
+    status       String   @default("AVAILABLE") // AVAILABLE, IN_USE, MAINTENANCE
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    reservations VehicleReservation[]
+
+    @@unique([tenantId, licensePlate])
+    @@index([tenantId])
+}
+
+model VehicleReservation {
+    id        String   @id @default(uuid())
+    vehicleId String
+    vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+    userId    String
+    startDate DateTime @db.Date
+    endDate   DateTime @db.Date
+    purpose   String?
+    createdAt DateTime @default(now())
+
+    @@index([vehicleId])
+    @@index([startDate, endDate])
+}
