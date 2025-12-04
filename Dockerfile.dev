@@ -8,10 +8,15 @@ RUN npm install -g pnpm
 
 # 의존성 파일만 먼저 복사 (캐싱 최적화)
 COPY package.json pnpm-lock.yaml ./
-COPY nx.json tsconfig.base.json eslint.config.mjs ./
+COPY nx.json tsconfig.base.json ./
+COPY prisma.config.ts ./
 
 # 의존성 설치
 RUN pnpm install
+
+# Prisma schema 복사 및 Prisma Client 생성
+COPY libs/shared/infra/prisma ./libs/shared/infra/prisma
+RUN pnpm prisma generate
 
 # 소스 코드는 볼륨 마운트로 제공됨
 # Hot Reload를 위해 watch 모드로 실행

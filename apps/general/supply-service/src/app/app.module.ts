@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
+import { InfraModule } from '@all-erp/shared/infra';
+import { SharedDomainModule } from '@all-erp/shared/domain';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { InventoryModule } from './inventory/inventory.module';
-import { ConfigModule } from '@nestjs/config';
 
 /**
  * 애플리케이션의 루트 모듈
@@ -10,9 +11,8 @@ import { ConfigModule } from '@nestjs/config';
  */
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    InfraModule,
+    SharedDomainModule,
     InventoryModule,
   ],
   controllers: [AppController],

@@ -1,48 +1,18 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
-import { Logger, ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { bootstrapService } from '@all-erp/shared/infra';
 import { AppModule } from './app/app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 /**
  * General Affairs Service 부트스트랩 함수
- * 애플리케이션을 초기화하고 실행합니다.
+ * 공통 부트스트랩 서비스를 사용하여 애플리케이션을 초기화합니다.
  */
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  
-  // API 전역 접두사 설정 (예: /api/...)
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-
-  // 전역 유효성 검사 파이프 설정
-  // whitelist: DTO에 없는 속성 제거
-  // transform: 페이로드를 DTO 인스턴스로 변환
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-    })
-  );
-
-  // Swagger API 문서 설정
-  const config = new DocumentBuilder()
-    .setTitle('General Affairs Service')
-    .setDescription('총무 관리 API')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup(globalPrefix, app, document);
-
-  // 포트 설정 (기본값: 3033)
-  const port = process.env.PORT || 3033;
-  await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
-}
-
-bootstrap();
+bootstrapService({
+  module: AppModule,
+  serviceName: 'General Affairs Service',
+  port: Number(process.env.PORT) || 3033,
+  globalPrefix: 'api',
+  swagger: {
+    title: 'General Affairs Service',
+    description: '총무 관리 API',
+    version: '1.0',
+  },
+});
