@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { SharedInfraModule } from '@all-erp/shared/infra';
+import { SharedDomainModule } from '@all-erp/shared/domain';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EmployeeModule } from './employee/employee.module';
@@ -13,6 +15,8 @@ import { EmployeeModule } from './employee/employee.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    SharedInfraModule,
+    SharedDomainModule,
     EmployeeModule,
   ],
   controllers: [AppController],

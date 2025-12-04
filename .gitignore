@@ -61,49 +61,5 @@ dev-environment/.env
 
 # Next.js
 .next
-out요약 답변: NX 플러그인으로 Next.js를 설치했을 때 HTML 관련 빌드 오류가 발생하는 경우는 주로 tsconfig.json 설정 문제나 Next.js App Router/Pages 구조 불일치 때문입니다. 해결 방법은 next.config.js와 tsconfig.json을 올바르게 수정하고, 필요 시 ignoreBuildErrors 옵션을 활용해 임시로 빌드를 통과시킨 뒤 근본 원인을 잡는 것입니다.
-
-🔑 주요 원인
-tsconfig.json 경로 문제 NX가 Next.js 타입 정의를 자동으로 추가하면서 dist/apps/.../.next/types/**/*.ts 같은 경로가 포함되는데, 실제 파일이 없으면 빌드 오류가 납니다.
-
-App Router와 Pages 혼용 Next.js 13 이후 App Router(app/)를 쓰는 경우, NX 플러그인 설정이 Pages(pages/) 기반으로 되어 있으면 타입 불일치가 발생합니다.
-
-HTML/JSX 타입 불일치 React 18/19와 Next.js 버전 호환 문제로 JSX.IntrinsicElements 타입이 꼬여서 HTML 태그 관련 오류가 발생할 수 있습니다.
-
-⚙️ 해결 방법
-tsconfig.json 수정 NX가 자동으로 추가한 include 경로를 확인하고, 실제 존재하지 않는 .next/types 경로는 제거하거나 올바른 경로로 수정합니다.
-
-json
-{
-"include": [
-"next-env.d.ts",
-"**/*.ts",
-"**/*.tsx"
-]
-}
-next.config.js에서 빌드 오류 무시 (임시) 근본 원인을 찾는 동안 빌드가 막히지 않도록 ignoreBuildErrors 옵션을 켜둘 수 있습니다:
-
-js
-// next.config.js
-module.exports = {
-typescript: {
-ignoreBuildErrors: true,
-},
-}
-App Router/Pages 구조 확인 프로젝트가 app/ 디렉토리를 쓰는지 pages/ 디렉토리를 쓰는지 확인하고, NX 설정(project.json)과 일치시켜야 합니다.
-
-React/Next.js 버전 호환성 점검
-
-Next.js 15/16 → React 19 필수
-
-Next.js 14 → React 18 안정적 버전이 맞지 않으면 HTML 태그 타입 정의가 꼬여 빌드 오류가 납니다.
-
-✅ 정리
-NX 플러그인으로 Next.js 설치 시 발생하는 HTML 빌드 오류는 타입 정의 경로 문제와 버전 호환성 문제가 가장 흔한 원인입니다.
-
-tsconfig.json에서 잘못된 include 경로를 수정하고, next.config.js에서 ignoreBuildErrors를 임시로 켜두면 빌드가 통과합니다.
-
-최종적으로는 React/Next.js 버전 호환성과 App Router/Pages 구조 일치를 확인해야 안정적으로 해결됩니다.
-
-Sources: Stack Overflow – NX Build fails with NextJS and App Folder
+out
 vite.config.*.timestamp*

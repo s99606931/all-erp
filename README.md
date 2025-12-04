@@ -220,7 +220,9 @@ flowchart TB
 node -v  # v22.x.x
 
 # pnpm 설치
-npm install -g pnpm
+# Corepack을 사용하여 pnpm 활성화
+corepack enable
+corepack prepare pnpm@latest --activate
 pnpm -v  # 9.x.x
 ```
 

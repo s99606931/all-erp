@@ -58,11 +58,11 @@ docker compose -f docker-compose.infra.yml up -d
 ```
 
 **포함 서비스**:
+
 - PostgreSQL (DB)
 - Redis (캐시)
 - RabbitMQ (메시지 큐)
 - Milvus, etcd, MinIO (Vector DB)
-
 
 ### 2. `docker-compose.devops.yml` - DevOps 도구 (선택)
 
@@ -73,6 +73,7 @@ docker compose -f docker-compose.devops.yml up -d
 ```
 
 **포함 서비스**:
+
 - GitLab (Git 저장소 + CI/CD)
 - Prometheus + Grafana (모니터링)
 - ELK Stack (로깅)
@@ -87,6 +88,7 @@ docker compose -f docker-compose.dev.yml up -d
 ```
 
 **포함 서비스**:
+
 - auth-service, system-service, tenant-service
 
 ### 4. `docker-compose.prod.yml` - 운영 환경
@@ -97,19 +99,19 @@ docker compose -f docker-compose.dev.yml up -d
 
 ## 🔧 주요 서비스 접속 정보
 
-| 카테고리 | 서비스 | 접속 주소 | 계정 |
-|---|---|---|---|
-| **인프라** | PostgreSQL | localhost:5432 | postgres / devpassword123 |
-| | Redis | localhost:6379 | - |
-| | RabbitMQ | http://localhost:15672 | admin / admin |
-| | MinIO | http://localhost:9001 | minioadmin / minioadmin |
-| **애플리케이션** | Auth Service | http://localhost:3001 | - |
-| | System Service | http://localhost:3002 | - |
-| | Tenant Service | http://localhost:3006 | - |
-| **DevOps** | GitLab | http://localhost:8980 | root / changeme123! |
-| | Grafana | http://localhost:3000 | admin / admin |
-| | Prometheus | http://localhost:9090 | - |
-| | Kibana | http://localhost:5601 | - |
+| 카테고리         | 서비스         | 접속 주소              | 계정                      |
+| ---------------- | -------------- | ---------------------- | ------------------------- |
+| **인프라**       | PostgreSQL     | localhost:5432         | postgres / devpassword123 |
+|                  | Redis          | localhost:6379         | -                         |
+|                  | RabbitMQ       | http://localhost:15672 | admin / admin             |
+|                  | MinIO          | http://localhost:9001  | minioadmin / minioadmin   |
+| **애플리케이션** | Auth Service   | http://localhost:3001  | -                         |
+|                  | System Service | http://localhost:3002  | -                         |
+|                  | Tenant Service | http://localhost:3006  | -                         |
+| **DevOps**       | GitLab         | http://localhost:8980  | root / changeme123!       |
+|                  | Grafana        | http://localhost:3000  | admin / admin             |
+|                  | Prometheus     | http://localhost:9090  | -                         |
+|                  | Kibana         | http://localhost:5601  | -                         |
 
 ---
 
@@ -136,7 +138,6 @@ docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml stop
 # 데이터까지 초기화 (주의!)
 docker compose down -v
 ```
-
 
 ### 기존 환경 사용
 
@@ -207,21 +208,21 @@ docker compose --profile all up -d
 
 ### 기본 인프라
 
-| 서비스 | 주소 | 계정 |
-|---------|------|------|
-| PostgreSQL | `localhost:5432` | postgres/devpassword123 |
-| Redis | `localhost:6379` | - |
-| RabbitMQ | `http://localhost:15672` | admin/admin |
-| MinIO | `http://localhost:9001` | minioadmin/minioadmin |
+| 서비스     | 주소                     | 계정                    |
+| ---------- | ------------------------ | ----------------------- |
+| PostgreSQL | `localhost:5432`         | postgres/devpassword123 |
+| Redis      | `localhost:6379`         | -                       |
+| RabbitMQ   | `http://localhost:15672` | admin/admin             |
+| MinIO      | `http://localhost:9001`  | minioadmin/minioadmin   |
 
 ### DevOps 도구
 
-| 서비스 | 주소 | 계정 |
-|---------|------|------|
-| GitLab | `http://localhost:8980` | root/changeme123! |
-| Prometheus | `http://localhost:9090` | - |
-| Grafana | `http://localhost:3000` | admin/admin |
-| Kibana | `http://localhost:5601` | - |
+| 서비스     | 주소                    | 계정              |
+| ---------- | ----------------------- | ----------------- |
+| GitLab     | `http://localhost:8980` | root/changeme123! |
+| Prometheus | `http://localhost:9090` | -                 |
+| Grafana    | `http://localhost:3000` | admin/admin       |
+| Kibana     | `http://localhost:5601` | -                 |
 
 ---
 
@@ -345,22 +346,22 @@ docker compose --profile all up -d
 
 ### 기본 인프라
 
-| 서비스 | 주소 | 계정 |
-|---------|------|------|
-| PostgreSQL | `localhost:5432` | postgres/devpassword123 |
-| Redis | `localhost:6379` | - |
-| RabbitMQ | `http://localhost:15672` | admin/admin |
-| MinIO | `http://localhost:9001` | minioadmin/minioadmin |
+| 서비스     | 주소                     | 계정                    |
+| ---------- | ------------------------ | ----------------------- |
+| PostgreSQL | `localhost:5432`         | postgres/devpassword123 |
+| Redis      | `localhost:6379`         | -                       |
+| RabbitMQ   | `http://localhost:15672` | admin/admin             |
+| MinIO      | `http://localhost:9001`  | minioadmin/minioadmin   |
 
 ### DevOps 도구
 
-| 서비스 | 주소 | 계정 |
-|---------|------|------|
-| GitLab | `http://localhost:8980` | root/changeme123! |
-| Prometheus | `http://localhost:9090` | - |
-| Grafana | `http://localhost:3000` | admin/admin |
-| Kibana | `http://localhost:5601` | - |
-| Jaeger | `http://localhost:16686` | - |
+| 서비스     | 주소                     | 계정              |
+| ---------- | ------------------------ | ----------------- |
+| GitLab     | `http://localhost:8980`  | root/changeme123! |
+| Prometheus | `http://localhost:9090`  | -                 |
+| Grafana    | `http://localhost:3000`  | admin/admin       |
+| Kibana     | `http://localhost:5601`  | -                 |
+| Jaeger     | `http://localhost:16686` | -                 |
 
 ---
 
@@ -476,14 +477,14 @@ dev-environment/
 
 인프라 서비스 (`docker-compose.infra.yml`):
 
-| 서비스 | 포트 | 용도 |
-|---------|------|------|
-| PostgreSQL | 5432 | 메인 DB |
-| Redis | 6379 | 캐시, 세션 |
-| RabbitMQ | 5672, 15672 | 메시지 큐 |
-| Milvus | 19530 | Vector DB (RAG) |
-| MinIO | 9000, 9001 | 객체 저장소 |
-| etcd | 2379 | Milvus 메타데이터 |
+| 서비스     | 포트        | 용도              |
+| ---------- | ----------- | ----------------- |
+| PostgreSQL | 5432        | 메인 DB           |
+| Redis      | 6379        | 캐시, 세션        |
+| RabbitMQ   | 5672, 15672 | 메시지 큐         |
+| Milvus     | 19530       | Vector DB (RAG)   |
+| MinIO      | 9000, 9001  | 객체 저장소       |
+| etcd       | 2379        | Milvus 메타데이터 |
 
 ---
 
@@ -512,11 +513,13 @@ cd /data/allsharp/dev-environment
 WSL 경로에 Windows에서 접근하려면:
 
 **방법 1: 심볼릭 링크 (PowerShell 관리자 권한)**
+
 ```powershell
 New-Item -ItemType SymbolicLink -Path "D:\wsl-allsharp" -Target "\\wsl$\Ubuntu-24.04\data\allsharp"
 ```
 
 **방법 2: 직접 UNC 경로**
+
 ```
 \\wsl$\Ubuntu-24.04\data\allsharp
 ```
@@ -529,7 +532,6 @@ New-Item -ItemType SymbolicLink -Path "D:\wsl-allsharp" -Target "\\wsl$\Ubuntu-2
 - [환경 변수 가이드](../docs/infrastructure/environment_variables.md)
 - [API 설계 가이드](../docs/human/api_design_guide.md)
 - [DB 설계 가이드](../docs/human/db_design_guide.md)
-
 
 본 문서는 Windows 로컬 환경에서 Docker Compose를 사용하여 ALL-ERP 개발 환경을 구축하는 방법을 안내합니다.
 
@@ -551,11 +553,13 @@ New-Item -ItemType SymbolicLink -Path "D:\wsl-allsharp" -Target "\\wsl$\Ubuntu-2
 **다운로드**: https://www.docker.com/products/docker-desktop
 
 **시스템 요구사항**:
+
 - Windows 10 64-bit: Pro, Enterprise, or Education (Build 19041 이상)
 - WSL 2 필수
 - 최소 8GB RAM (16GB 권장)
 
 **설치 후 설정**:
+
 ```powershell
 # WSL 2 백엔드 확인
 wsl --set-default-version 2
@@ -573,13 +577,15 @@ wsl --set-default-version 2
 ```powershell
 # 설치 확인
 node -v  # v22.x.x
-npm -v
+pnpm -v
 ```
 
 ### 1.3 pnpm (패키지 매니저)
 
 ```powershell
-npm install -g pnpm
+# pnpm은 Node.js 16.13+ 부터 Corepack으로 관리 가능
+corepack enable
+corepack prepare pnpm@latest --activate
 pnpm -v  # 9.x.x 이상
 ```
 
@@ -660,6 +666,7 @@ docker-compose -f docker-compose.infra.yml ps
 ```
 
 **실행되는 서비스**:
+
 - PostgreSQL (Port: 5432)
 - Redis (Port: 6379)
 - RabbitMQ (Port: 5672, 15672)
@@ -773,6 +780,7 @@ notepad C:\Windows\System32\drivers\etc\hosts
 ### 8.1 Docker Desktop이 시작되지 않음
 
 **해결책**:
+
 1. WSL 2 설치 확인
    ```powershell
    wsl --install
@@ -785,6 +793,7 @@ notepad C:\Windows\System32\drivers\etc\hosts
 **증상**: `Bind for 0.0.0.0:5432 failed: port is already allocated`
 
 **해결책**:
+
 ```powershell
 # 포트 사용 중인 프로세스 확인
 netstat -ano | findstr :5432
@@ -796,10 +805,12 @@ taskkill /PID <PID> /F
 ### 8.3 Docker 컨테이너가 느림
 
 **해결책**:
+
 1. Docker Desktop > Settings > Resources에서 CPU/메모리 증가
 2. WSL 2 메모리 제한 설정
 
    **파일 생성**: `C:\Users\<Username>\.wslconfig`
+
    ```ini
    [wsl2]
    memory=8GB
@@ -814,6 +825,7 @@ taskkill /PID <PID> /F
 ### 8.4 Prisma 마이그레이션 실패
 
 **해결책**:
+
 ```powershell
 # PostgreSQL 컨테이너 재시작
 docker-compose -f docker-compose.infra.yml restart postgres
@@ -825,6 +837,7 @@ pnpm prisma migrate dev --name init
 ### 8.5 pnpm install 오류
 
 **해결책**:
+
 ```powershell
 # 캐시 클리어
 pnpm store prune
@@ -875,6 +888,7 @@ pnpm nx lint auth-service
 ## 10. 개발 워크플로우 예시
 
 **Day 1: 환경 설정**
+
 ```powershell
 # 1. 인프라 실행
 cd d:\all-erp\dev-environment
@@ -889,6 +903,7 @@ pnpm prisma migrate dev
 ```
 
 **Day 2+: 개발**
+
 ```powershell
 # 터미널 1: Backend 실행
 pnpm nx serve auth-service
@@ -898,6 +913,7 @@ pnpm nx serve web-admin
 ```
 
 **퇴근 시**
+
 ```powershell
 # 인프라 종료 (선택)
 docker-compose -f docker-compose.infra.yml down
@@ -908,11 +924,13 @@ docker-compose -f docker-compose.infra.yml down
 ## 11. 리소스 사용량
 
 **최소 요구사항 (인프라만)**:
+
 - CPU: 4 Core
 - RAM: 8 GB
 - Disk: 50 GB
 
 **권장 사양 (개발 + 인프라)**:
+
 - CPU: 8 Core
 - RAM: 16 GB
 - Disk: 100 GB SSD

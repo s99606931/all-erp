@@ -6,6 +6,9 @@ echo " ALL-ERP 개발 환경 시작"
 echo "=================================================="
 echo ""
 
+# 고아 컨테이너 경고 숨기기
+export COMPOSE_IGNORE_ORPHANS=True
+
 # 1. .env 파일 확인
 if [ ! -f "../.env" ]; then
     echo "[1/6] .env 파일 생성..."
@@ -81,7 +84,7 @@ case ${profile_choice:-1} in
 esac
 
 echo "      선택된 프로필: $PROFILES"
-docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml $PROFILES up -d
+docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml $PROFILES up -d --build
 
 if [ $? -ne 0 ]; then
     echo "      ❌ 개발 환경 시작 실패!"
