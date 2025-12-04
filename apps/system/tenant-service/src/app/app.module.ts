@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { validateConfig } from '@all-erp/shared/config';
+import { SharedInfraModule } from '@all-erp/shared/infra';
+import { SharedDomainModule } from '@all-erp/shared/domain';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TenantModule } from './tenant/tenant.module';
@@ -15,9 +17,12 @@ import { TenantModule } from './tenant/tenant.module';
       isGlobal: true,
       validate: validateConfig,
     }),
+    SharedInfraModule,
+    SharedDomainModule,
     TenantModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
+

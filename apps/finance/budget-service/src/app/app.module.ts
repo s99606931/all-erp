@@ -1,4 +1,8 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { validateConfig } from '@all-erp/shared/config';
+import { SharedInfraModule } from '@all-erp/shared/infra';
+import { SharedDomainModule } from '@all-erp/shared/domain';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BudgetModule } from './budget/budget.module';
@@ -8,8 +12,17 @@ import { BudgetModule } from './budget/budget.module';
  * 주요 컨트롤러와 프로바이더를 등록합니다.
  */
 @Module({
-  imports: [BudgetModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validate: validateConfig,
+    }),
+    SharedInfraModule,
+    SharedDomainModule,
+    BudgetModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
+
