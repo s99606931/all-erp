@@ -377,7 +377,7 @@ graph TB
 
 ```bash
 # NX Cloud 연결 (선택사항)
-npx nx connect-to-nx-cloud
+pnpm nx connect-to-nx-cloud
 ```
 
 ---

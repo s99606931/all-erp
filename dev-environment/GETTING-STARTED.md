@@ -208,7 +208,7 @@ pnpm install
 # Prisma 설정 (Prisma 7)
 
 # 개발 의존성으로 dotenv 패키지를 추가 (환경 변수 관리에 사용)
-pnpm add -D dotenv
+# pnpm add -D dotenv
 # Prisma 스키마를 기반으로 Prisma Client를 생성 (데이터베이스 접근을 위한 ORM 클라이언트)
 pnpm prisma generate
 # Prisma 마이그레이션을 실행하여 개발 환경 데이터베이스 스키마를 최신 상태로 유지 (스키마 변경 사항을 데이터베이스에 적용)
