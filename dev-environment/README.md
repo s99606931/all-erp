@@ -693,6 +693,7 @@ pnpm install
 
 ```powershell
 # Prisma Client 생성
+pnpm add -D dotenv
 pnpm prisma generate
 
 # 데이터베이스 마이그레이션

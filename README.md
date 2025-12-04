@@ -255,6 +255,8 @@ docker compose -f docker-compose.infra.yml up -d
 
 ```bash
 cd ..
+cd ..
+pnpm add -D dotenv
 pnpm prisma generate
 pnpm prisma migrate dev
 ```

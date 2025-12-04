@@ -175,22 +175,23 @@ cd /data/all-erp
 ### 7단계: 개발 환경 실행
 
 ```bash
-cd /data/all-erp/dev-environment
-
+cd /data/all-erp
 # 환경 변수 설정
 cp .env.example .env
-nano .env  # 필요 시 수정
 
+cd /data/all-erp/dev-environment
 # 실행 권한 부여
 chmod +x start-dev.sh stop-dev.sh
+
+# (선택) 권한 문제로 서비스가 시작되지 않는 경우 실행
+mkdir -p volumes/elasticsearch volumes/logstash volumes/kibana volumes/grafana volumes/prometheus
+sudo chown -R 1000:1000 volumes/elasticsearch volumes/logstash volumes/kibana
+sudo chown -R 472:472 volumes/grafana
+sudo chown -R 65534:65534 volumes/prometheus
 
 # 인프라 서비스 시작
 ./start-dev.sh
 
-# (선택) 권한 문제로 서비스가 시작되지 않는 경우 실행
-sudo chown -R 1000:1000 volumes/elasticsearch volumes/logstash volumes/kibana
-sudo chown -R 472:472 volumes/grafana
-sudo chown -R 65534:65534 volumes/prometheus
 ```
 
 ---
@@ -204,8 +205,17 @@ cd /data/all-erp
 pnpm install
 
 # Prisma 설정
-pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma
-pnpm prisma migrate dev --schema=libs/shared/infra/prisma/schema.prisma
+# Prisma 설정 (Prisma 7)
+
+# 개발 의존성으로 dotenv 패키지를 추가 (환경 변수 관리에 사용)
+pnpm add -D dotenv
+# Prisma 스키마를 기반으로 Prisma Client를 생성 (데이터베이스 접근을 위한 ORM 클라이언트)
+pnpm prisma generate
+# Prisma 마이그레이션을 실행하여 개발 환경 데이터베이스 스키마를 최신 상태로 유지 (스키마 변경 사항을 데이터베이스에 적용)
+pnpm prisma migrate dev
+
+# 개발 데이터베이스를 초기화하고 모든 데이터를 삭제 후 새로운 마이그레이션을 적용 (주의: 모든 데이터가 삭제됨)
+# pnpm prisma migrate reset --force
 
 # 서비스 실행
 pnpm nx serve auth-service
