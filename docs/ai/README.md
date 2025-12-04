@@ -29,11 +29,12 @@
 - **배포 모델**: Multi-tenant SaaS (고객사별 데이터 격리)
 - **차별점**: AI 기반 업무 자동화 (OCR 자동 분개, RAG 챗봇, 이상 탐지)
 
-### 기술 스택 (2025년 11월 기준)
-- **Backend**: NestJS (Node.js 22), Prisma ORM, PostgreSQL
-- **Frontend**: Next.js 15 (App Router), Shadcn/UI, TanStack Query
-- **Infrastructure**: Docker, Kubernetes, pnpm, Nx Monorepo
-- **AI**: LangChain, OpenAI GPT-4o, Vector DB (Pinecone/Qdrant)
+### 기술 스택 (2025년 12월 v2.0)
+- **Backend**: NestJS 11.x, Prisma 7.x, PostgreSQL 17 (17개 DB)
+- **Frontend**: Vite + React 19, Module Federation (11개 앱)
+- **Infrastructure**: Docker, pnpm, Nx Monorepo
+- **Architecture**: Database per Service + Micro Frontend
+- **AI**: ai-service (MongoDB), LangChain, OpenAI GPT-4o
 
 ---
 
@@ -41,23 +42,29 @@
 
 ```
 all-erp/
-├── apps/                     # 마이크로서비스 앱들
-│   ├── system/              # auth-service, system-service, tenant-service
+├── apps/                     # 마이크로서비스 (17개)
+│   ├── system/              # auth, system, tenant-service
 │   ├── hr/                  # personnel, payroll, attendance
 │   ├── finance/             # budget, accounting, settlement
 │   ├── general/             # asset, supply, general-affairs
-│   ├── ai/                  # ai-service
-│   └── frontend/web-admin   # Next.js 관리자 웹
-├── libs/shared/             # 공통 라이브러리
-│   ├── util/               # 유틸리티 함수
-│   ├── domain/             # 공통 DTO, Exception
-│   └── infra/              # DB, MQ 모듈
-├── docs/                    # 📚 문서
-│   ├── ai/                 # ✨ AI 전용 가이드 (현재 위치)
-│   ├── human/              # 사람 개발자용 문서
-│   ├── tasks/              # Phase별 PRD 문서
-│   └── project_roadmap.md  # 전체 로드맵
-└── deploy/                  # Docker, Kubernetes 설정
+│   ├── ai/                  # ai-service (MongoDB)
+│   ├── platform/            # approval, report, notification, file (신규)
+│   └── frontend/            # Micro Frontend (11개 앱)
+│       ├── shell/           # Host 앱
+│       ├── system-mfe/      # Remote 앱 (시스템관리)
+│       ├── hr-mfe/          # Remote 앱 (인사)
+│       └── ... (10개 Remote)
+├── libs/
+│   ├── shared/
+│   │   ├── util/, domain/, infra/
+│   │   └── database/        # Prisma 스키마 (17개)
+│   └── frontend/            # 프론트엔드 공통 라이브러리
+├── docs/
+│   ├── ai/                 # ✨ AI 전용 가이드
+│   ├── architecture/        # 아키텍처 문서
+│   ├── README-MICROSERVICES-PLAN.md
+│   └── ...
+└── dev-environment/          # Docker Compose (인프라, 서비스)
 ```
 
 ---

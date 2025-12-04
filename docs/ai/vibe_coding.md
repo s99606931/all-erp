@@ -48,6 +48,10 @@
         }
         ```
 5.  **유효성 검사**: 입력 데이터에 대한 검증(Validation) 로직을 항상 포함합니다 (`class-validator` 등 활용).
+6.  **Database per Service 준수**:
+    - 다른 서비스의 DB에 직접 접근 금지
+    - Foreign Key 대신 ID만 저장 (`employeeId: string`)
+    - 필요 시 API 호출 또는 이벤트 구독
 
 ## 4. 답변 스타일 (Response Style)
 - **코드 우선 (Code First)**: 설명보다 코드를 먼저 보여주는 것을 선호합니다.

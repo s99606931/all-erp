@@ -230,41 +230,106 @@ DROP TABLE users;
 
 ---
 
-## 7. 멀티테넌시 전략
+## 7. 멀티테넌시 전략 (Multitenancy Strategy)
 
-### 7.1 Schema per Tenant
+### 7.1 Row-Level Security (RLS)
 
-각 테넌트는 별도의 스키마를 사용합니다.
+Database per Service 환경에서는 각 서비스별로 RLS를 적용합니다.
 
+**PostgreSQL RLS 설정**:
 ```sql
--- 테넌트 A
-CREATE SCHEMA tenant_a;
-CREATE TABLE tenant_a.users (...);
+-- RLS 활성화
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 
--- 테넌트 B
-CREATE SCHEMA tenant_b;
-CREATE TABLE tenant_b.users (...);
-```
-
-**Prisma 동적 스키마 전환**:
-```typescript
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: `postgresql://user:pass@localhost:5432/erp?schema=tenant_${tenantId}`,
-    },
-  },
-});
-```
-
-### 7.2 Row Level Security (대안)
-
-단일 스키마에서 `tenant_id`로 데이터 격리:
-
-```sql
+-- 테넌트별 데이터 격리 정책
 CREATE POLICY tenant_isolation ON users
   USING (tenant_id = current_setting('app.current_tenant')::INTEGER);
 ```
+
+**Prisma Middleware로 자동 테넌트 필터링**:
+```typescript
+// libs/shared/infra/src/lib/prisma/tenant.middleware.ts
+export function applyTenantFilter(prisma: PrismaClient, tenantId: number) {
+  prisma.$use(async (params, next) => {
+    if (params.model) {
+      // 모든 조회에 tenantId 필터 추가
+      if (params.action === 'findMany' || params.action === 'findFirst') {
+        params.args.where = {
+          ...params.args.where,
+          tenantId,
+        };
+      }
+    }
+    return next(params);
+  });
+}
+```
+
+### 7.2 서비스별 DB 인스턴스 (17개)
+
+각 서비스는 독립된 PostgreSQL 또는 MongoDB 인스턴스를 사용합니다.
+
+| 서비스 | DB 이름 | 포트 | 타입 |
+|------|---------|------|------|
+| auth-service | auth_db | 5432 | PostgreSQL |
+| system-service | system_db | 5433 | PostgreSQL |
+| tenant-service | tenant_db | 5434 | PostgreSQL |
+| personnel-service | personnel_db | 5435 | PostgreSQL |
+| payroll-service | payroll_db | 5436 | PostgreSQL |
+| attendance-service | attendance_db | 5437 | PostgreSQL |
+| budget-service | budget_db | 5438 | PostgreSQL |
+| accounting-service | accounting_db | 5439 | PostgreSQL |
+| settlement-service | settlement_db | 5440 | PostgreSQL |
+| asset-service | asset_db | 5441 | PostgreSQL |
+| supply-service | supply_db | 5442 | PostgreSQL |
+| general-affairs-service | general_affairs_db | 5443 | PostgreSQL |
+| approval-service | approval_db | 5444 | PostgreSQL |
+| report-service | report_db | 5445 | PostgreSQL |
+| notification-service | notification_db | 5446 | PostgreSQL |
+| file-service | file_db | 5447 | PostgreSQL |
+| ai-service | ai_db | 27017 | MongoDB |
+
+**연결 문자열 예시**:
+```bash
+# auth-service .env
+DATABASE_URL="postgresql://postgres:password@localhost:5432/auth_db"
+
+# personnel-service .env
+DATABASE_URL="postgresql://postgres:password@localhost:5435/personnel_db"
+```
+
+### 7.3 데이터 공유 전략
+
+다른 서비스의 데이터가 필요한 경우:
+
+**1. API 호출 (Sync)**:
+```typescript
+// payroll-service에서 personnel-service 데이터 조회
+const employee = await this.httpService.get(
+  'http://personnel-service:3011/api/v1/employees/123'
+).toPromise();
+```
+
+**2. 이벤트 구독 (Async)**:
+```typescript
+// personnel-service에서 직원 정보 변경 시
+await this.eventBus.publish('employee.updated', {
+  employeeId,
+  name,
+  tenantId,
+});
+
+// payroll-service에서 이벤트 수신
+@EventPattern('employee.updated')
+async handleEmployeeUpdated(data: EmployeeUpdatedEvent) {
+  // 로컬 DB에 직원 캠시 업데이트
+  await this.prisma.employeeCache.upsert(...);
+}
+```
+
+**3. CQRS 패턴**:
+- 명령(Command): 원본 데이터는 원본 서비스가 관리
+- 조회(Query): 읽기 전용 복제본을 로컬 DB에 저장
 
 ---
 

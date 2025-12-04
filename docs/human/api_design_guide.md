@@ -309,3 +309,195 @@ export class UserController {
 ```
 http://localhost:3001/api/docs
 ```
+
+---
+
+## 11. 서비스 간 통신 (Microservices Communication)
+
+Database per Service 패턴에서는 다른 서비스의 DB에 직접 접근할 수 없습니다.
+
+### 11.1 동기 통신 (HTTP API)
+
+다른 서비스의 데이터가 필요할 때 HTTP API를 호출합니다.
+
+**예시: 급여 서비스에서 인사 서비스 데이터 조회**
+```typescript
+// payroll-service
+async calculatePayroll(employeeId: number) {
+  // 인사 서비스 API 호출
+  const employee = await this.httpService.get(
+    `http://personnel-service:3011/api/v1/employees/${employeeId}`
+  ).toPromise();
+  
+  // 급여 계산 로직
+  const salary = this.calculateSalary(employee.data);
+  return salary;
+}
+```
+
+### 11.2 비동기 통신 (RabbitMQ Event)
+
+데이터 변경을 다른 서비스에 알릴 때 이벤트를 발행합니다.
+
+**예시: 사용자 생성 이벤트 발행**
+```typescript
+// auth-service
+async createUser(dto: CreateUserDto) {
+  const user = await this.prisma.user.create({ data: dto });
+  
+  // 이벤트 발행
+  await this.eventBus.publish('user.created', {
+    userId: user.id,
+    email: user.email,
+    tenantId: user.tenantId,
+    timestamp: new Date(),
+  });
+  
+  return user;
+}
+```
+
+**이벤트 수신**
+```typescript
+// personnel-service
+@EventPattern('user.created')
+async handleUserCreated(data: UserCreatedEvent) {
+  // 인사 기본 정보 생성
+  await this.prisma.employee.create({
+    data: {
+      userId: data.userId,
+      tenantId: data.tenantId,
+    },
+  });
+}
+```
+
+### 11.3 통신 패턴 선택 기준
+
+| 시나리오 | 권장 방법 |
+|---------|----------|
+| 즉시 응답 필요 | HTTP API (동기) |
+| 데이터 일관성보다 성능 우선 | 이벤트 (비동기) |
+| 여러 서비스에 알림 필요 | 이벤트 (비동기) |
+| 트랜잭션 보장 필요 | Saga 패턴 (이벤트) |
+
+---
+
+## 12. 이벤트 페이로드 설계
+
+### 12.1 이벤트 네이밍 규칙
+
+```
+{도메인}.{액션}
+```
+
+**예시**:
+- `user.created`
+- `employee.updated`
+- `salary.paid`
+- `budget.approved`
+
+### 12.2 이벤트 페이로드 구조
+
+```typescript
+interface BaseEvent {
+  eventId: string;        // 이벤트 고유 ID (멱등성)
+  eventType: string;      // 이벤트 타입
+  timestamp: Date;        // 발생 시간
+  tenantId: number;       // 테넌트 ID
+  userId?: number;        // 발행자 ID
+}
+
+interface UserCreatedEvent extends BaseEvent {
+  eventType: 'user.created';
+  data: {
+    userId: number;
+    email: string;
+    name: string;
+  };
+}
+```
+
+### 12.3 이벤트 버전 관리
+
+이벤트 스키마가 변경될 때 버전을 명시합니다.
+
+```typescript
+interface UserCreatedEventV2 extends BaseEvent {
+  eventType: 'user.created';
+  version: 2;  // 버전 추가
+  data: {
+    userId: number;
+    email: string;
+    name: string;
+    phoneNumber: string;  // 신규 필드
+  };
+}
+```
+
+---
+
+## 13. 분산 트랜잭션 (Distributed Transactions)
+
+### 13.1 Saga 패턴
+
+여러 서비스에 걸친 트랜잭션은 Saga 패턴으로 처리합니다.
+
+**예시: 급여 지급 프로세스**
+```typescript
+// payroll-service
+async processSalary(employeeId: number, amount: number) {
+  // 1. 급여 처리 레코드 생성
+  const payroll = await this.prisma.payroll.create({
+    data: { employeeId, amount, status: 'PENDING' },
+  });
+  
+  // 2. 예산 차감 요청 이벤트 발행
+  await this.eventBus.publish('budget.deduct.requested', {
+    payrollId: payroll.id,
+    amount,
+  });
+}
+
+@EventPattern('budget.deduct.success')
+async handleBudgetDeducted(data: BudgetDeductedEvent) {
+  // 3. 급여 처리 완료
+  await this.prisma.payroll.update({
+    where: { id: data.payrollId },
+    data: { status: 'COMPLETED' },
+  });
+}
+
+@EventPattern('budget.deduct.failed')
+async handleBudgetDeductFailed(data: BudgetDeductFailedEvent) {
+  // 4. 보상 트랜잭션: 급여 처리 취소
+  await this.prisma.payroll.update({
+    where: { id: data.payrollId },
+    data: { status: 'FAILED' },
+  });
+}
+```
+
+### 13.2 멱등성 보장
+
+이벤트 중복 처리를 방지하기 위해 `eventId`를 저장합니다.
+
+```typescript
+@EventPattern('user.created')
+async handleUserCreated(event: UserCreatedEvent) {
+  // 이미 처리된 이벤트인지 확인
+  const exists = await this.prisma.processedEvent.findUnique({
+    where: { eventId: event.eventId },
+  });
+  
+  if (exists) return;  // 중복 처리 방지
+  
+  // 이벤트 처리
+  await this.prisma.employee.create({ data: event.data });
+  
+  // 처리 완료 기록
+  await this.prisma.processedEvent.create({
+    data: { eventId: event.eventId },
+  });
+}
+```

@@ -30,16 +30,18 @@
 공공기관 및 기업을 위한 AI 기반 지능형 ERP 플랫폼을 구축하여, 업무 효율성을 200% 향상시키고 운영 비용을 30% 절감합니다.
 
 ### 핵심 특징
-- **MSA**: 11개의 독립적인 마이크로서비스
-- **SaaS**: 멀티테넌트 아키텍처 (고객사별 데이터 격리)
+- **MSA**: 17개의 독립적인 마이크로서비스 (Database per Service)
+- **SaaS**: 멀티테넌트 아키텍처 (Row-Level Security 기반 데이터 격리)
+- **Micro Frontend**: Module Federation 기반 11개 프론트엔드 앱
 - **AI Integration**: 자동 분개, RAG 챗봇, 이상 탐지
 
 ### 기술 스택
 ```
-Backend:  NestJS, Prisma ORM, PostgreSQL, Redis, RabbitMQ
-Frontend: Next.js 15, Shadcn/UI, TanStack Query, Zustand
-DevOps:   Docker, Kubernetes, pnpm, Nx Monorepo
+Backend:  NestJS, Prisma ORM, PostgreSQL (17 DBs), Redis, RabbitMQ
+Frontend: Vite, React, Module Federation, TanStack Query, Zustand
+DevOps:   Docker Compose, Kubernetes, pnpm, Nx Monorepo
 AI:       LangChain, OpenAI GPT-4o, Pinecone/Qdrant
+Storage:  Minio (S3-compatible)
 ```
 
 ---
@@ -88,24 +90,37 @@ cp .env.example .env
 
 ### 3. 로컬 개발 환경 실행
 
-#### 3.1 인프라 실행 (DB, Redis, RabbitMQ)
+#### 3.1 인프라 실행 (17개 DB, Redis, RabbitMQ, Minio)
 ```bash
-docker-compose -f docker-compose.infra.yml up -d
+cd dev-environment
+docker compose -f docker-compose.infra.yml up -d
+
+# 로그 확인
+docker compose -f docker-compose.infra.yml logs -f
 ```
 
-#### 3.2 백엔드 서비스 실행
+#### 3.2 백엔드 서비스 실행 (17개)
 ```bash
-# 특정 서비스 실행 (예: auth-service)
+# Docker Compose로 특정 서비스 실행
+cd dev-environment
+docker compose -f docker-compose.dev.yml up -d auth-service
+
+# 또는 로컬에서 직접 실행
 pnpm nx serve auth-service
 
 # 여러 서비스 동시 실행
-pnpm nx run-many --target=serve --projects=auth-service,system-service
+docker compose -f docker-compose.dev.yml up -d auth-service system-service tenant-service
 ```
 
-#### 3.3 프론트엔드 실행
+#### 3.3 프론트엔드 실행 (Micro Frontend)
 ```bash
-pnpm nx serve web-admin
-# http://localhost:4200 접속
+# Shell + Remote 앱 모두 실행
+cd dev-environment
+docker compose -f docker-compose.frontend.yml up -d
+
+# 또는 Shell 앱만 실행
+pnpm nx serve shell
+# http://localhost:3000 접속
 ```
 
 ### 4. 개발 도구 설정
@@ -133,21 +148,27 @@ pnpm nx serve web-admin
 
 ```
 all-erp/
-├── apps/                    # 마이크로서비스 앱들
-│   ├── system/             # 인증, 시스템, 테넌트 관리
-│   ├── hr/                 # 인사, 급여, 복무
-│   ├── finance/            # 예산, 재무, 결산
-│   ├── general/            # 자산, 물품, 총무
-│   ├── ai/                 # AI 서비스
-│   └── frontend/web-admin  # 관리자 웹
+├── apps/                    # 마이크로서비스 앱들 (17개)
+│   ├── system/             # 인증, 시스템, 테넌트 관리 (3개)
+│   ├── hr/                 # 인사, 급여, 복무 (3개)
+│   ├── finance/            # 예산, 재무, 결산 (3개)
+│   ├── general/            # 자산, 물품, 총무 (3개)
+│   ├── platform/           # 결재, 보고서, 알림, 파일 (4개)
+│   ├── ai/                 # AI 서비스 (1개)
+│   └── frontend/           # Micro Frontend (11개)
+│       ├── shell/         # Shell 앱 (1개)
+│       └── remote/        # Remote 앱 (10개)
 ├── libs/shared/            # 공통 라이브러리
 │   ├── util/              # 유틸리티
 │   ├── domain/            # DTO, Exception
-│   └── infra/             # DB, MQ 모듈
+│   ├── infra/             # DB, MQ, Storage 모듈
+│   └── ui/                # UI 컴포넌트
 ├── docs/                   # 문서
 │   ├── human/             # 👥 사람 개발자용 (현재 위치)
 │   ├── ai/                # 🤖 AI용
+│   ├── architecture/      # 아키텍처 문서
 │   └── tasks/             # 📋 PRD 문서
+├── dev-environment/        # Docker Compose 설정
 └── deploy/                 # 배포 설정
 ```
 

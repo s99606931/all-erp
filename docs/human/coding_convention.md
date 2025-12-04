@@ -4,8 +4,8 @@
 본 문서는 MSA 기반 ERP 시스템 개발에 참여하는 **모든 개발자**가 준수해야 할 코드 품질 표준, 폴더 구조, 네이밍 규칙을 정의합니다.
 
 ## 2. 기술 스택 (Tech Stack)
-- **Backend**: NestJS (v11+), TypeScript, Prisma, PostgreSQL
-- **Frontend**: Next.js (App Router), TypeScript, Tailwind CSS, Zustand
+- **Backend**: NestJS (v11+), TypeScript, Prisma, PostgreSQL (17 DBs)
+- **Frontend**: Vite, React, Module Federation, TanStack Query, Zustand
 - **Monorepo**: Nx
 
 ## 3. 폴더 구조 (Folder Structure)
@@ -25,18 +25,29 @@ src/
 └── main.ts
 ```
 
-### 3.2 프론트엔드 (Next.js)
+### 3.2 프론트엔드 (Micro Frontend)
+
+**Shell 앱** (`apps/frontend/shell`):
 ```
-app/
-├── (dashboard)/           # 인증된 사용자용 레이아웃 그룹
-│   ├── [feature]/         # 기능별 페이지 라우트
-│   │   ├── page.tsx
-│   │   └── layout.tsx
-├── components/            # 공통 및 기능별 컴포넌트
-│   ├── ui/                # 디자인 시스템 기본 컴포넌트 (Button, Input 등)
-│   └── [feature]/         # 특정 기능 전용 컴포넌트
-├── lib/                   # 유틸리티 함수, 훅, 상수
+src/
+├── app/
+│   ├── App.tsx            # 메인 앱 컴포넌트
+│   ├── Router.tsx         # 라우팅 설정
+│   └── Layout.tsx         # 공통 레이아웃
+├── components/            # Shell 전용 컴포넌트
+├── lib/                   # 유틸리티 함수, 훅
 └── store/                 # 전역 상태 (Zustand)
+```
+
+**Remote 앱** (`apps/frontend/remote/{domain}`):
+```
+src/
+├── app/
+│   ├── routes/            # 도메인 라우트
+│   └── pages/             # 페이지 컴포넌트
+├── components/            # Remote 전용 컴포넌트
+├── lib/                   # 유틸리티
+└── store/                 # 로컬 상태
 ```
 
 ## 4. 코딩 컨벤션 (Coding Convention)
@@ -60,6 +71,29 @@ app/
 - **Docstring**: 공개 메서드나 복잡한 로직의 함수 상단에는 JSDoc 형태의 설명을 추가합니다.
 - **TODO**: 추후 작업이 필요한 곳에는 `// TODO: [작업내용]` 형식을 사용합니다.
 
+### 4.4 Database per Service 규칙
+
+**절대 금지사항**:
+```typescript
+// ❌ 다른 서비스 DB 직접 접근 금지
+import { personnelPrisma } from '@all-erp/personnel-service/prisma';
+const employee = await personnelPrisma.employee.findUnique(...);
+```
+
+**권장 방법**:
+```typescript
+// ✅ HTTP API 호출
+const employee = await this.httpService.get(
+  'http://personnel-service:3011/api/v1/employees/123'
+).toPromise();
+
+// ✅ 이벤트 구독
+@EventPattern('employee.updated')
+async handleEmployeeUpdated(data: EmployeeUpdatedEvent) {
+  await this.syncEmployeeData(data);
+}
+```
+
 ## 5. Git & Commit
 - **Commit Message**: Conventional Commits 규칙을 따릅니다.
     - `feat`: 새로운 기능 추가
@@ -68,3 +102,4 @@ app/
     - `refactor`: 코드 리팩토링 (기능 변경 없음)
     - `chore`: 빌드 태스크, 패키지 매니저 설정 등
 - **Branch Strategy**: Git Flow 또는 GitHub Flow를 따릅니다 (main -> develop -> feature/*).
+

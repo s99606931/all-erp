@@ -30,7 +30,7 @@ NODE_ENV="development"
 PORT=3000
 ```
 
-### 1.2 서비스별 포트 번호
+### 1.2 서비스별 포트 번호 (17개)
 
 | 서비스 | 포트 | 설명 |
 |---------|------|------|
@@ -46,8 +46,13 @@ PORT=3000
 | `asset-service` | 3031 | 자산 관리 |
 | `supply-service` | 3032 | 물품 관리 |
 | `general-affairs-service` | 3033 | 총무 관리 |
+| `approval-service` | 3041 | 결재 관리 |
+| `report-service` | 3042 | 보고서 관리 |
+| `notification-service` | 3043 | 알림 서비스 |
+| `file-service` | 3044 | 파일 관리 |
 | `ai-service` | 3007 | AI 서비스 |
-| `web-admin` | 4200 | 관리자 웹 |
+| `shell` (Frontend) | 3000 | Shell 앱 |
+| Remote 앱들 | 3100+ | Remote 앱 (10개) |
 
 ---
 
@@ -242,20 +247,36 @@ pnpm prisma generate
 
 ### 문제 3: Docker 컨테이너 문제
 ```bash
-# 전체 재시작
-docker-compose -f docker-compose.infra.yml down
-docker-compose -f docker-compose.infra.yml up -d
+# 인프라 전체 재시작
+cd dev-environment
+docker compose -f docker-compose.infra.yml down
+docker compose -f docker-compose.infra.yml up -d
 
 # 로그 확인
-docker-compose -f docker-compose.infra.yml logs -f postgres
+docker compose -f docker-compose.infra.yml logs -f postgres
+
+# 백엔드 서비스 재시작
+docker compose -f docker-compose.dev.yml restart auth-service
 ```
 
 ### 문제 4: pnpm install 실패
 ```bash
-# 캐시 삭제 후 재설치
+# 캠시 삭제 후 재설치
 pnpm store prune
 rm -rf node_modules
 pnpm install
+```
+
+### 문제 5: 서비스 간 통신 실패
+```bash
+# Docker 네트워크 확인
+docker network ls
+
+# 서비스 연결 확인
+curl http://personnel-service:3011/health
+
+# RabbitMQ 연결 확인
+curl http://localhost:15672  # RabbitMQ Management UI
 ```
 
 ---

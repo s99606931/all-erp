@@ -1,117 +1,365 @@
-# SaaS Multitenancy Architecture
+# SaaS Multitenancy Architecture v2.0
 
-> **Version**: 1.0
-> **Date**: 2025-11-30
-> **Status**: Approved
+> **Version**: 2.0  
+> **Date**: 2025-12-04  
+> **Status**: Approved  
+> **Architecture**: Database per Service
 
 ## 1. 개요 (Overview)
 
-본 문서는 ERP 시스템의 **멀티테넌시(Multi-tenancy)** 구현 전략을 정의합니다.
-핵심 목표는 **데이터의 완벽한 격리**와 **효율적인 리소스 공유**를 동시에 달성하는 것입니다.
+본 문서는 **Database per Service 아키텍처**에서의 멀티테넌시 구현 전략을 정의합니다.  
+핵심 목표는 **서비스 독립성 유지**와 **데이터 완벽 격리**를 동시에 달성하는 것입니다.
 
 ### 핵심 결정 사항 (Key Decisions)
-- **데이터 격리**: **Schema per Tenant** (PostgreSQL)
-- **테넌트 식별**: **Subdomain** (진입점) + **Header** (내부 통신)
+
+- **데이터 격리**: **Row-Level Security (RLS)** + tenantId 필드
+- **테넌트 식별**: **Subdomain** + **X-Tenant-ID Header**
+- **아키텍처**: Database per Service (17개 독립 DB)
 
 ---
 
-## 2. 아키텍처 다이어그램 (Architecture Diagram)
+## 2. Architecture v2.0 다이어그램
 
 ```mermaid
 flowchart TB
-    ClientUser["User (Browser)"]
+    User["User<br/>samsung.erp.com"]
     
-    subgraph Ingress["Ingress / Gateway"]
-        LB["Load Balancer"]
-        Gateway["API Gateway (Nginx/Ingress)"]
+    subgraph Gateway["API Gateway (Nginx)"]
+        GW[Tenant Resolver<br/>samsung → samsung_id]
     end
     
-    subgraph Services["Microservices (NestJS)"]
-        Auth["Auth Service"]
-        System["System Service"]
-        Biz["Business Services<br/>(HR, Finance...)"]
+    subgraph Services["17 Services (Database per Service)"]
+        Auth[auth-service]
+        Personnel[personnel-service]
+        Payroll[payroll-service]
         
-        Middleware["Tenant Middleware<br/>(Extract ID)"]
+        AuthDB[(auth_db)]
+        PersonnelDB[(personnel_db)]
+        PayrollDB[(payroll_db)]
+        
+        Auth -->|tenantId filter| AuthDB
+        Personnel -->|tenantId filter| PersonnelDB
+        Payroll -->|tenantId filter| PayrollDB
     end
     
-    subgraph Data["Database (PostgreSQL)"]
-        Public["Schema: public<br/>(Shared Data)"]
-        TenantA["Schema: tenant_a"]
-        TenantB["Schema: tenant_b"]
-    end
-
-    ClientUser -->|https://tenant-a.erp.com| LB
-    LB --> Gateway
-    Gateway -->|X-Tenant-ID: tenant-a| Middleware
+    User -->|HTTPS| GW
+    GW -->|X-Tenant-ID: samsung_id| Auth
+    GW -->|X-Tenant-ID: samsung_id| Personnel
+    GW -->|X-Tenant-ID: samsung_id| Payroll
     
-    Middleware --> Auth
-    Middleware --> System
-    Middleware --> Biz
-    
-    Auth -->|Set Search Path| TenantA
-    System -->|Set Search Path| TenantA
-    Biz -->|Set Search Path| TenantA
-    
-    note[/"Tenant Context Propagation<br/>via AsyncLocalStorage"/]
-    Middleware -.-> note
+    AuthDB -.->|RLS Policy| AuthDB
+    PersonnelDB -.->|RLS Policy| PersonnelDB
+    PayrollDB -.->|RLS Policy| PayrollDB
 ```
 
 ---
 
-## 3. 상세 설계 (Detailed Design)
+## 3. Database per Service 환경에서의 멀티테넌시
 
-### 3.1 테넌트 식별 (Tenant Identification)
+### 3.1 각 DB에 tenantId 필드 적용
 
-요청이 들어왔을 때 어떤 테넌트의 요청인지 식별하는 전략입니다.
+모든 서비스의 모든 테이블에 `tenantId` 컬럼을 포함합니다.
 
-| 단계 | 식별 방법 | 예시 | 설명 |
-|---|---|---|---|
-| **1. 클라이언트 진입** | **Subdomain** | `https://samsung.erp.com` | 사용자는 서브도메인을 통해 자신의 테넌트 환경에 접속합니다. |
-| **2. 게이트웨이/프록시** | **Header 변환** | `X-Tenant-ID: samsung` | 게이트웨이(또는 프론트엔드 서버)에서 서브도메인을 파싱하여 헤더로 변환합니다. |
-| **3. 내부 서비스 통신** | **Header 유지** | `X-Tenant-ID: samsung` | 마이크로서비스 간 통신 시에는 항상 헤더를 포함하여 컨텍스트를 전파합니다. |
+```prisma
+// libs/shared/database/personnel/schema.prisma
+model Employee {
+  id           String   @id @default(uuid())
+  tenantId     String                          // 필수!
+  name         String
+  email        String
+  departmentId String
+  createdAt    DateTime @default(now())
+  
+  @@index([tenantId])                          // 성능 최적화
+  @@unique([tenantId, email])                  // 테넌트 내 유일성
+}
+```
 
-### 3.2 데이터 격리 (Data Isolation)
+### 3.2 Row-Level Security (RLS) 적용
 
-**Schema per Tenant** 전략을 사용합니다.
+PostgreSQL의 RLS 기능으로 DB 레벨에서 데이터 격리를 강제합니다.
 
-- **물리적 DB**: 하나의 PostgreSQL 인스턴스(또는 클러스터)를 공유합니다.
-- **논리적 격리**: 각 테넌트는 별도의 **Schema**를 가집니다.
-    - 예: `tenant_a`, `tenant_b`, `tenant_c`
-- **공통 데이터**: 모든 테넌트가 공유하는 데이터(예: 국가 코드, 시스템 설정)는 `public` 스키마에 저장합니다.
+```sql
+-- personnel_db에 RLS 적용
+ALTER TABLE "Employee" ENABLE ROW LEVEL SECURITY;
 
-#### Prisma 구현 전략
-Prisma는 기본적으로 단일 스키마를 타겟팅하지만, PostgreSQL의 `search_path` 기능을 활용하여 동적으로 스키마를 전환할 수 있습니다.
+CREATE POLICY employee_tenant_isolation ON "Employee"
+  USING (tenantId = current_setting('app.tenant_id')::text);
+
+-- 읽기 정책
+CREATE POLICY employee_select_policy ON "Employee"
+  FOR SELECT
+  USING (tenantId = current_setting('app.tenant_id')::text);
+
+-- 쓰기 정책
+CREATE POLICY employee_insert_policy ON "Employee"
+  FOR INSERT
+  WITH CHECK (tenantId = current_setting('app.tenant_id')::text);
+```
+
+### 3.3 Prisma Middleware로 tenantId 자동 주입
 
 ```typescript
-// 예시 코드 (개념)
-const tenantId = Context.getTenantId();
-await prisma.$executeRaw(`SET search_path TO "${tenantId}", "public"`);
+// libs/shared/database/personnel/client.ts
+import { PrismaClient } from '@prisma/client';
+import { AsyncLocalStorage } from 'async_hooks';
+
+const tenantContext = new AsyncLocalStorage<string>();
+
+const prisma = new PrismaClient();
+
+// Middleware: 모든 쿼리에 tenantId 자동 추가
+prisma.$use(async (params, next) => {
+  const tenantId = tenantContext.getStore();
+  
+  if (!tenantId) {
+    throw new Error('Tenant context not set');
+  }
+  
+  // SELECT, UPDATE, DELETE에 tenantId 필터 자동 추가
+  if (['findMany', 'findFirst', 'findUnique', 'update', 'delete'].includes(params.action)) {
+    params.args.where = {
+      ...params.args.where,
+      tenantId,
+    };
+  }
+  
+  // INSERT에 tenantId 자동 주입
+  if (params.action === 'create') {
+    params.args.data = {
+      ...params.args.data,
+      tenantId,
+    };
+  }
+  
+  // PostgreSQL session 설정 (RLS용)
+  await prisma.$executeRaw`SET app.tenant_id = ${tenantId}`;
+  
+  return next(params);
+});
+
+// Context 저장 헬퍼
+export function runInTenantContext<T>(tenantId: string, fn: () => T): T {
+  return tenantContext.run(tenantId, fn);
+}
+
+export { prisma };
 ```
-
-### 3.3 요청 처리 흐름 (Request Flow)
-
-1.  **Request In**: 클라이언트가 `tenant-a.erp.com/api/users` 호출.
-2.  **Middleware**:
-    -   `X-Tenant-ID` 헤더 확인.
-    -   없으면 `Host` 헤더에서 서브도메인 파싱.
-    -   유효한 Tenant ID인지 검증 (Redis 캐시 등 활용).
-    -   `AsyncLocalStorage`에 Tenant ID 저장.
-3.  **Guard**:
-    -   `TenantGuard`가 실행되어 Tenant ID가 없는 요청 차단.
-4.  **Service/Repository**:
-    -   DB 쿼리 실행 직전, 현재 Context의 Tenant ID를 사용하여 DB 세션 설정 (또는 클라이언트 전환).
-5.  **Response**: 결과 반환.
 
 ---
 
-## 4. 마이그레이션 관리 (Migration Management)
+## 4. 테넌트 식별 흐름
 
-Schema per Tenant 전략의 가장 큰 과제는 **스키마 변경 관리**입니다.
+### 4.1 요청 처리 Flow
 
-- **마이그레이션 스크립트**: Prisma Migrate를 사용하여 `migrations/` 생성.
-- **배포 파이프라인**:
-    1.  `public` 스키마 마이그레이션 실행.
-    2.  등록된 모든 활성 테넌트 목록 조회.
-    3.  각 테넌트 스키마에 대해 순차적(또는 병렬)으로 마이그레이션 실행.
+```
+1. User → samsung.erp.com/api/employees
+2. Nginx → Subdomain 파싱 → X-Tenant-ID: samsung_id
+3. NestJS Middleware → Header 추출 → AsyncLocalStorage 저장
+4. Controller → Service → Repository
+5. Prisma Middleware → tenantId 필터 자동 적용
+6. PostgreSQL RLS → 추가 검증
+7. Response → Client
+```
 
-> **Note**: 초기 단계에서는 스크립트로 관리하며, 추후 `Tenant Manager Service`가 이를 자동화하도록 고도화합니다.
+### 4.2 NestJS Middleware 구현
+
+```typescript
+// libs/shared/infra/src/middleware/tenant.middleware.ts
+import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
+import { AsyncLocalStorage } from 'async_hooks';
+
+export const tenantContext = new AsyncLocalStorage<string>();
+
+@Injectable()
+export class TenantMiddleware implements NestMiddleware {
+  use(req: Request, res: Response, next: NextFunction) {
+    // 1. Header에서 Tenant ID 추출
+    let tenantId = req.headers['x-tenant-id'] as string;
+    
+    // 2. Header가 없으면 Subdomain에서 파싱
+    if (!tenantId) {
+      const host = req.headers.host || '';
+      const subdomain = host.split('.')[0];
+      tenantId = this.resolveSubdomain(subdomain);  // DB 조회
+    }
+    
+    // 3. 검증
+    if (!tenantId) {
+      throw new UnauthorizedException('Tenant not found');
+    }
+    
+    // 4. AsyncLocalStorage에 저장
+    tenantContext.run(tenantId, () => {
+      (req as any).tenantId = tenantId;
+      next();
+    });
+  }
+  
+  private resolveSubdomain(subdomain: string): string {
+    // Redis 캐시에서 조회
+    return this.cache.get(`subdomain:${subdomain}`);
+  }
+}
+```
+
+---
+
+## 5. 서비스 간 통신 시 Tenant Context 전파
+
+### 5.1 HTTP 호출 시 Header 전달
+
+```typescript
+// payroll-service에서 personnel-service 호출
+async getEmployeeInfo(empId: string) {
+  const tenantId = tenantContext.getStore();
+  
+  const response = await this.httpService.get(
+    `http://personnel-service:3011/api/employees/${empId}`,
+    {
+      headers: {
+        'X-Tenant-ID': tenantId,  // Context 전파
+      },
+    }
+  ).toPromise();
+  
+  return response.data;
+}
+```
+
+### 5.2 RabbitMQ Event 시 Payload에 포함
+
+```typescript
+// 이벤트 발행
+await this.eventBus.publish('employee.updated', {
+  tenantId: tenantContext.getStore(),  // 이벤트에 포함
+  employeeId: '...',
+  name: '...',
+});
+
+// 이벤트 구독
+@RabbitSubscribe('employee.updated')
+async handleEmployeeUpdated(event: EmployeeUpdatedEvent) {
+  return tenantContext.run(event.tenantId, async () => {
+    // 올바른 Tenant Context에서 실행
+    await this.cache.set(`employee:${event.employeeId}`, event);
+  });
+}
+```
+
+---
+
+## 6. 마이그레이션 관리
+
+### 6.1 각 DB별 독립 마이그레이션
+
+```bash
+# 각 서비스 DB 마이그레이션
+cd libs/shared/database/auth
+pnpm prisma migrate dev --name add_tenant_id
+
+cd ../personnel
+pnpm prisma migrate dev --name add_tenant_id
+
+# ... 17개 반복
+```
+
+### 6.2 RLS 정책 자동 적용 스크립트
+
+```sql
+-- scripts/apply-rls.sql
+DO $$
+DECLARE
+  tbl RECORD;
+BEGIN
+  FOR tbl IN 
+    SELECT tablename 
+    FROM pg_tables 
+    WHERE schemaname = 'public'
+  LOOP
+    EXECUTE format('ALTER TABLE %I ENABLE ROW LEVEL SECURITY', tbl.tablename);
+    
+    EXECUTE format('
+      CREATE POLICY %I_tenant_isolation ON %I
+      USING (tenantId = current_setting(''app.tenant_id'')::text)
+    ', tbl.tablename, tbl.tablename);
+  END LOOP;
+END $$;
+```
+
+---
+
+## 7. 보안 고려사항
+
+### 7.1 Tenant ID 위조 방지
+
+- API Gateway에서만 Tenant ID 설정
+- 서비스 내부에서는 Context에서만 읽기
+- 절대 클라이언트 입력으로 받지 않음
+
+### 7.2 Cross-Tenant Access 차단
+
+```typescript
+// Guard로 추가 검증
+@Injectable()
+export class TenantGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean {
+    const request = context.switchToHttp().getRequest();
+    const tenantId = tenantContext.getStore();
+    
+    // Request의 tenantId와 Context가 일치하는지 검증
+    if (request.body?.tenantId && request.body.tenantId !== tenantId) {
+      throw new ForbiddenException('Cross-tenant access denied');
+    }
+    
+    return true;
+  }
+}
+```
+
+---
+
+## 8. 모니터링
+
+### 8.1 Tenant별 메트릭
+
+```typescript
+// Prometheus 메트릭
+const requestCounter = new Counter({
+  name: 'erp_requests_total',
+  help: 'Total requests by tenant',
+  labelNames: ['tenant_id', 'service', 'endpoint'],
+});
+
+// Middleware에서 기록
+requestCounter.labels(tenantId, 'personnel-service', req.path).inc();
+```
+
+---
+
+## 9. 장단점
+
+### 장점 ✅
+
+- **강력한 격리**: DB 레벨 + 애플리케이션 레벨 이중 보호
+- **서비스 독립성**: 각 서비스가 자신의 DB 완전 제어
+- **확장성**: Tenant별, 서비스별 독립 스케일링
+
+### 단점 ⚠️
+
+- **복잡도 증가**: Context 전파 로직 필수
+- **성능 오버헤드**: RLS 정책 평가 비용
+- **운영 부담**: 17개 DB × N개 Tenant 관리
+
+---
+
+## 10. 참조 문서
+
+- [마이크로서비스 아키텍처 v2.0](./microservices-architecture-review.md)
+- [Database per Service 가이드](./database-per-service-guide.md)
+
+---
+
+**문서 버전**: 2.0  
+**최종 업데이트**: 2025-12-04

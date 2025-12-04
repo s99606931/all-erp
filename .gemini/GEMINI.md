@@ -2,7 +2,8 @@
 
 이 문서는 Gemini가 사용자와 협업할 때 준수해야 할 언어 및 행동 규칙을 정의합니다.
 채팅창에서 출력되는 모든 언어는 한국어로 작성합니다. 
-특히 ai가 생성가하는 코드를 한국어로 작성하도록 지시합니다. 
+특히 ai가 생성하는 코드를 한국어로 작성하도록 지시합니다. 
+
 ## 1. 언어 원칙 (Language Principles)
 *   **기본 언어**: 모든 대화, 문서, 계획, 태스크 리스트는 **한국어(Korean)**를 기본으로 사용합니다.
 *   **생각 및 진행 상황**: LLM의 내부 사고 과정(Thought Process), 태스크 상태(Task Status), 진행 요약(Task Summary) 등 사용자에게 노출되는 모든 진행 상황 정보도 **한국어**로 작성합니다.
@@ -42,7 +43,8 @@
 2. **`docs/ai/vibe_coding.md`** 읽기 → AI 페르소나 및 코딩 스타일 숙지
 3. **`docs/ai/project_context.md`** 읽기 → 아키텍처 및 기술 스택 이해
 4. **`docs/ai/task_workflow.md`** 읽기 → PRD 기반 작업 방법 학습
-5. **해당 PRD 문서** 읽고 → 작업 시작!
+5. **`docs/README-MICROSERVICES-PLAN.md`** 읽기 → 마이크로서비스 전환 계획 이해
+6. **해당 PRD 문서** 읽고 → 작업 시작!
 
 위 순서대로 학습하면 프로젝트의 핵심 컨텍스트를 빠르게 이해하고 일관성 있는 개발을 진행할 수 있습니다.
 
@@ -56,23 +58,25 @@
     *   개발 생산성을 위해 볼륨 마운트와 Hot Reload를 사용합니다.
 
 *   **환경별 Docker Compose 파일**:
-    *   `docker-compose.dev.yml`: 개발 환경 (볼륨 마운트, Hot Reload)
-    *   `docker-compose.test.yml`: 테스트 환경 (격리된 DB, E2E)
-    *   `docker-compose.prod.yml`: 운영 환경 (빌드된 이미지)
+    *   `docker-compose.infra.yml`: 인프라 (17개 DB, Redis, RabbitMQ, Minio)
+    *   `docker-compose.dev.yml`: 개발 환경 (17개 백엔드 서비스)
+    *   `docker-compose.frontend.yml`: 프론트엔드 (Shell + 10개 Remote 앱)
 
 *   **개발 워크플로우**:
     ```bash
-    # 개발 시작
+    # 1. 인프라 실행 (17개 DB 포함)
     cd dev-environment
-    docker compose -f docker-compose.dev.yml up -d
+    docker compose -f docker-compose.infra.yml up -d
     
-    # 소스 수정 (로컬)
-    vim /data/all-erp/apps/auth-service/src/main.ts
+    # 2. 백엔드 서비스 실행 (예: auth-service)
+    docker compose -f docker-compose.dev.yml up -d auth-service
     
-    # 자동 반영 (볼륨 마운트)
-    # Hot Reload로 컨테이너 자동 재시작
+    # 3. 소스 수정 (로컬)
+    vim /data/all-erp/apps/system/auth-service/src/main.ts
     
-    # 종료
+    # 4. 자동 반영 (볼륨 마운트 + Hot Reload)
+    
+    # 5. 종료
     docker compose -f docker-compose.dev.yml down
     ```
 
@@ -81,16 +85,25 @@
     *   **격리**: OS 환경에 영향받지 않음
     *   **재현성**: "내 컴퓨터에서는 되는데" 문제 원천 차단
 
-*   **참고 문서**: [`docs/guides/docker-compose-workflow.md`](file:///data/all-erp/docs/guides/docker-compose-workflow.md)
-
 ## 7. 프로젝트 아키텍처 및 표준 (Project Architecture & Standards)
+
+*   **마이크로서비스 아키텍처 (v2.0)**:
+    *   **총 17개 서비스**: 현재 13개 유지 + 신규 4개 추가
+    *   **Database per Service**: 각 서비스별 독립 DB (17개 DB 인스턴스)
+    *   **Micro Frontend**: Module Federation 기반 11개 앱 (Shell 1 + Remote 10)
 
 *   **공통 모듈 사용 의무화**:
     *   모든 마이크로서비스의 `main.ts`는 반드시 `libs/shared/infra`의 `bootstrapService`를 사용하여 초기화해야 합니다.
     *   `AppModule`은 `SharedInfraModule`과 `SharedDomainModule`을 import하여 공통 기능을 활용해야 합니다.
+    
 *   **폴더 구조 준수**:
     *   새로운 파일이나 모듈 생성 시 [`docs/guides/project-structure.md`](file:///data/all-erp/docs/guides/project-structure.md)의 가이드를 엄격히 준수합니다.
     *   `api` (Controller), `domain` (Service), `infra` (Repository) 계층을 명확히 분리합니다.
 
+*   **Database per Service 통신 규칙**:
+    *   **직접 DB 참조 금지**: 다른 서비스의 DB에 직접 접근하지 않습니다.
+    *   **API 호출**: 다른 서비스의 데이터가 필요하면 HTTP API로 조회합니다.
+    *   **이벤트 발행**: 데이터 변경 시 RabbitMQ로 이벤트를 발행하여 다른 서비스에 알립니다.
+
 ---
-*이 지침은 2025년 12월 03일부터 적용됩니다.*
+*이 지침은 2025년 12월 04일 v2.0으로 업데이트되었습니다.*
