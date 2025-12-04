@@ -1,0 +1,49 @@
+// settlement-service용 독립 Prisma 스키마
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
+}
+
+// 결산
+model Settlement {
+    id          String   @id @default(uuid())
+    fiscalYear  Int      @map("fiscal_year")
+    period      String // MONTHLY, QUARTERLY, YEARLY
+    periodValue String   @map("period_value") // 2025-01, 2025-Q1, 2025
+    status      String   @default("DRAFT") // DRAFT, CONFIRMED, CLOSED
+    tenantId    String   @map("tenant_id")
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+
+    @@unique([tenantId, fiscalYear, period, periodValue])
+    @@index([tenantId])
+    @@index([fiscalYear])
+    @@map("settlements")
+}
+
+model ProcessedEvent {
+    eventId     String   @id @map("event_id")
+    eventType   String   @map("event_type")
+    processedAt DateTime @map("processed_at")
+    createdAt   DateTime @default(now()) @map("created_at")
+
+    @@map("processed_events")
+}
+
+model OutboxEvent {
+    id        String   @id @default(uuid())
+    eventId   String   @unique @map("event_id")
+    eventType String   @map("event_type")
+    payload   String
+    status    String   @default("PENDING")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@map("outbox_events")
+}

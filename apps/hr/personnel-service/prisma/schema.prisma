@@ -1,0 +1,82 @@
+// personnel-service용 독립 Prisma 스키마
+// Database per Service 패턴: personnel_db만 접근
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
+}
+
+// 직원
+model Employee {
+    id             String    @id @default(uuid())
+    userId         String    @unique @map("user_id") // auth-service User ID (외래키 아님)
+    employeeNumber String    @unique @map("employee_number")
+    name           String
+    email          String?
+    phone          String?
+    departmentId   String    @map("department_id") // system-service Department ID
+    positionCode   String    @map("position_code") // system-service CommonCode
+    hireDate       DateTime  @map("hire_date") @db.Date
+    resignDate     DateTime? @map("resign_date") @db.Date
+    status         String    @default("ACTIVE") // ACTIVE, INACTIVE, RESIGNED
+    tenantId       String    @map("tenant_id")
+    createdAt      DateTime  @default(now()) @map("created_at")
+    updatedAt      DateTime  @updatedAt @map("updated_at")
+    deletedAt      DateTime? @map("deleted_at")
+
+    history EmployeeHistory[]
+
+    @@index([tenantId])
+    @@index([userId])
+    @@index([departmentId])
+    @@index([status])
+    @@map("employees")
+}
+
+// 인사 이동 이력
+model EmployeeHistory {
+    id         String   @id @default(uuid())
+    employeeId String   @map("employee_id")
+    eventType  String   @map("event_type") // HIRED, PROMOTED, TRANSFERRED, RESIGNED
+    eventDate  DateTime @map("event_date") @db.Date
+    fromValue  String?  @map("from_value") // JSON
+    toValue    String?  @map("to_value") // JSON
+    reason     String?
+    createdAt  DateTime @default(now()) @map("created_at")
+
+    employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+    @@index([employeeId])
+    @@index([eventDate])
+    @@map("employee_history")
+}
+
+// 이벤트 멱등성 관리
+model ProcessedEvent {
+    eventId     String   @id @map("event_id")
+    eventType   String   @map("event_type")
+    processedAt DateTime @map("processed_at")
+    createdAt   DateTime @default(now()) @map("created_at")
+
+    @@index([eventType])
+    @@map("processed_events")
+}
+
+// Outbox 패턴
+model OutboxEvent {
+    id        String   @id @default(uuid())
+    eventId   String   @unique @map("event_id")
+    eventType String   @map("event_type")
+    payload   String // JSON
+    status    String   @default("PENDING")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@index([status])
+    @@map("outbox_events")
+}

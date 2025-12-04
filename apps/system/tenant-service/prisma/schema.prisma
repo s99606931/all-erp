@@ -1,0 +1,74 @@
+// tenant-service용 독립 Prisma 스키마
+// Database per Service 패턴: tenant_db만 접근
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
+}
+
+// 테넌트 (고객사)
+model Tenant {
+    id               String    @id @default(uuid())
+    name             String
+    subdomain        String    @unique
+    subscriptionPlan String    @default("FREE") @map("subscription_plan") // FREE, BASIC, PRO, ENTERPRISE
+    maxUsers         Int       @default(10) @map("max_users")
+    maxStorage       Int       @default(1024) @map("max_storage") // MB
+    isActive         Boolean   @default(true) @map("is_active")
+    createdAt        DateTime  @default(now()) @map("created_at")
+    updatedAt        DateTime  @updatedAt @map("updated_at")
+    deletedAt        DateTime? @map("deleted_at")
+
+    settings TenantSetting[]
+
+    @@index([subdomain])
+    @@index([isActive])
+    @@map("tenants")
+}
+
+// 테넌트 설정
+model TenantSetting {
+    id        String   @id @default(uuid())
+    tenantId  String   @map("tenant_id")
+    key       String
+    value     String // JSON
+    category  String   @default("general")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+    @@unique([tenantId, key])
+    @@index([tenantId])
+    @@map("tenant_settings")
+}
+
+// 이벤트 멱등성 관리
+model ProcessedEvent {
+    eventId     String   @id @map("event_id")
+    eventType   String   @map("event_type")
+    processedAt DateTime @map("processed_at")
+    createdAt   DateTime @default(now()) @map("created_at")
+
+    @@index([eventType])
+    @@map("processed_events")
+}
+
+// Outbox 패턴
+model OutboxEvent {
+    id        String   @id @default(uuid())
+    eventId   String   @unique @map("event_id")
+    eventType String   @map("event_type")
+    payload   String // JSON
+    status    String   @default("PENDING")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@index([status])
+    @@map("outbox_events")
+}

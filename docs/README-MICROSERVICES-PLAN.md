@@ -36,9 +36,19 @@
 
 ## 2. Database per Service
 
-### DB 인스턴스 (17개)
-- PostgreSQL (16개): 각 서비스별 독립 DB
-- MongoDB (1개): ai-service
+### DB 전략
+- **PostgreSQL 컨테이너**: 1개 (17개 독립 데이터베이스 포함)
+  - 각 서비스별 독립 데이터베이스 (16개)
+  - 논리적 격리로 리소스 효율성 극대화
+- **MongoDB 컨테이너**: 1개 (ai-service용)
+
+### 데이터베이스 목록
+- auth_db, system_db, tenant_db
+- personnel_db, payroll_db, attendance_db
+- budget_db, accounting_db, settlement_db
+- asset_db, supply_db, general_affairs_db
+- approval_db, report_db, notification_db, file_db
+- ai_db (MongoDB)
 
 ### 서비스 간 통신
 - **API 호출**: REST API로 데이터 조회
@@ -91,7 +101,7 @@
 - 팀별 소유권 명확
 
 ### 단점 ⚠️
-- 운영 복잡도 증가 (17개 DB 관리)
+- 데이터베이스 관리 필요 (17개 독립 DB)
 - 데이터 일관성 보장 어려움
 - 개발 기간 증가 (20주 → 26주)
 - 네트워크 레이턴시 증가
@@ -101,7 +111,7 @@
 ## 6. 성공 기준
 
 - 17개 서비스 독립 배포 가능
-- 17개 DB 정상 운영
+- 17개 독립 데이터베이스 정상 운영 (PostgreSQL 1개 컨테이너 + MongoDB 1개)
 - 11개 Micro Frontend 앱 독립 실행
 - API 응답 시간 평균 500ms 이하
 - 동시 사용자 1000명 지원

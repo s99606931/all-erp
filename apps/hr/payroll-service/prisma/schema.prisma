@@ -1,0 +1,78 @@
+// payroll-service용 독립 Prisma 스키마
+// Database per Service 패턴: payroll_db만 접근
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
+}
+
+// 급여
+model Payroll {
+    id             String    @id @default(uuid())
+    employeeId     String    @map("employee_id") // personnel-service Employee ID (외래키 아님)
+    paymentMonth   String    @map("payment_month") // YYYY-MM
+    baseSalary     Decimal   @map("base_salary") @db.Decimal(15, 2)
+    totalAllowance Decimal   @default(0) @map("total_allowance") @db.Decimal(15, 2)
+    totalDeduction Decimal   @default(0) @map("total_deduction") @db.Decimal(15, 2)
+    netPay         Decimal   @map("net_pay") @db.Decimal(15, 2)
+    status         String    @default("DRAFT") // DRAFT, CONFIRMED, PAID
+    paidAt         DateTime? @map("paid_at")
+    tenantId       String    @map("tenant_id")
+    createdAt      DateTime  @default(now()) @map("created_at")
+    updatedAt      DateTime  @updatedAt @map("updated_at")
+
+    items PayrollItem[]
+
+    @@unique([employeeId, paymentMonth])
+    @@index([tenantId])
+    @@index([employeeId])
+    @@index([paymentMonth])
+    @@index([status])
+    @@map("payrolls")
+}
+
+// 급여 항목
+model PayrollItem {
+    id        String  @id @default(uuid())
+    payrollId String  @map("payroll_id")
+    itemType  String  @map("item_type") // ALLOWANCE, DEDUCTION
+    itemCode  String  @map("item_code") // BASIC, OVERTIME, TAX, INSURANCE 등
+    itemName  String  @map("item_name")
+    amount    Decimal @db.Decimal(15, 2)
+
+    payroll Payroll @relation(fields: [payrollId], references: [id], onDelete: Cascade)
+
+    @@index([payrollId])
+    @@index([itemCode])
+    @@map("payroll_items")
+}
+
+// 이벤트 멱등성 관리
+model ProcessedEvent {
+    eventId     String   @id @map("event_id")
+    eventType   String   @map("event_type")
+    processedAt DateTime @map("processed_at")
+    createdAt   DateTime @default(now()) @map("created_at")
+
+    @@index([eventType])
+    @@map("processed_events")
+}
+
+// Outbox 패턴
+model OutboxEvent {
+    id        String   @id @default(uuid())
+    eventId   String   @unique @map("event_id")
+    eventType String   @map("event_type")
+    payload   String // JSON
+    status    String   @default("PENDING")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@index([status])
+    @@map("outbox_events")
+}

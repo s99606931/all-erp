@@ -1,0 +1,50 @@
+// budget-service용 독립 Prisma 스키마
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
+}
+
+// 예산
+model Budget {
+    id           String   @id @default(uuid())
+    departmentId String   @map("department_id")
+    category     String // 인건비, 운영비, 설비비 등
+    fiscalYear   Int      @map("fiscal_year")
+    amount       Decimal  @db.Decimal(15, 2)
+    spent        Decimal  @default(0) @db.Decimal(15, 2)
+    tenantId     String   @map("tenant_id")
+    createdAt    DateTime @default(now()) @map("created_at")
+    updatedAt    DateTime @updatedAt @map("updated_at")
+
+    @@unique([tenantId, departmentId, category, fiscalYear])
+    @@index([tenantId])
+    @@index([fiscalYear])
+    @@map("budgets")
+}
+
+model ProcessedEvent {
+    eventId     String   @id @map("event_id")
+    eventType   String   @map("event_type")
+    processedAt DateTime @map("processed_at")
+    createdAt   DateTime @default(now()) @map("created_at")
+
+    @@map("processed_events")
+}
+
+model OutboxEvent {
+    id        String   @id @default(uuid())
+    eventId   String   @unique @map("event_id")
+    eventType String   @map("event_type")
+    payload   String
+    status    String   @default("PENDING")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@map("outbox_events")
+}

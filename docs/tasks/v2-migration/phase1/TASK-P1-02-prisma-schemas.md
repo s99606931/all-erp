@@ -168,12 +168,12 @@ model ProcessedEvent {
 
 **auth-service .env**:
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5432/auth_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/auth_db"
 ```
 
 **personnel-service .env**:
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5435/personnel_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/personnel_db"
 ```
 
 ### 4. 외래키 제거 규칙

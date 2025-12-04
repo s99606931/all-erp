@@ -14,24 +14,24 @@ Finance 도메인(budget, accounting, settlement 서비스)의 DB 연결을 전�
 
 ### budget-service (.env)
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5438/budget_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/budget_db"
 ```
 
 ### accounting-service (.env)
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5439/accounting_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/accounting_db"
 ```
 
 ### settlement-service (.env)
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5440/settlement_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/settlement_db"
 ```
 
 ### 마이그레이션
 ```bash
-cd apps/finance/budget-service && pnpm prisma migrate deploy
-cd ../accounting-service && pnpm prisma migrate deploy
-cd ../settlement-service && pnpm prisma migrate deploy
+cd apps/finance/budget-service && pnpm prisma migrate dev --name init && pnpm prisma generate
+cd ../accounting-service && pnpm prisma migrate dev --name init && pnpm prisma generate
+cd ../settlement-service && pnpm prisma migrate dev --name init && pnpm prisma generate
 ```
 
 ## ✅ 완료 조건

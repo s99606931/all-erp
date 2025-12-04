@@ -14,24 +14,24 @@ HR 도메인(personnel, payroll, attendance 서비스)의 DB 연결을 신규 �
 
 ### personnel-service 연결 (.env)
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5435/personnel_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/personnel_db"
 ```
 
 ### payroll-service 연결 (.env)
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5436/payroll_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/payroll_db"
 ```
 
 ### attendance-service 연결 (.env)
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5437/attendance_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/attendance_db"
 ```
 
 ### 마이그레이션 및 테스트
 ```bash
-cd apps/hr/personnel-service && pnpm prisma migrate deploy && pnpm prisma generate
-cd ../payroll-service && pnpm prisma migrate deploy && pnpm prisma generate
-cd ../attendance-service && pnpm prisma migrate deploy && pnpm prisma generate
+cd apps/hr/personnel-service && pnpm prisma migrate dev --name init && pnpm prisma generate
+cd ../payroll-service && pnpm prisma migrate dev --name init && pnpm prisma generate
+cd ../attendance-service && pnpm prisma migrate dev --name init && pnpm prisma generate
 ```
 
 ## ✅ 완료 조건

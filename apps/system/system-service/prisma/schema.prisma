@@ -1,0 +1,90 @@
+// system-service용 독립 Prisma 스키마
+// Database per Service 패턴: system_db만 접근
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
+}
+
+// 공통 코드 그룹
+model CommonCode {
+    id        String   @id @default(uuid())
+    groupCode String   @map("group_code")
+    code      String
+    value     String
+    order     Int      @default(0)
+    tenantId  String   @map("tenant_id")
+    isActive  Boolean  @default(true) @map("is_active")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@unique([tenantId, groupCode, code])
+    @@index([tenantId])
+    @@index([groupCode])
+    @@map("common_codes")
+}
+
+// 부서
+model Department {
+    id        String       @id @default(uuid())
+    code      String
+    name      String
+    parentId  String?      @map("parent_id")
+    parent    Department?  @relation("DepartmentHierarchy", fields: [parentId], references: [id])
+    children  Department[] @relation("DepartmentHierarchy")
+    order     Int          @default(0)
+    tenantId  String       @map("tenant_id")
+    isActive  Boolean      @default(true) @map("is_active")
+    createdAt DateTime     @default(now()) @map("created_at")
+    updatedAt DateTime     @updatedAt @map("updated_at")
+
+    @@unique([tenantId, code])
+    @@index([tenantId])
+    @@index([parentId])
+    @@map("departments")
+}
+
+// 시스템 설정
+model SystemSetting {
+    id        String   @id @default(uuid())
+    key       String
+    value     String // JSON
+    category  String   @default("general")
+    tenantId  String?  @map("tenant_id") // null이면 전체 시스템 설정
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@unique([tenantId, key])
+    @@index([category])
+    @@map("system_settings")
+}
+
+// 이벤트 멱등성 관리
+model ProcessedEvent {
+    eventId     String   @id @map("event_id")
+    eventType   String   @map("event_type")
+    processedAt DateTime @map("processed_at")
+    createdAt   DateTime @default(now()) @map("created_at")
+
+    @@index([eventType])
+    @@map("processed_events")
+}
+
+// Outbox 패턴
+model OutboxEvent {
+    id        String   @id @default(uuid())
+    eventId   String   @unique @map("event_id")
+    eventType String   @map("event_type")
+    payload   String // JSON
+    status    String   @default("PENDING")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@index([status])
+    @@map("outbox_events")
+}

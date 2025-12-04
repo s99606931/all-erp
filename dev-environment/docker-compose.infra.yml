@@ -42,6 +42,26 @@ services:
       timeout: 3s
       retries: 5
 
+  mongo:
+    image: mongo:7
+    container_name: all-erp-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: ai_db
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:-mongo}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-devpassword123}
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./volumes/mongo:/data/db
+    networks:
+      - all-erp-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   rabbitmq:
     image: rabbitmq:4-management-alpine
     container_name: all-erp-rabbitmq

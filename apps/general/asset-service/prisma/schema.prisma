@@ -1,0 +1,67 @@
+// asset-service용 독립 Prisma 스키마
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
+}
+
+// 자산
+model Asset {
+    id               String   @id @default(uuid())
+    assetNumber      String   @unique @map("asset_number")
+    name             String
+    category         String
+    acquisitionDate  DateTime @map("acquisition_date") @db.Date
+    acquisitionValue Decimal  @map("acquisition_value") @db.Decimal(15, 2)
+    currentValue     Decimal  @map("current_value") @db.Decimal(15, 2)
+    status           String   @default("ACTIVE") // ACTIVE, TRANSFERRED, DISPOSED
+    tenantId         String   @map("tenant_id")
+    createdAt        DateTime @default(now()) @map("created_at")
+    updatedAt        DateTime @updatedAt @map("updated_at")
+
+    history AssetHistory[]
+
+    @@index([tenantId])
+    @@index([status])
+    @@map("assets")
+}
+
+// 자산 이력
+model AssetHistory {
+    id          String   @id @default(uuid())
+    assetId     String   @map("asset_id")
+    changeType  String   @map("change_type") // ACQUIRED, TRANSFERRED, DEPRECIATED, DISPOSED
+    description String
+    changedAt   DateTime @default(now()) @map("changed_at")
+
+    asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+    @@index([assetId])
+    @@map("asset_history")
+}
+
+model ProcessedEvent {
+    eventId     String   @id @map("event_id")
+    eventType   String   @map("event_type")
+    processedAt DateTime @map("processed_at")
+    createdAt   DateTime @default(now()) @map("created_at")
+
+    @@map("processed_events")
+}
+
+model OutboxEvent {
+    id        String   @id @default(uuid())
+    eventId   String   @unique @map("event_id")
+    eventType String   @map("event_type")
+    payload   String
+    status    String   @default("PENDING")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@map("outbox_events")
+}

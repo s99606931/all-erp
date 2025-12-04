@@ -1,0 +1,79 @@
+// auth-service용 독립 Prisma 스키마
+// Database per Service 패턴: auth_db만 접근
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
+}
+
+// 역할 Enum
+enum Role {
+    USER
+    ADMIN
+    MANAGER
+}
+
+// 사용자
+model User {
+    id        String    @id @default(uuid())
+    email     String    @unique
+    password  String
+    name      String?
+    role      Role      @default(USER)
+    tenantId  String?   @map("tenant_id")
+    isActive  Boolean   @default(true) @map("is_active")
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime? @map("deleted_at")
+
+    refreshTokens RefreshToken[]
+
+    @@index([tenantId])
+    @@index([email])
+    @@map("users")
+}
+
+// Refresh Token
+model RefreshToken {
+    id        String   @id @default(uuid())
+    token     String   @unique
+    userId    String   @map("user_id")
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    expiresAt DateTime @map("expires_at")
+    createdAt DateTime @default(now()) @map("created_at")
+    revoked   Boolean  @default(false)
+
+    @@index([userId])
+    @@map("refresh_tokens")
+}
+
+// 이벤트 멱등성 관리
+model ProcessedEvent {
+    eventId     String   @id @map("event_id")
+    eventType   String   @map("event_type")
+    processedAt DateTime @map("processed_at")
+    createdAt   DateTime @default(now()) @map("created_at")
+
+    @@index([eventType])
+    @@map("processed_events")
+}
+
+// Outbox 패턴 (이벤트 발행)
+model OutboxEvent {
+    id        String   @id @default(uuid())
+    eventId   String   @unique @map("event_id")
+    eventType String   @map("event_type")
+    payload   String // JSON
+    status    String   @default("PENDING") // PENDING, PUBLISHED, FAILED
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@index([status])
+    @@index([createdAt])
+    @@map("outbox_events")
+}

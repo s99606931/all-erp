@@ -8,175 +8,192 @@
 
 ## 🎯 목표
 
-17개 DB + RabbitMQ + Redis + Minio를 포함한 완전한 인프라 Docker Compose 설정을 완성합니다.
+단일 PostgreSQL 컨테이너(17개 독립 DB) + MongoDB + RabbitMQ + Redis + Minio를 포함한 완전한 인프라 Docker Compose 설정을 완성합니다.
 
 ## 📝 상세 작업 내용
 
 ### 1. 완전한 docker-compose.infra.yml
 
-**dev-environment/docker-compose.infra.yml**:
+**dev-environment/docker-compose.infra.yml** (기존 설정 기반):
 ```yaml
-version: '3.8'
+# 인프라 서비스만 포함 (PostgreSQL, MongoDB, Redis, RabbitMQ, Milvus 등)
 
 services:
-  # PostgreSQL 인스턴스 (16개)
-  postgres-auth:
-    image: postgres:16-alpine
-    container_name: postgres-auth
+  # PostgreSQL 단일 컨테이너 (17개 독립 데이터베이스)
+  postgres:
+    image: postgres:17-alpine
+    container_name: all-erp-postgres
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: auth_db
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      POSTGRES_DB: ${DB_DATABASE:-all_erp}
+      TZ: ${TZ:-Asia/Seoul}
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
-      - postgres-auth-data:/var/lib/postgresql/data
+      - ./volumes/postgres:/var/lib/postgresql/data
+      - ./config/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - all-erp-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
       interval: 10s
       timeout: 5s
       retries: 5
-
-  postgres-system:
-    image: postgres:16-alpine
-    container_name: postgres-system
-    environment:
-      POSTGRES_DB: system_db
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-    ports:
-      - "5433:5432"
-    volumes:
-      - postgres-system-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # ... 나머지 14개 PostgreSQL 인스턴스 (tenant, personnel, payroll, etc.)
 
   # MongoDB (ai-service용)
-  mongo-ai:
+  mongo:
     image: mongo:7
-    container_name: mongo-ai
+    container_name: all-erp-mongo
+    restart: unless-stopped
     environment:
       MONGO_INITDB_DATABASE: ai_db
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-mongo}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-password}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:-mongo}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-devpassword123}
     ports:
       - "27017:27017"
     volumes:
-      - mongo-ai-data:/data/db
+      - ./volumes/mongo:/data/db
+    networks:
+      - all-erp-network
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Redis
+  # Redis (캐싱 및 세션)
   redis:
-    image: redis:7-alpine
-    container_name: redis
-    command: redis-server --requirepass ${REDIS_PASSWORD:-password}
+    image: redis:8-alpine
+    container_name: all-erp-redis
+    restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6379}:6379"
     volumes:
-      - redis-data:/data
+      - ./volumes/redis:/data
+      - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - all-erp-network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
-      timeout: 5s
+      timeout: 3s
       retries: 5
 
-  # RabbitMQ
+  # RabbitMQ (이벤트 버스)
   rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: rabbitmq
+    image: rabbitmq:4-management-alpine
+    container_name: all-erp-rabbitmq
+    restart: unless-stopped
     environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:-guest}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-admin}
     ports:
-      - "5672:5672"    # AMQP
-      - "15672:15672"  # Management UI
+      - "${RABBITMQ_PORT:-5672}:5672"
+      - "15672:15672"
     volumes:
-      - rabbitmq-data:/var/lib/rabbitmq
+      - ./volumes/rabbitmq:/var/lib/rabbitmq
+      - ./config/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    networks:
+      - all-erp-network
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  # etcd (Milvus 의존성)
+  etcd:
+    image: quay.io/coreos/etcd:v3.6.6
+    container_name: all-erp-etcd
+    restart: unless-stopped
+    environment:
+      ETCD_AUTO_COMPACTION_MODE: revision
+      ETCD_AUTO_COMPACTION_RETENTION: "1000"
+      ETCD_QUOTA_BACKEND_BYTES: "4294967296"
+      ETCD_SNAPSHOT_COUNT: "50000"
+      ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+      ETCD_ADVERTISE_CLIENT_URLS: http://etcd:2379
+      ETCD_DATA_DIR: /etcd
+    volumes:
+      - ./volumes/etcd:/etcd
+    networks:
+      - all-erp-network
 
   # Minio (S3-compatible storage)
   minio:
     image: minio/minio:latest
-    container_name: minio
-    command: server /data --console-address ":9001"
+    container_name: all-erp-minio
+    restart: unless-stopped
     environment:
-      MINIO_ROOT_USER: ${MINIO_USER:-minioadmin}
-      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD:-minioadmin}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
     ports:
-      - "9000:9000"    # API
-      - "9001:9001"    # Console
+      - "9000:9000"
+      - "9001:9001"
     volumes:
-      - minio-data:/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - ./volumes/minio:/minio_data
+    command: minio server /minio_data --console-address ":9001"
+    networks:
+      - all-erp-network
 
-volumes:
-  postgres-auth-data:
-  postgres-system-data:
-  postgres-tenant-data:
-  postgres-personnel-data:
-  postgres-payroll-data:
-  postgres-attendance-data:
-  postgres-budget-data:
-  postgres-accounting-data:
-  postgres-settlement-data:
-  postgres-asset-data:
-  postgres-supply-data:
-  postgres-general-affairs-data:
-  postgres-approval-data:
-  postgres-report-data:
-  postgres-notification-data:
-  postgres-file-data:
-  mongo-ai-data:
-  redis-data:
-  rabbitmq-data:
-  minio-data:
+  # Milvus (벡터 DB for AI)
+  milvus:
+    image: milvusdb/milvus:v2.6.6
+    container_name: all-erp-milvus
+    restart: unless-stopped
+    environment:
+      ETCD_ENDPOINTS: etcd:2379
+      MINIO_ADDRESS: minio:9000
+    ports:
+      - "19530:19530"
+      - "9091:9091"
+    volumes:
+      - ./volumes/milvus:/var/lib/milvus
+    command: milvus run standalone
+    depends_on:
+      - etcd
+      - minio
+    networks:
+      - all-erp-network
 
 networks:
-  default:
-    name: erp-network
+  all-erp-network:
+    name: all-erp-network
     driver: bridge
 ```
 
 ### 2. 환경 변수 템플릿
 
-**dev-environment/.env.infra**:
+**dev-environment/.env** (기존 파일 활용):
 ```bash
 # PostgreSQL
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=dev_password_change_in_prod
+DB_USERNAME=postgres
+DB_PASSWORD=devpassword123
+DB_DATABASE=all_erp
+DB_PORT=5432
+TZ=Asia/Seoul
 
 # MongoDB
-MONGO_USER=mongo
-MONGO_PASSWORD=dev_password_change_in_prod
+MONGO_USERNAME=mongo
+MONGO_PASSWORD=devpassword123
 
 # Redis
-REDIS_PASSWORD=dev_password_change_in_prod
+REDIS_PORT=6379
 
 # RabbitMQ
-RABBITMQ_USER=guest
-RABBITMQ_PASS=guest
+RABBITMQ_USER=admin
+RABBITMQ_PASSWORD=admin
+RABBITMQ_PORT=5672
 
 # Minio
-MINIO_USER=minioadmin
-MINIO_PASSWORD=dev_password_change_in_prod
+MINIO_ROOT_USER=minioadmin
+MINIO_ROOT_PASSWORD=minioadmin
 ```
+
+> **중요**: 프로덕션 환경에서는 강력한 비밀번호로 변경 필수!
 
 ### 3. 헬스 체크 스크립트
 
@@ -186,41 +203,57 @@ MINIO_PASSWORD=dev_password_change_in_prod
 
 echo "🏥 인프라 헬스 체크 시작..."
 
-# PostgreSQL 체크
-for port in 5432 5433 5434 5435 5436 5437 5438 5439 5440 5441 5442 5443 5444 5445 5446 5447; do
-  if docker exec -it postgres-auth pg_isready -p $port &>/dev/null; then
-    echo "✅ PostgreSQL :$port"
-  else
-    echo "❌ PostgreSQL :$port"
-  fi
-done
+# PostgreSQL 체크 (단일 컨테이너)
+if docker exec all-erp-postgres pg_isready -U postgres &>/dev/null; then
+  echo "✅ PostgreSQL (all-erp-postgres)"
+  
+  # 17개 데이터베이스 확인
+  DBS="auth_db system_db tenant_db personnel_db payroll_db attendance_db budget_db accounting_db settlement_db asset_db supply_db general_affairs_db approval_db report_db notification_db file_db"
+  
+  for db in $DBS; do
+    if docker exec all-erp-postgres psql -U postgres -lqt | cut -d \| -f 1 | grep -qw $db; then
+      echo "  ✅ $db"
+    else
+      echo "  ❌ $db (미생성)"
+    fi
+  done
+else
+  echo "❌ PostgreSQL (all-erp-postgres)"
+fi
 
 # MongoDB 체크
-if docker exec -it mongo-ai mongosh --eval "db.adminCommand('ping')" &>/dev/null; then
-  echo "✅ MongoDB :27017"
+if docker exec all-erp-mongo mongosh --quiet --eval "db.adminCommand('ping')" &>/dev/null; then
+  echo "✅ MongoDB (all-erp-mongo)"
 else
-  echo "❌ MongoDB :27017"
+  echo "❌ MongoDB (all-erp-mongo)"
 fi
 
 # Redis 체크
-if docker exec -it redis redis-cli ping &>/dev/null; then
-  echo "✅ Redis :6379"
+if docker exec all-erp-redis redis-cli ping &>/dev/null; then
+  echo "✅ Redis (all-erp-redis)"
 else
-  echo "❌ Redis :6379"
+  echo "❌ Redis (all-erp-redis)"
 fi
 
 # RabbitMQ 체크
-if curl -s http://localhost:15672 &>/dev/null; then
-  echo "✅ RabbitMQ :15672"
+if docker exec all-erp-rabbitmq rabbitmq-diagnostics -q ping &>/dev/null; then
+  echo "✅ RabbitMQ (all-erp-rabbitmq)"
 else
-  echo "❌ RabbitMQ :15672"
+  echo "❌ RabbitMQ (all-erp-rabbitmq)"
 fi
 
 # Minio 체크
 if curl -s http://localhost:9000/minio/health/live &>/dev/null; then
-  echo "✅ Minio :9000"
+  echo "✅ Minio (all-erp-minio)"
 else
-  echo "❌ Minio :9000"
+  echo "❌ Minio (all-erp-minio)"
+fi
+
+# Milvus 체크
+if curl -s http://localhost:9091/healthz &>/dev/null; then
+  echo "✅ Milvus (all-erp-milvus)"
+else
+  echo "❌ Milvus (all-erp-milvus)"
 fi
 
 echo "✅ 헬스 체크 완료"
@@ -259,10 +292,11 @@ echo "✅ 인프라 중지 완료"
 
 ## ✅ 완료 조건
 
-- [ ] `docker-compose.infra.yml` 완성
-- [ ] 17개 DB + RabbitMQ + Redis + Minio 모두 포함
+- [ ] `docker-compose.infra.yml` 완성 (기존 설정 활용)
+- [ ] PostgreSQL 컨테이너 + 17개 DB 생성 확인
+- [ ] MongoDB + RabbitMQ + Redis + Minio + Milvus + etcd 모두 포함
 - [ ] 헬스 체크 설정 완료
-- [ ] 환경 변수 템플릿 작성
+- [ ] 환경 변수 설정 확인
 - [ ] 시작/중지/헬스체크 스크립트 작성
 - [ ] `docker compose up -d` 실행 성공
 - [ ] 모든 서비스 헬스 체크 통과
@@ -290,7 +324,9 @@ docker compose -f docker-compose.infra.yml logs -f
 
 ## 🚨 주의사항
 
-- 운영 환경에서는 환경 변수 파일을 Git에 커밋하지 말 것
-- 헬스 체크는 필수 (의존성 관리)
-- 볼륨 마운트로 데이터 영속성 보장
-- 네트워크는 `erp-network`로 통일
+- **리소스 효율성**: 단일 PostgreSQL 컨테이너 사용으로 메모리/CPU 효율 향상
+- **데이터 격리**: 논리적 데이터베이스 분리로 서비스 독립성 유지
+- **보안**: 프로덕션 환경에서는 .env 파일을 Git에 커밋하지 말 것
+- **헬스 체크**: 모든 서비스의 헬스 체크 필수 (의존성 관리)
+- **볼륨 마운트**: 데이터 영속성 보장
+- **네트워크**: `all-erp-network`로 통일하여 서비스 간 통신 원활화

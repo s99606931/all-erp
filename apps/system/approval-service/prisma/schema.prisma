@@ -1,0 +1,70 @@
+// approval-service용 독립 Prisma 스키마
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
+}
+
+// 결재 요청
+model ApprovalRequest {
+    id          String   @id @default(uuid())
+    requestType String   @map("request_type") // LEAVE, EXPENSE, PURCHASE, etc.
+    requesterId String   @map("requester_id")
+    title       String
+    content     String
+    status      String   @default("PENDING") // PENDING, APPROVED, REJECTED
+    tenantId    String   @map("tenant_id")
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+
+    lines ApprovalLine[]
+
+    @@index([tenantId])
+    @@index([requesterId])
+    @@index([status])
+    @@map("approval_requests")
+}
+
+// 결재 라인
+model ApprovalLine {
+    id         String    @id @default(uuid())
+    requestId  String    @map("request_id")
+    approverId String    @map("approver_id")
+    order      Int
+    status     String    @default("PENDING") // PENDING, APPROVED, REJECTED
+    comment    String?
+    decidedAt  DateTime? @map("decided_at")
+    createdAt  DateTime  @default(now()) @map("created_at")
+
+    request ApprovalRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+    @@index([requestId])
+    @@index([approverId])
+    @@map("approval_lines")
+}
+
+model ProcessedEvent {
+    eventId     String   @id @map("event_id")
+    eventType   String   @map("event_type")
+    processedAt DateTime @map("processed_at")
+    createdAt   DateTime @default(now()) @map("created_at")
+
+    @@map("processed_events")
+}
+
+model OutboxEvent {
+    id        String   @id @default(uuid())
+    eventId   String   @unique @map("event_id")
+    eventType String   @map("event_type")
+    payload   String
+    status    String   @default("PENDING")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@map("outbox_events")
+}

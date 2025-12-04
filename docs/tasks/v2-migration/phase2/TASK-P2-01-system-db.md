@@ -16,7 +16,7 @@ System 도메인(auth, system, tenant 서비스)의 DB 연결을 신규 독립 D
 
 **apps/system/auth-service/.env**:
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5432/auth_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/auth_db"
 REDIS_URL="redis://:password@localhost:6379"
 RABBITMQ_URL="amqp://guest:guest@localhost:5672"
 JWT_SECRET="your-secret-key"
@@ -47,7 +47,7 @@ bootstrap();
 
 **apps/system/system-service/.env**:
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5433/system_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/system_db"
 REDIS_URL="redis://:password@localhost:6379"
 RABBITMQ_URL="amqp://guest:guest@localhost:5672"
 ```
@@ -56,7 +56,7 @@ RABBITMQ_URL="amqp://guest:guest@localhost:5672"
 
 **apps/system/tenant-service/.env**:
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5434/tenant_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/tenant_db"
 REDIS_URL="redis://:password@localhost:6379"
 RABBITMQ_URL="amqp://guest:guest@localhost:5672"
 ```
@@ -66,17 +66,17 @@ RABBITMQ_URL="amqp://guest:guest@localhost:5672"
 ```bash
 # auth-service
 cd apps/system/auth-service
-pnpm prisma migrate deploy
+pnpm prisma migrate dev --name init
 pnpm prisma generate
 
 # system-service
 cd ../system-service
-pnpm prisma migrate deploy
+pnpm prisma migrate dev --name init
 pnpm prisma generate
 
 # tenant-service
 cd ../tenant-service
-pnpm prisma migrate deploy
+pnpm prisma migrate dev --name init
 pnpm prisma generate
 ```
 

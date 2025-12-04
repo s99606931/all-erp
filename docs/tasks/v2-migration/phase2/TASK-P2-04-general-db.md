@@ -14,30 +14,29 @@ General 도메인(asset, supply, general-affairs 서비스) + AI 서비스의 DB
 
 ### asset-service (.env)
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5441/asset_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/asset_db"
 ```
 
 ### supply-service (.env)
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5442/supply_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/supply_db"
 ```
 
 ### general-affairs-service (.env)
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5443/general_affairs_db"
+DATABASE_URL="postgresql://postgres:devpassword123@localhost:5432/general_affairs_db"
 ```
 
 ### ai-service (.env - MongoDB)
 ```bash
-DATABASE_URL="mongodb://mongo:password@localhost:27017/ai_db"
+DATABASE_URL="mongodb://mongo:devpassword123@localhost:27017/ai_db"
 ```
 
 ### 마이그레이션
 ```bash
-cd apps/general/asset-service && pnpm prisma migrate deploy
-cd ../supply-service && pnpm prisma migrate deploy
-cd ../general-affairs-service && pnpm prisma migrate deploy
-cd ../../ai/ai-service && pnpm prisma generate  # MongoDB는 migrate 없이 generate만
+cd apps/general/asset-service && pnpm prisma migrate dev --name init && pnpm prisma generate
+cd ../supply-service && pnpm prisma migrate dev --name init && pnpm prisma generate
+cd ../general-affairs-service && pnpm prisma migrate dev --name init && pnpm prisma generate
 ```
 
 ## ✅ 완료 조건
