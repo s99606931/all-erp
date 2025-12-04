@@ -83,6 +83,14 @@
 
 *   **참고 문서**: [`docs/guides/docker-compose-workflow.md`](file:///data/all-erp/docs/guides/docker-compose-workflow.md)
 
+## 7. 프로젝트 아키텍처 및 표준 (Project Architecture & Standards)
+
+*   **공통 모듈 사용 의무화**:
+    *   모든 마이크로서비스의 `main.ts`는 반드시 `libs/shared/infra`의 `bootstrapService`를 사용하여 초기화해야 합니다.
+    *   `AppModule`은 `SharedInfraModule`과 `SharedDomainModule`을 import하여 공통 기능을 활용해야 합니다.
+*   **폴더 구조 준수**:
+    *   새로운 파일이나 모듈 생성 시 [`docs/guides/project-structure.md`](file:///data/all-erp/docs/guides/project-structure.md)의 가이드를 엄격히 준수합니다.
+    *   `api` (Controller), `domain` (Service), `infra` (Repository) 계층을 명확히 분리합니다.
 
 ---
-*이 지침은 2025년 11월 26일부터 적용됩니다.*
+*이 지침은 2025년 12월 03일부터 적용됩니다.*

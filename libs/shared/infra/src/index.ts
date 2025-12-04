@@ -15,3 +15,6 @@ export * from './lib/tenant.middleware';
 // 공통 Infra 모듈
 export * from './lib/infra.module';
 
+// Bootstrap
+export * from './lib/bootstrap/bootstrap';
+
