@@ -1,6 +1,7 @@
 # TASK-P5-11: general affairs MFE
 
 ## 📋 작업 개요
+
 - **Phase**: Phase 5
 - **예상 시간**: 1주
 - **우선순위**: Medium
@@ -8,7 +9,7 @@
 
 ## 🎯 목표
 
-general-affairs-mfe  Remote 앱 개발 (55 페이지).
+general-affairs-mfe Remote 앱 개발 (55 페이지).
 
 ## 📝 상세 작업 내용
 
@@ -33,7 +34,7 @@ export default defineConfig({
 
 - [ ] Vite 앱 생성
 - [ ] Module Federation 설정
-- [ ] 55개 페이지 구현
+- [ ] 백앤드 DB 구조를 확인후 페이지 기본 생성
 - [ ] Shell 앱 연동
 
 ## 🔧 실행 명령어
