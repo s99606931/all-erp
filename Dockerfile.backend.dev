@@ -1,0 +1,29 @@
+FROM node:22-slim
+
+# 작업 디렉토리 설정
+WORKDIR /workspace
+
+# 시스템 의존성 설치 (Prisma용)
+RUN apt-get update && \
+    apt-get install -y openssl libssl-dev ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+# pnpm 설치
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# 의존성 파일 복사
+COPY package.json pnpm-lock.yaml ./
+COPY nx.json tsconfig.base.json ./
+COPY prisma.config.ts ./
+
+# 의존성 설치
+RUN pnpm install --frozen-lockfile
+
+# Prisma schema 복사
+COPY libs/shared/infra/prisma ./libs/shared/infra/prisma
+
+# 소스 코드는 볼륨 마운트로 제공됨 (개발 환경)
+# Hot Reload를 위해 watch 모드로 실행
+
+# 개발 서버 실행 (docker-compose에서 command로 오버라이드)
+CMD ["sh", "-c", "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve"]

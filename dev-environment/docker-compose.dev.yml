@@ -43,7 +43,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules # node_modules는 컨테이너 내부 것 사용
-    command: pnpm nx serve auth-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve auth-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -73,7 +73,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve system-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve system-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -103,7 +103,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve tenant-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve tenant-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -133,7 +133,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve personnel-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve personnel-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -163,7 +163,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve payroll-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve payroll-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -193,7 +193,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve attendance-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve attendance-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -223,7 +223,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve budget-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve budget-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -253,7 +253,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve accounting-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve accounting-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -283,7 +283,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve settlement-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve settlement-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -313,7 +313,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve asset-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve asset-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -343,7 +343,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve supply-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve supply-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -373,7 +373,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve general-affairs-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve general-affairs-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -406,7 +406,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve ai-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve ai-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -437,7 +437,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve approval-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve approval-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -469,7 +469,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve report-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve report-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -501,12 +501,12 @@ services:
       MINIO_SECRET_KEY: minioadmin
     ports:
       - "${FILE_SERVICE_PORT:-3044}:3044"
-      - "9245:9229"  # 디버깅 포트
+      - "9246:9229"  # 디버깅 포트 (9245에서 9246으로 변경)
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve file-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve file-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -527,7 +527,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve web-admin --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve web-admin --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -559,7 +559,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: pnpm nx serve notification-service --host=0.0.0.0
+    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve notification-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
