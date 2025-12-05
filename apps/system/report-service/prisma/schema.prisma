@@ -2,6 +2,7 @@
 
 datasource db {
     provider = "postgresql"
+    url      = env("REPORT_DATABASE_URL")
 }
 
 generator client {
@@ -9,39 +10,41 @@ generator client {
     output   = "../node_modules/.prisma/client"
 }
 
-// 보고서 (CQRS Read Model)
+// 보고서
 model Report {
-    id         String   @id @default(uuid())
-    reportType String   @map("report_type") // PAYROLL, ATTENDANCE, BUDGET, etc.
-    month      String // YYYY-MM
-    data       String // JSON (읽기 최적화 데이터)
-    tenantId   String   @map("tenant_id")
-    createdAt  DateTime @default(now()) @map("created_at")
-    updatedAt  DateTime @updatedAt @map("updated_at")
+    id          Int      @id @default(autoincrement())
+    title       String
+    reportType  String   @map("report_type")  // PERSONNEL, PAYROLL, BUDGET, ACCOUNTING, ATTENDANCE, ASSET, SUPPLY, etc.
+    format      String   // PDF, EXCEL, CSV
+    status      String   // PENDING, PROCESSING, COMPLETED, FAILED
+    generatedBy Int      @map("generated_by")
+    fileUrl     String?  @map("file_url")
+    errorMessage String? @map("error_message")
+    tenantId    Int      @map("tenant_id")
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
 
-    @@unique([tenantId, reportType, month])
     @@index([tenantId])
     @@index([reportType])
+    @@index([status])
+    @@index([createdAt])
     @@map("reports")
 }
 
-model ProcessedEvent {
-    eventId     String   @id @map("event_id")
-    eventType   String   @map("event_type")
-    processedAt DateTime @map("processed_at")
-    createdAt   DateTime @default(now()) @map("created_at")
+// 보고서 템플릿
+model ReportTemplate {
+    id           Int      @id @default(autoincrement())
+    name         String
+    description  String?
+    reportType   String   @map("report_type")
+    templateData String   @map("template_data")  // JSON 형식의 템플릿 설정
+    isActive     Boolean  @default(true) @map("is_active")
+    tenantId     Int      @map("tenant_id")
+    createdAt    DateTime @default(now()) @map("created_at")
+    updatedAt    DateTime @updatedAt @map("updated_at")
 
-    @@map("processed_events")
-}
-
-model OutboxEvent {
-    id        String   @id @default(uuid())
-    eventId   String   @unique @map("event_id")
-    eventType String   @map("event_type")
-    payload   String
-    status    String   @default("PENDING")
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
-
-    @@map("outbox_events")
+    @@index([tenantId])
+    @@index([reportType])
+    @@index([isActive])
+    @@map("report_templates")
 }
