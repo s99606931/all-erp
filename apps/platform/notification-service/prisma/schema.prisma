@@ -6,41 +6,65 @@ datasource db {
 
 generator client {
     provider = "prisma-client-js"
-    output   = "../node_modules/.prisma/client"
 }
 
 // 알림
 model Notification {
-    id        String    @id @default(uuid())
-    userId    String    @map("user_id")
-    type      String // EMAIL, SMS, PUSH, IN_APP
-    title     String
-    message   String
-    isRead    Boolean   @default(false) @map("is_read")
-    readAt    DateTime? @map("read_at")
-    tenantId  String    @map("tenant_id")
-    createdAt DateTime  @default(now()) @map("created_at")
+    id           Int       @id @default(autoincrement())
+    recipientId  Int       @map("recipient_id") // 수신자 ID (auth-service)
+    type         String // EMAIL, SMS, PUSH
+    title        String
+    content      String    @db.Text
+    status       String // PENDING, SENT, FAILED
+    sentAt       DateTime? @map("sent_at")
+    errorMessage String?   @map("error_message") @db.Text
+    metadata     Json? // 추가 메타데이터 (JSON)
+    tenantId     Int       @map("tenant_id")
+    createdAt    DateTime  @default(now()) @map("created_at")
+    updatedAt    DateTime  @updatedAt @map("updated_at")
 
+    @@index([recipientId])
+    @@index([type])
+    @@index([status])
     @@index([tenantId])
-    @@index([userId])
-    @@index([isRead])
+    @@index([createdAt])
     @@map("notifications")
 }
 
+// 알림 템플릿
+model NotificationTemplate {
+    id          Int      @id @default(autoincrement())
+    name        String
+    description String?
+    type        String // EMAIL, SMS, PUSH
+    subject     String? // 이메일용 제목
+    template    String   @db.Text // 템플릿 내용 (변수 치환 가능)
+    isActive    Boolean  @default(true) @map("is_active")
+    tenantId    Int      @map("tenant_id")
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+
+    @@index([type])
+    @@index([isActive])
+    @@index([tenantId])
+    @@map("notification_templates")
+}
+
+// 멱등성
 model ProcessedEvent {
     eventId     String   @id @map("event_id")
-    eventType   String   @map("event_type")
     processedAt DateTime @map("processed_at")
     createdAt   DateTime @default(now()) @map("created_at")
 
     @@map("processed_events")
 }
 
+// Outbox 패턴
 model OutboxEvent {
     id        String   @id @default(uuid())
     eventId   String   @unique @map("event_id")
     eventType String   @map("event_type")
-    payload   String
+    payload   String   @db.Text
     status    String   @default("PENDING")
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt @map("updated_at")
