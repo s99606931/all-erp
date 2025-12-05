@@ -2,6 +2,9 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './Layout';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ProtectedRoute from '../components/ProtectedRoute';
+import Login from '../pages/Login';
+import NotFound from '../pages/NotFound';
 
 // Remote 앱 동적 로드
 // 각 Remote 앱은 독립적으로 빌드되고 런타임에 로드됩니다.
@@ -72,7 +75,18 @@ export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        {/* 로그인 페이지 (인증 불필요) */}
+        <Route path="/login" element={<Login />} />
+
+        {/* 보호된 라우트 (인증 필요) */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
           {/* 루트 경로는 대시보드로 리다이렉트 */}
           <Route index element={<Navigate to="/dashboard" replace />} />
           
@@ -171,17 +185,7 @@ export default function Router() {
           />
 
           {/* 404 페이지 */}
-          <Route
-            path="*"
-            element={
-              <div className="flex items-center justify-center h-full">
-                <div className="text-center">
-                  <h1 className="text-6xl font-bold text-gray-300">404</h1>
-                  <p className="text-xl text-gray-600 mt-4">페이지를 찾을 수 없습니다.</p>
-                </div>
-              </div>
-            }
-          />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
