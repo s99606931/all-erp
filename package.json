@@ -73,7 +73,7 @@
     "vitest": "^4.0.15",
     "webpack-cli": "^5.1.4"
   },
-  "dependencies": {
+"dependencies": {
     "@nestjs/axios": "^4.0.1",
     "@nestjs/common": "^11.1.9",
     "@nestjs/config": "^4.0.2",
@@ -82,6 +82,7 @@
     "@nestjs/microservices": "^11.1.9",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.1.9",
+    "@nestjs/schedule": "^6.0.1",
     "@nestjs/swagger": "^11.2.3",
     "@node-rs/argon2": "^2.0.2",
     "@radix-ui/react-dialog": "^1.1.15",
