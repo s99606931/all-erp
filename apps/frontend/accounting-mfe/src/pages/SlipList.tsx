@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { JournalEntry } from '../types/accounting';
-import { formatCurrency, formatDate } from '../lib/utils';
+import { formatCurrency } from '../lib/utils';
 
 export default function SlipList() {
   const [slips, setSlips] = useState<JournalEntry[]>([]);
