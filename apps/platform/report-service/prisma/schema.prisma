@@ -2,27 +2,25 @@
 
 datasource db {
     provider = "postgresql"
-    url      = env("REPORT_DATABASE_URL")
 }
 
 generator client {
     provider = "prisma-client-js"
-    output   = "../node_modules/.prisma/client"
 }
 
 // 보고서
 model Report {
-    id          Int      @id @default(autoincrement())
-    title       String
-    reportType  String   @map("report_type")  // PERSONNEL, PAYROLL, BUDGET, ACCOUNTING, ATTENDANCE, ASSET, SUPPLY, etc.
-    format      String   // PDF, EXCEL, CSV
-    status      String   // PENDING, PROCESSING, COMPLETED, FAILED
-    generatedBy Int      @map("generated_by")
-    fileUrl     String?  @map("file_url")
-    errorMessage String? @map("error_message")
-    tenantId    Int      @map("tenant_id")
-    createdAt   DateTime @default(now()) @map("created_at")
-    updatedAt   DateTime @updatedAt @map("updated_at")
+    id           Int      @id @default(autoincrement())
+    title        String
+    reportType   String   @map("report_type") // PERSONNEL, PAYROLL, BUDGET, ACCOUNTING, ATTENDANCE, ASSET, SUPPLY, etc.
+    format       String // PDF, EXCEL, CSV
+    status       String // PENDING, PROCESSING, COMPLETED, FAILED
+    generatedBy  Int      @map("generated_by")
+    fileUrl      String?  @map("file_url")
+    errorMessage String?  @map("error_message")
+    tenantId     Int      @map("tenant_id")
+    createdAt    DateTime @default(now()) @map("created_at")
+    updatedAt    DateTime @updatedAt @map("updated_at")
 
     @@index([tenantId])
     @@index([reportType])
@@ -37,7 +35,7 @@ model ReportTemplate {
     name         String
     description  String?
     reportType   String   @map("report_type")
-    templateData String   @map("template_data")  // JSON 형식의 템플릿 설정
+    templateData String   @map("template_data") // JSON 형식의 템플릿 설정
     isActive     Boolean  @default(true) @map("is_active")
     tenantId     Int      @map("tenant_id")
     createdAt    DateTime @default(now()) @map("created_at")

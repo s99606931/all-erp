@@ -1,7 +1,7 @@
 {
   "name": "report-service",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/system/report-service/src",
+  "sourceRoot": "apps/platform/report-service/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -9,7 +9,7 @@
       "options": {
         "command": "webpack-cli build",
         "args": ["--node-env=production"],
-        "cwd": "apps/system/report-service"
+        "cwd": "apps/platform/report-service"
       },
       "configurations": {
         "development": {
@@ -22,8 +22,8 @@
       "cache": true,
       "executor": "@nx/js:prune-lockfile",
       "outputs": [
-        "{workspaceRoot}/dist/apps/system/report-service/package.json",
-        "{workspaceRoot}/dist/apps/system/report-service/pnpm-lock.yaml"
+        "{workspaceRoot}/dist/apps/platform/report-service/package.json",
+        "{workspaceRoot}/dist/apps/platform/report-service/pnpm-lock.yaml"
       ],
       "options": {
         "buildTarget": "build"
@@ -32,7 +32,7 @@
     "copy-workspace-modules": {
       "dependsOn": ["build"],
       "cache": true,
-      "outputs": ["{workspaceRoot}/dist/apps/system/report-service/workspace_modules"],
+      "outputs": ["{workspaceRoot}/dist/apps/platform/report-service/workspace_modules"],
       "executor": "@nx/js:copy-workspace-modules",
       "options": {
         "buildTarget": "build"
@@ -64,9 +64,9 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/system/report-service/jest.config.ts"
+        "jestConfig": "apps/platform/report-service/jest.config.ts"
       }
     }
   },
-  "tags": []
+  "tags": ["scope:platform", "type:service"]
 }
