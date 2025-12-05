@@ -33,7 +33,7 @@ export default defineConfig({
 
 - [ ] Vite 앱 생성
 - [ ] Module Federation 설정
-- [ ] 87개 페이지 구현
+- [ ] 87개 페이지 구현 - erp메뉴구조참고 
 - [ ] Shell 앱 연동
 
 ## 🔧 실행 명령어

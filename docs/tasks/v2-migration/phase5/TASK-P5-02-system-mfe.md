@@ -57,7 +57,7 @@ export default function SystemRoutes() {
 
 - [ ] Vite 앱 생성
 - [ ] Module Federation 설정
-- [ ] 69개 페이지 구현
+- [ ] 백앤드 DB 구조를 확인후 페이지 기본 생성 
 - [ ] Shell 앱에서 로드 확인
 
 ## 🔧 실행 명령어
