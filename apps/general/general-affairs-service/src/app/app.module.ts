@@ -4,6 +4,7 @@ import { SharedDomainModule } from '@all-erp/shared/domain';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { VehicleModule } from './vehicle/vehicle.module';
+import { PrismaModule } from '../prisma.module';
 
 @Module({
   imports: [InfraModule, SharedDomainModule, VehicleModule],

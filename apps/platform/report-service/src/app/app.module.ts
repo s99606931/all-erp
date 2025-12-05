@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { SharedInfraModule, EventModule } from '@all-erp/shared/infra';
 import { SharedDomainModule } from '@all-erp/shared/domain';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ReportModule } from './report/report.module';
+import { PrismaModule } from '../prisma.module';
 import { ReportTemplateModule } from './report-template/report-template.module';
+import { PrismaModule } from '../prisma.module';
 import { PrismaService } from './prisma.service';
 
 /**
@@ -17,7 +18,7 @@ import { PrismaService } from './prisma.service';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    SharedInfraModule,
+    PrismaModule,
     SharedDomainModule,
     EventModule.forRoot({
       repositoryProvider: PrismaService,

@@ -9,8 +9,8 @@ services:
   # ============================================
   shell:
     build:
-      context: ../apps/frontend/shell
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: Dockerfile.frontend.dev
     container_name: shell
     ports:
       - "3000:3000"
@@ -31,8 +31,8 @@ services:
   # System MFE
   system-mfe:
     build:
-      context: ../apps/frontend/system-mfe
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: Dockerfile.frontend.dev
     container_name: system-mfe
     ports:
       - "3100:3100"
@@ -49,8 +49,8 @@ services:
   # HR MFE
   hr-mfe:
     build:
-      context: ../apps/frontend/hr-mfe
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: Dockerfile.frontend.dev
     container_name: hr-mfe
     ports:
       - "3101:3101"
@@ -67,8 +67,8 @@ services:
   # Payroll MFE
   payroll-mfe:
     build:
-      context: ../apps/frontend/payroll-mfe
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: Dockerfile.frontend.dev
     container_name: payroll-mfe
     ports:
       - "3102:3102"
@@ -85,8 +85,8 @@ services:
   # Attendance MFE
   attendance-mfe:
     build:
-      context: ../apps/frontend/attendance-mfe
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: Dockerfile.frontend.dev
     container_name: attendance-mfe
     ports:
       - "3103:3103"
@@ -103,8 +103,8 @@ services:
   # Budget MFE
   budget-mfe:
     build:
-      context: ../apps/frontend/budget-mfe
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: Dockerfile.frontend.dev
     container_name: budget-mfe
     ports:
       - "3104:3104"
@@ -121,8 +121,8 @@ services:
   # Treasury MFE
   treasury-mfe:
     build:
-      context: ../apps/frontend/treasury-mfe
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: Dockerfile.frontend.dev
     container_name: treasury-mfe
     ports:
       - "3105:3105"
@@ -139,8 +139,8 @@ services:
   # Accounting MFE
   accounting-mfe:
     build:
-      context: ../apps/frontend/accounting-mfe
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: Dockerfile.frontend.dev
     container_name: accounting-mfe
     ports:
       - "3106:3106"
@@ -157,8 +157,8 @@ services:
   # Asset MFE
   asset-mfe:
     build:
-      context: ../apps/frontend/asset-mfe
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: Dockerfile.frontend.dev
     container_name: asset-mfe
     ports:
       - "3107:3107"
@@ -175,8 +175,8 @@ services:
   # Inventory MFE
   inventory-mfe:
     build:
-      context: ../apps/frontend/inventory-mfe
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: Dockerfile.frontend.dev
     container_name: inventory-mfe
     ports:
       - "3108:3108"
@@ -193,8 +193,8 @@ services:
   # General Affairs MFE
   general-affairs-mfe:
     build:
-      context: ../apps/frontend/general-affairs-mfe
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: Dockerfile.frontend.dev
     container_name: general-affairs-mfe
     ports:
       - "3109:3109"

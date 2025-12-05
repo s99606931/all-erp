@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { validateConfig } from '@all-erp/shared/config';
-import { SharedInfraModule } from '@all-erp/shared/infra';
 import { SharedDomainModule } from '@all-erp/shared/domain';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CommonCodeModule } from './common-code/common-code.module';
+import { PrismaModule } from '../prisma.module';
 import { DepartmentModule } from './department/department.module';
+import { PrismaModule } from '../prisma.module';
 import { TenantEventHandler } from './events/tenant-event.handler';
 
 /**
@@ -19,7 +20,7 @@ import { TenantEventHandler } from './events/tenant-event.handler';
       isGlobal: true,
       validate: validateConfig,
     }),
-    SharedInfraModule,
+    PrismaModule,
     SharedDomainModule,
     CommonCodeModule,
     DepartmentModule,

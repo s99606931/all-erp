@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { SharedInfraModule } from '@all-erp/shared/infra';
 import { SharedDomainModule } from '@all-erp/shared/domain';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AttendanceModule } from './attendance/attendance.module';
+import { PrismaModule } from '../prisma.module';
 import { LeaveModule } from './leave/leave.module';
+import { PrismaModule } from '../prisma.module';
 
 /**
  * 애플리케이션의 루트 모듈
@@ -16,7 +17,7 @@ import { LeaveModule } from './leave/leave.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    SharedInfraModule,
+    PrismaModule,
     SharedDomainModule,
     AttendanceModule,
     LeaveModule,

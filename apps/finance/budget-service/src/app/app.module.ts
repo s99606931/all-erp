@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { validateConfig } from '@all-erp/shared/config';
-import { SharedInfraModule } from '@all-erp/shared/infra';
 import { SharedDomainModule } from '@all-erp/shared/domain';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BudgetModule } from './budget/budget.module';
+import { PrismaModule } from '../prisma.module';
 
 /**
  * 애플리케이션의 루트 모듈
@@ -17,7 +17,7 @@ import { BudgetModule } from './budget/budget.module';
       isGlobal: true,
       validate: validateConfig,
     }),
-    SharedInfraModule,
+    PrismaModule,
     SharedDomainModule,
     BudgetModule,
   ],

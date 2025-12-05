@@ -21,7 +21,7 @@ services:
     profiles: ['system']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-auth-service-dev
     environment:
       NODE_ENV: development
@@ -30,6 +30,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
       DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/auth_db?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
@@ -43,7 +44,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules # node_modules는 컨테이너 내부 것 사용
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve auth-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/system/auth-service/prisma/schema.prisma && exec pnpm nx serve auth-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -53,7 +54,7 @@ services:
     profiles: ['system']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-system-service-dev
     environment:
       NODE_ENV: development
@@ -62,6 +63,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
       DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/system_db?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
@@ -73,7 +75,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve system-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/system/system-service/prisma/schema.prisma && exec pnpm nx serve system-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -83,7 +85,7 @@ services:
     profiles: ['system']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-tenant-service-dev
     environment:
       NODE_ENV: development
@@ -92,6 +94,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
       DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/tenant_db?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
@@ -103,7 +106,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve tenant-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/system/tenant-service/prisma/schema.prisma && exec pnpm nx serve tenant-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -113,7 +116,7 @@ services:
     profiles: ['hr']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-personnel-service-dev
     environment:
       NODE_ENV: development
@@ -122,6 +125,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
       DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/personnel_db?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
@@ -133,7 +137,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve personnel-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/hr/personnel-service/prisma/schema.prisma && exec pnpm nx serve personnel-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -143,7 +147,7 @@ services:
     profiles: ['hr']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-payroll-service-dev
     environment:
       NODE_ENV: development
@@ -152,6 +156,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
       DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/payroll_db?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
@@ -163,7 +168,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve payroll-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/hr/payroll-service/prisma/schema.prisma && exec pnpm nx serve payroll-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -173,7 +178,7 @@ services:
     profiles: ['hr']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-attendance-service-dev
     environment:
       NODE_ENV: development
@@ -182,6 +187,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
       DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/attendance_db?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
@@ -193,7 +199,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve attendance-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/hr/attendance-service/prisma/schema.prisma && exec pnpm nx serve attendance-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -203,7 +209,7 @@ services:
     profiles: ['finance']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-budget-service-dev
     environment:
       NODE_ENV: development
@@ -212,6 +218,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
       DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/budget_db?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
@@ -223,7 +230,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve budget-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/finance/budget-service/prisma/schema.prisma && exec pnpm nx serve budget-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -233,7 +240,7 @@ services:
     profiles: ['finance']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-accounting-service-dev
     environment:
       NODE_ENV: development
@@ -242,6 +249,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
       DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/accounting_db?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
@@ -253,7 +261,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve accounting-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/finance/accounting-service/prisma/schema.prisma && exec pnpm nx serve accounting-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -263,7 +271,7 @@ services:
     profiles: ['finance']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-settlement-service-dev
     environment:
       NODE_ENV: development
@@ -272,6 +280,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
       DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/settlement_db?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
@@ -283,7 +292,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve settlement-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/finance/settlement-service/prisma/schema.prisma && exec pnpm nx serve settlement-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -293,7 +302,7 @@ services:
     profiles: ['general']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-asset-service-dev
     environment:
       NODE_ENV: development
@@ -302,6 +311,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
       DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/asset_db?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
@@ -313,7 +323,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve asset-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/general/asset-service/prisma/schema.prisma && exec pnpm nx serve asset-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -323,7 +333,7 @@ services:
     profiles: ['general']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-supply-service-dev
     environment:
       NODE_ENV: development
@@ -332,6 +342,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
       DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/supply_db?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
@@ -343,7 +354,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve supply-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/general/supply-service/prisma/schema.prisma && exec pnpm nx serve supply-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -353,7 +364,7 @@ services:
     profiles: ['general']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-general-affairs-service-dev
     environment:
       NODE_ENV: development
@@ -362,6 +373,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
       DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/general_affairs_db?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
@@ -373,7 +385,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve general-affairs-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/general/general-affairs-service/prisma/schema.prisma && exec pnpm nx serve general-affairs-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -383,7 +395,7 @@ services:
     profiles: ['ai']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.ai.dev
     container_name: all-erp-ai-service-dev
     environment:
       NODE_ENV: development
@@ -416,7 +428,7 @@ services:
     profiles: ['platform']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-approval-service-dev
     environment:
       NODE_ENV: development
@@ -437,7 +449,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve approval-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/platform/approval-service/prisma/schema.prisma && exec pnpm nx serve approval-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -448,7 +460,7 @@ services:
     profiles: ["platform"]
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-report-service-dev
     environment:
       NODE_ENV: development
@@ -469,7 +481,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve report-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/platform/report-service/prisma/schema.prisma && exec pnpm nx serve report-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
@@ -479,7 +491,7 @@ services:
     profiles: ["platform"]
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-file-service-dev
     environment:
       NODE_ENV: development
@@ -506,39 +518,17 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve file-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/platform/file-service/prisma/schema.prisma && exec pnpm nx serve file-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped
 
-  # Web Admin (관리자 웹 콘솔)
-  web-admin:
-    profiles: ['ai']
-    build:
-      context: ..
-      dockerfile: Dockerfile.dev
-    container_name: all-erp-web-admin-dev
-    environment:
-      NODE_ENV: development
-    ports:
-      - '${WEB_ADMIN_PORT:-4200}:4200'
-      - '9242:9229' # 디버깅 포트
-    volumes:
-      - ../apps:/workspace/apps:cached
-      - ../libs:/workspace/libs:cached
-      - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve web-admin --host=0.0.0.0"
-    networks:
-      - all-erp-network
-    restart: unless-stopped
-
-    
   # Notification Service (알림 관리)
   notification-service:
     profiles: ['platform']
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.dev
     container_name: all-erp-notification-service-dev
     environment:
       NODE_ENV: development
@@ -559,7 +549,7 @@ services:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
-    command: sh -c "pnpm prisma generate --schema=libs/shared/infra/prisma/schema.prisma && exec pnpm nx serve notification-service --host=0.0.0.0"
+    command: sh -c "pnpm prisma generate --schema=apps/platform/notification-service/prisma/schema.prisma && exec pnpm nx serve notification-service --host=0.0.0.0"
     networks:
       - all-erp-network
     restart: unless-stopped

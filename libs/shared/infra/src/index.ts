@@ -1,4 +1,5 @@
-// Prisma 모듈
+// Prisma 모듈 및 Base 클래스
+export * from './lib/prisma/prisma.base';
 export * from './lib/prisma/prisma.module';
 
 // Logger 모듈

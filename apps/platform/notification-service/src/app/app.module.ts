@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { SharedInfraModule, EventModule } from '@all-erp/shared/infra';
 import { SharedDomainModule } from '@all-erp/shared/domain';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma.service';
 import { NotificationModule } from './modules/notification/notification.module';
+import { PrismaModule } from '../prisma.module';
 
 /**
  * 애플리케이션의 루트 모듈
@@ -16,7 +16,7 @@ import { NotificationModule } from './modules/notification/notification.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    SharedInfraModule,
+    PrismaModule,
     SharedDomainModule,
     EventModule.forRoot({
       repositoryProvider: PrismaService,

@@ -4,6 +4,7 @@ import { SharedDomainModule } from '@all-erp/shared/domain';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { InventoryModule } from './inventory/inventory.module';
+import { PrismaModule } from '../prisma.module';
 
 /**
  * 애플리케이션의 루트 모듈

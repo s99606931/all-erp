@@ -1,25 +1,30 @@
-import { Module } from '@nestjs/common';
-import { PrismaModule } from './prisma/prisma.module';
+import { Module, Global } from '@nestjs/common';
 import { LoggerModule } from './logger/logger.module';
 import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
+import { EventModule } from './event/event.module';
 
 /**
  * 공통 인프라 모듈
  * 
- * 모든 마이크로서비스에서 사용되는 인프라 관련 모듈을 통합합니다.
- * - PrismaModule: 데이터베이스 연결
- * Prisma, Logger, RabbitMQ 등 인프라 관련 모듈을 통합 제공
+ * Database per Service 패턴에 따라 PrismaModule은 제거되었습니다.
+ * 각 마이크로서비스는 자체 PrismaModule을 구현해야 합니다.
+ * 
+ * 포함되는 모듈:
+ * - LoggerModule: winston 기반 로깅
+ * - RabbitMQModule: 이벤트 기반 통신
+ * - EventModule: 이벤트 발행/구독
  */
+@Global()
 @Module({
   imports: [
-    PrismaModule,
     LoggerModule,
     RabbitMQModule,
+    EventModule,
   ],
   exports: [
-    PrismaModule,
     LoggerModule,
     RabbitMQModule,
+    EventModule,
   ],
 })
 export class SharedInfraModule {}

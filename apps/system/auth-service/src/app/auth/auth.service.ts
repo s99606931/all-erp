@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 import { hash, verify } from '@node-rs/argon2';
-import { Role } from '@prisma/client';
+import { Role } from '.prisma/auth-client';
 import { LoginDto, RegisterDto } from './dto/auth.dto';
 
 @Injectable()

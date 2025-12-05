@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
-import { SharedInfraModule, EventModule, PrismaService } from '@all-erp/shared/infra';
 import { SharedDomainModule } from '@all-erp/shared/domain';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PayrollModule } from './payroll/payroll.module';
+import { PrismaModule } from '../prisma.module';
 import { EmployeeEventListener } from './listeners/employee-event.listener';
 
 /**
@@ -18,7 +18,7 @@ import { EmployeeEventListener } from './listeners/employee-event.listener';
       isGlobal: true,
     }),
     ScheduleModule.forRoot(),
-    SharedInfraModule,
+    PrismaModule,
     SharedDomainModule,
     EventModule.forRoot({
       repositoryProvider: PrismaService,
