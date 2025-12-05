@@ -442,6 +442,7 @@ services:
       - all-erp-network
     restart: unless-stopped
 
+
   # Report Service (보고서 관리)
   report-service:
     profiles: ["platform"]
@@ -473,6 +474,43 @@ services:
       - all-erp-network
     restart: unless-stopped
 
+  # File Service (파일 관리)
+  file-service:
+    profiles: ["platform"]
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-file-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/file_db?schema=public
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      # Minio 설정
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: false
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    ports:
+      - "${FILE_SERVICE_PORT:-3044}:3044"
+      - "9245:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve file-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
   # Web Admin (관리자 웹 콘솔)
   web-admin:
     profiles: ['ai']
@@ -490,6 +528,38 @@ services:
       - ../libs:/workspace/libs:cached
       - /workspace/node_modules
     command: pnpm nx serve web-admin --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+    
+  # Notification Service (알림 관리)
+  notification-service:
+    profiles: ['platform']
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-notification-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/notification_db?schema=public
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - '${NOTIFICATION_SERVICE_PORT:-3043}:3043'
+      - '9245:9229' # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve notification-service --host=0.0.0.0
     networks:
       - all-erp-network
     restart: unless-stopped

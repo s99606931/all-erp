@@ -1,48 +1,49 @@
-// file-service용 독립 Prisma 스키마
-
 datasource db {
-    provider = "postgresql"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
-    provider = "prisma-client-js"
-    output   = "../node_modules/.prisma/client"
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/file-client"
 }
 
-// 파일
+// 파일 메타데이터
 model File {
-    id           String   @id @default(uuid())
-    fileName     String   @map("file_name")
-    originalName String   @map("original_name")
-    mimeType     String   @map("mime_type")
-    size         Int // bytes
-    storageUrl   String   @map("storage_url") // S3, Minio URL
-    uploaderId   String   @map("uploader_id")
-    tenantId     String   @map("tenant_id")
-    createdAt    DateTime @default(now()) @map("created_at")
+  id           Int      @id @default(autoincrement())
+  fileName     String   @map("file_name")        // Minio에 저장된 파일명 (UUID)
+  originalName String   @map("original_name")     // 원본 파일명
+  fileSize     Int      @map("file_size")         // bytes
+  mimeType     String   @map("mime_type")         // MIME 타입
+  storageKey   String   @unique @map("storage_key")  // Minio 객체 키
+  bucketName   String   @default("erp-files") @map("bucket_name")  // Minio 버킷명
+  uploadedBy   Int      @map("uploaded_by")       // 업로드한 사용자 ID
+  tenantId     Int      @map("tenant_id")
+  createdAt    DateTime @default(now()) @map("created_at")
 
-    @@index([tenantId])
-    @@index([uploaderId])
-    @@map("files")
+  @@index([tenantId])
+  @@index([uploadedBy])
+  @@map("files")
 }
 
+// 멱등성
 model ProcessedEvent {
-    eventId     String   @id @map("event_id")
-    eventType   String   @map("event_type")
-    processedAt DateTime @map("processed_at")
-    createdAt   DateTime @default(now()) @map("created_at")
+  eventId     String   @id @map("event_id")
+  processedAt DateTime @map("processed_at")
+  createdAt   DateTime @default(now()) @map("created_at")
 
-    @@map("processed_events")
+  @@map("processed_events")
 }
 
+// Outbox 패턴
 model OutboxEvent {
-    id        String   @id @default(uuid())
-    eventId   String   @unique @map("event_id")
-    eventType String   @map("event_type")
-    payload   String
-    status    String   @default("PENDING")
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
+  id        String   @id @default(uuid())
+  eventId   String   @unique @map("event_id")
+  eventType String   @map("event_type")
+  payload   String
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-    @@map("outbox_events")
+  @@map("outbox_events")
 }
