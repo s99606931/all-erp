@@ -1,0 +1,759 @@
+
+ NX   Running target lint for 50 projects:
+
+- general-affairs-service-e2e
+- notification-service-e2e
+- general-affairs-service
+- accounting-service-e2e
+- settlement-service-e2e
+- approval-service-e2e
+- notification-service
+- general-affairs-mfe
+- accounting-service
+- budget-service-e2e
+- settlement-service
+- supply-service-e2e
+- approval-service
+- asset-service-e2e
+- attendance-service-e2e
+- system-service-e2e
+- tenant-service-e2e
+- personnel-service-e2e
+- accounting-mfe
+- attendance-mfe
+- auth-service-e2e
+- report-service
+- budget-service
+- inventory-mfe
+- payroll-service-e2e
+- supply-service
+- asset-service
+- attendance-service
+- file-service
+- system-service
+- tenant-service
+- treasury-mfe
+- payroll-mfe
+- personnel-service
+- auth-service
+- budget-mfe
+- system-mfe
+- asset-mfe
+- payroll-service
+- web-admin
+- ai-service-e2e
+- hr-mfe
+- shell
+- tenancy
+- ai-service
+- config
+- domain
+- events
+- infra
+- util
+
+
+
+> nx run config:lint
+
+> eslint .
+
+
+> nx run domain:lint
+
+> eslint .
+
+
+> nx run infra:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/infra/src/lib/event/event.module.ts[24m[0m
+[0m  [2m13:49[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/infra/src/lib/event/outbox.relay.ts[24m[0m
+[0m  [2m29:60[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/infra/src/lib/event/outbox.repository.interface.ts[24m[0m
+[0m  [2m6:47[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m6:63[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m7:23[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m7:54[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/infra/src/lib/logger/logger.service.spec.ts[24m[0m
+[0m  [2m7:26[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/infra/src/lib/prisma/prisma.service.spec.ts[24m[0m
+[0m   [2m90:25[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m   [2m96:18[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m100:25[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 10 problems (0 errors, 10 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+(node:8926) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 exit listeners added to [process]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> nx run personnel-service:lint
+
+> eslint .
+
+
+> nx run system-service:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/system/system-service/src/app/common-code/common-code.controller.ts[24m[0m
+[0m  [2m11:29[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/system-service/src/app/common-code/common-code.service.ts[24m[0m
+[0m  [2m8:21[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/system-service/src/app/department/department.controller.ts[24m[0m
+[0m  [2m11:29[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/system-service/src/app/department/department.service.ts[24m[0m
+[0m  [2m8:21[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/system-service/src/app/events/tenant-event.handler.spec.ts[24m[0m
+[0m   [2m8:7[22m   [33mwarning[39m  'rabbitmq' is assigned a value but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m44:25[22m  [33mwarning[39m  Unexpected any. Specify a different type       [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/system-service/src/app/events/tenant-event.handler.ts[24m[0m
+[0m  [2m16:19[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m24:46[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 8 problems (0 errors, 8 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run attendance-service:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/hr/attendance-service/src/app/leave/leave.controller.ts[24m[0m
+[0m  [2m12:35[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/hr/attendance-service/src/app/leave/leave.service.ts[24m[0m
+[0m  [2m8:27[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 2 problems (0 errors, 2 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run supply-service:lint
+
+> eslint .
+
+(node:8926) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 SIGINT listeners added to [process]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+(node:8926) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 SIGTERM listeners added to [process]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+(node:8926) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 SIGHUP listeners added to [process]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+
+> nx run general-affairs-service:lint
+
+> eslint .
+
+
+> nx run notification-service:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/notification-service/src/app/modules/notification/dto/create-notification.dto.ts[24m[0m
+[0m  [2m40:29[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/notification-service/src/app/modules/notification/notification.event-handler.ts[24m[0m
+[0m  [2m41:48[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m65:46[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/notification-service/src/app/modules/notification/notification.service.ts[24m[0m
+[0m  [2m84:63[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 4 problems (0 errors, 4 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run accounting-service:lint
+
+> eslint .
+
+
+> nx run settlement-service:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/finance/settlement-service/src/app/report/report.service.ts[24m[0m
+[0m  [2m38:29[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 1 problem (0 errors, 1 warning)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run approval-service:lint
+
+> eslint .
+
+
+> nx run budget-service:lint
+
+> eslint .
+
+
+> nx run asset-service:lint
+
+> eslint .
+
+
+> nx run tenant-service:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/system/tenant-service/src/app/tenant/dto/tenant.dto.ts[24m[0m
+[0m  [2m1:44[22m  [33mwarning[39m  'IsEnum' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[33m[1m✖ 1 problem (0 errors, 1 warning)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run auth-service:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/system/auth-service/src/app/auth/auth.service.spec.ts[24m[0m
+[0m  [2m5:29[22m  [33mwarning[39m  'UnauthorizedException' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/auth-service/src/app/auth/auth.service.ts[24m[0m
+[0m  [2m40:13[22m  [33mwarning[39m  'password' is assigned a value but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/auth-service/src/app/auth/strategies/jwt.strategy.ts[24m[0m
+[0m  [2m16:27[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 3 problems (0 errors, 3 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run payroll-service:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/hr/payroll-service/src/app/listeners/employee-event.listener.ts[24m[0m
+[0m   [2m8:9[22m   [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m27:77[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/hr/payroll-service/src/app/payroll/payroll.service.spec.ts[24m[0m
+[0m  [2m10:7[22m  [33mwarning[39m  'calculator' is assigned a value but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[33m[1m✖ 3 problems (0 errors, 3 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run ai-service:lint
+
+> eslint .
+
+
+> nx run util:lint
+
+> eslint .
+
+
+> nx run tenancy:lint
+
+> eslint .
+
+
+> nx run events:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/events/package.json[24m[0m
+[0m  [2m8:3[22m  [31merror[39m  The "events" project uses the following packages, but they are missing from "dependencies":[0m
+[0m    - uuid[0m
+[0m    - @nestjs/common[0m
+[0m    - @nestjs/microservices  [2m@nx/dependency-checks[22m[0m
+[0m[0m
+[0m[31m[1m✖ 1 problem (1 error, 0 warnings)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  1 error and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/events/package.json[24m[0m
+[0m  [2m8:3[22m  [31merror[39m  The "events" project uses the following packages, but they are missing from "dependencies":[0m
+[0m    - uuid[0m
+[0m    - @nestjs/common[0m
+[0m    - @nestjs/microservices  [2m@nx/dependency-checks[22m[0m
+[0m[0m
+[0m[31m[1m✖ 1 problem (1 error, 0 warnings)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  1 error and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+Warning: command "eslint ." exited with non-zero status code
+> nx run hr-mfe:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/hr-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/hr-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[31m[1m✖ 3 problems (2 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/hr-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/hr-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[31m[1m✖ 3 problems (2 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+Warning: command "eslint ." exited with non-zero status code
+> nx run web-admin:lint
+
+> eslint .
+
+
+> nx run asset-mfe:lint
+
+
+> asset-mfe@1.0.0 lint /data/all-erp/apps/frontend/asset-mfe
+> eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/asset-mfe/src/components/common.tsx[24m[0m
+[0m   [2m35:20[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m   [2m75:48[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m   [2m76:34[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m122:37[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m130:34[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 5 problems (0 errors, 5 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+ESLint found too many warnings (maximum: 0).
+[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 1.[39m
+
+> nx run budget-mfe:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/budget-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/budget-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[31m[1m✖ 3 problems (2 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/budget-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/budget-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[31m[1m✖ 3 problems (2 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+Warning: command "eslint ." exited with non-zero status code
+> nx run treasury-mfe:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/treasury-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/treasury-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[31m[1m✖ 3 problems (2 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/treasury-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/treasury-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[31m[1m✖ 3 problems (2 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+Warning: command "eslint ." exited with non-zero status code
+> nx run report-service:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/report-service/src/app/report-template/report-template.service.ts[24m[0m
+[0m  [2m54:18[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/report-service/src/app/report/dto/report-response.dto.ts[24m[0m
+[0m  [2m2:10[22m  [33mwarning[39m  'IsString' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m2:20[22m  [33mwarning[39m  'IsEnum' is defined but never used    [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m2:28[22m  [33mwarning[39m  'IsInt' is defined but never used     [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/report-service/src/app/report/report-generator.service.ts[24m[0m
+[0m   [2m98:78[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m121:53[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m140:31[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m166:55[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m181:29[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m197:53[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m205:29[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/report-service/src/app/report/report.service.spec.ts[24m[0m
+[0m  [2m11:7[22m  [33mwarning[39m  'prismaService' is assigned a value but never used           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m12:7[22m  [33mwarning[39m  'reportGeneratorService' is assigned a value but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/report-service/src/app/report/report.service.ts[24m[0m
+[0m  [2m59:18[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 14 problems (0 errors, 14 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run attendance-mfe:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/attendance-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/attendance-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/attendance-mfe/src/pages/LeaveRequestList.tsx[24m[0m
+[0m  [2m6:19[22m  [33mwarning[39m  'setSummary' is assigned a value but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[31m[1m✖ 4 problems (2 errors, 2 warnings)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/attendance-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/attendance-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/attendance-mfe/src/pages/LeaveRequestList.tsx[24m[0m
+[0m  [2m6:19[22m  [33mwarning[39m  'setSummary' is assigned a value but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[31m[1m✖ 4 problems (2 errors, 2 warnings)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+Warning: command "eslint ." exited with non-zero status code
+> nx run inventory-mfe:lint
+
+
+> inventory-mfe@1.0.0 lint /data/all-erp/apps/frontend/inventory-mfe
+> eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/inventory-mfe/src/components/common.tsx[24m[0m
+[0m   [2m35:20[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m   [2m75:48[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m   [2m76:34[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m122:37[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m130:34[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 5 problems (0 errors, 5 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+ESLint found too many warnings (maximum: 0).
+[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 1.[39m
+
+> nx run personnel-service-e2e:lint
+
+> eslint .
+
+
+> nx run system-service-e2e:lint
+
+> eslint .
+
+
+> nx run asset-service-e2e:lint
+
+> eslint .
+
+
+> nx run supply-service-e2e:lint
+
+> eslint .
+
+
+> nx run budget-service-e2e:lint
+
+> eslint .
+
+
+> nx run approval-service-e2e:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/approval-service-e2e/src/support/global-teardown.ts[24m[0m
+[0m  [2m2:1[22m  [33mwarning[39m  Unused eslint-disable directive (no problems were reported)[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/approval-service-e2e/src/support/test-setup.ts[24m[0m
+[0m  [2m1:1[22m  [33mwarning[39m  Unused eslint-disable directive (no problems were reported)[0m
+[0m[0m
+[0m[33m[1m✖ 2 problems (0 errors, 2 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[33m[1m  0 errors and 2 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run accounting-service-e2e:lint
+
+> eslint .
+
+
+> nx run notification-service-e2e:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/notification-service-e2e/src/support/global-teardown.ts[24m[0m
+[0m  [2m2:1[22m  [33mwarning[39m  Unused eslint-disable directive (no problems were reported)[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/notification-service-e2e/src/support/test-setup.ts[24m[0m
+[0m  [2m1:1[22m  [33mwarning[39m  Unused eslint-disable directive (no problems were reported)[0m
+[0m[0m
+[0m[33m[1m✖ 2 problems (0 errors, 2 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[33m[1m  0 errors and 2 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run general-affairs-mfe:lint
+
+
+> general-affairs-mfe@1.0.0 lint /data/all-erp/apps/frontend/general-affairs-mfe
+> eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/general-affairs-mfe/src/components/common.tsx[24m[0m
+[0m   [2m35:20[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m   [2m75:48[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m   [2m76:34[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m122:37[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m130:34[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/general-affairs-mfe/src/pages/approval/DraftBox.tsx[24m[0m
+[0m  [2m15:19[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/general-affairs-mfe/src/pages/approval/PendingApproval.tsx[24m[0m
+[0m   [2m2:33[22m  [33mwarning[39m  'Button' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m15:19[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 8 problems (0 errors, 8 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+ESLint found too many warnings (maximum: 0).
+[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 1.[39m
+
+> nx run general-affairs-service-e2e:lint
+
+> eslint .
+
+
+> nx run settlement-service-e2e:lint
+
+> eslint .
+
+
+> nx run attendance-service-e2e:lint
+
+> eslint .
+
+
+> nx run tenant-service-e2e:lint
+
+> eslint .
+
+
+> nx run auth-service-e2e:lint
+
+> eslint .
+
+
+> nx run payroll-service-e2e:lint
+
+> eslint .
+
+
+> nx run accounting-mfe:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/accounting-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/accounting-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/accounting-mfe/src/routes.tsx[24m[0m
+[0m  [2m1:1[22m  [31merror[39m  Do not use "@ts-nocheck" because it alters compilation errors  [2m@typescript-eslint/ban-ts-comment[22m[0m
+[0m[0m
+[0m[31m[1m✖ 4 problems (3 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/accounting-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/accounting-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/accounting-mfe/src/routes.tsx[24m[0m
+[0m  [2m1:1[22m  [31merror[39m  Do not use "@ts-nocheck" because it alters compilation errors  [2m@typescript-eslint/ban-ts-comment[22m[0m
+[0m[0m
+[0m[31m[1m✖ 4 problems (3 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+Warning: command "eslint ." exited with non-zero status code
+> nx run file-service:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/file-service/src/app/modules/file/dto/file-upload-response.dto.ts[24m[0m
+[0m  [2m1:10[22m  [33mwarning[39m  'IsInt' is defined but never used       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m1:17[22m  [33mwarning[39m  'IsString' is defined but never used    [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m1:27[22m  [33mwarning[39m  'IsOptional' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/file-service/src/app/modules/file/file.controller.ts[24m[0m
+[0m  [2m43:27[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 4 problems (0 errors, 4 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run payroll-mfe:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/payroll-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/payroll-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[31m[1m✖ 3 problems (2 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/payroll-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/payroll-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[31m[1m✖ 3 problems (2 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+Warning: command "eslint ." exited with non-zero status code
+> nx run system-mfe:lint
+
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/system-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/system-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[31m[1m✖ 3 problems (2 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+> eslint .
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/system-mfe/src/lib/utils.ts[24m[0m
+[0m  [2m11:49[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m  [2m34:48[22m  [31merror[39m  Type string trivially inferred from a string literal, remove type annotation  [2m@typescript-eslint/no-inferrable-types[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/system-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[31m[1m✖ 3 problems (2 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  2 errors and 0 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m
+Warning: command "eslint ." exited with non-zero status code
+> nx run ai-service-e2e:lint
+
+> eslint .
+
+
+> nx run shell:lint
+
+
+> shell@1.0.0 lint /data/all-erp/apps/frontend/shell
+> eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
+
+
+Oops! Something went wrong! :(
+
+ESLint: 9.39.1
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'globals' imported from /data/all-erp/apps/frontend/shell/eslint.config.js
+Did you mean to import "globals/index.js"?
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:314:9)
+    at packageResolve (node:internal/modules/esm/resolve:767:81)
+    at moduleResolve (node:internal/modules/esm/resolve:853:18)
+    at defaultResolve (node:internal/modules/esm/resolve:983:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:731:20)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:708:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:310:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:182:49)
+[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 2.[39m
+
+
+
+ NX   Running target lint for 50 projects failed
+
+Failed tasks:
+
+- events:lint
+- hr-mfe:lint
+- asset-mfe:lint
+- budget-mfe:lint
+- treasury-mfe:lint
+- attendance-mfe:lint
+- inventory-mfe:lint
+- general-affairs-mfe:lint
+- accounting-mfe:lint
+- payroll-mfe:lint
+- system-mfe:lint
+- shell:lint
+

@@ -1,0 +1,37 @@
+apps/hr/personnel-service/src/app/employee/employee.service.ts:    return prismaAny.$transaction(async (tx: any) => {
+apps/hr/payroll-service/src/app/listeners/employee-event.listener.ts:  data: any;
+apps/hr/payroll-service/src/app/listeners/employee-event.listener.ts:      await this.rabbitmq.subscribe('payroll.employee.created', async (msg: any) => {
+apps/hr/payroll-service/src/app/listeners/employee-event.listener.ts:          await prismaAny.$transaction(async (tx: any) => {
+apps/hr/attendance-service/src/app/leave/leave.controller.ts:  async requestLeave(@Body() dto: any) {
+apps/hr/attendance-service/src/app/leave/leave.service.ts:  async requestLeave(dto: any) {
+apps/platform/report-service/src/app/report/report-generator.service.ts:  private async generatePDF(reportId: number, data: any): Promise<string> {
+apps/platform/report-service/src/app/report/report-generator.service.ts:      data.data.forEach((row: any, index: number) => {
+apps/platform/report-service/src/app/report/report-generator.service.ts:  private async generateExcel(reportId: number, data: any): Promise<string> {
+apps/platform/report-service/src/app/report/report-generator.service.ts:    data.data.forEach((row: any) => {
+apps/platform/report-service/src/app/report/report-generator.service.ts:  private async generateCSV(reportId: number, data: any): Promise<string> {
+apps/platform/report-service/src/app/report/report-generator.service.ts:    data.data.forEach((row: any) => {
+apps/platform/report-service/src/app/report/report.service.ts:    const where: any = { tenantId };
+apps/platform/report-service/src/app/report-template/report-template.service.ts:    const where: any = { tenantId };
+apps/platform/file-service/src/app/modules/file/file.controller.ts:    @UploadedFile() file: any, // Multer file object
+apps/platform/notification-service/src/app/modules/notification/notification.event-handler.ts:  private async handleApprovalCompleted(event: any) {
+apps/platform/notification-service/src/app/modules/notification/notification.event-handler.ts:  private async handleReportGenerated(event: any) {
+apps/system/system-service/src/app/department/department.controller.ts:  async create(@Body() dto: any) {
+apps/system/system-service/src/app/department/department.service.ts:  async create(dto: any) {
+apps/system/system-service/src/app/events/tenant-event.handler.ts:      async (msg: any) => {
+apps/system/system-service/src/app/events/tenant-event.handler.ts:  private async handleTenantCreated(payload: any) {
+apps/system/system-service/src/app/common-code/common-code.service.ts:  async create(dto: any) {
+apps/system/system-service/src/app/common-code/common-code.controller.ts:  async create(@Body() dto: any) {
+apps/system/auth-service/src/app/auth/strategies/jwt.strategy.ts:  async validate(payload: any) {
+apps/frontend/shell/src/lib/utils.ts:export function debounce<T extends (...args: any[]) => any>(
+apps/frontend/shell/src/lib/utils.ts:export function throttle<T extends (...args: any[]) => any>(
+libs/shared/infra/src/lib/prisma/prisma.module.ts:      this.$on('query' as never, (e: any) => {
+libs/shared/infra/src/lib/prisma/prisma.module.ts:    this.$on('error' as never, (e: any) => {
+libs/shared/infra/src/lib/prisma/prisma.module.ts:    this.$on('warn' as never, (e: any) => {
+libs/shared/infra/src/lib/prisma/prisma.module.ts:    (this as any).$use(async (params: any, next: any) => {
+libs/shared/infra/src/lib/prisma/prisma.module.ts:              params.args.data = params.args.data.map((item: any) => ({
+libs/shared/infra/src/lib/event/event.service.ts:  async emit(eventType: string, payload: any, tx?: any): Promise<void> {
+libs/shared/infra/src/lib/event/outbox.repository.interface.ts:  $executeRawUnsafe(query: string, ...values: any[]): Promise<any>;
+libs/shared/infra/src/lib/event/outbox.repository.interface.ts:  $queryRawUnsafe<T = any>(query: string, ...values: any[]): Promise<T>;
+libs/shared/infra/src/lib/event/event.module.ts:  static forRoot(options: { repositoryProvider: any }): DynamicModule {
+libs/shared/infra/src/lib/logger/logger.service.spec.ts:  let mockWinstonLogger: any;
+libs/shared/infra/src/lib/bootstrap/bootstrap.ts:  module: any;
