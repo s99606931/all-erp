@@ -1,15 +1,16 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { PrismaService, EventService } from '@all-erp/shared/infra';
+import { EventService } from '@all-erp/shared/infra';
+import { ApprovalPrismaService } from '../../prisma/approval-prisma.service';
 import { CreateApprovalRequestDto } from './dto/create-approval-request.dto';
 import { GetApprovalRequestsDto } from './dto/get-approval-requests.dto';
 import { ApproveRequestDto } from './dto/approve-request.dto';
 import { RejectRequestDto } from './dto/reject-request.dto';
-import { ApprovalRequest, Prisma } from '@prisma/client';
+import { ApprovalRequest, Prisma } from '@prisma/approval-client';
 
 @Injectable()
 export class ApprovalService {
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly prisma: ApprovalPrismaService,
     private readonly eventService: EventService,
   ) {}
 
