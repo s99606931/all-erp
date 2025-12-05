@@ -1,6 +1,9 @@
 // 기본 인터페이스
 export * from './lib/base-event.interface';
 
+// 이벤트 타입 enum
+export * from './lib/event-types';
+
 // 이벤트 이미터 서비스
 export * from './lib/event-emitter.service';
 
