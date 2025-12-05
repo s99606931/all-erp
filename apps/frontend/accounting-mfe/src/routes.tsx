@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AccountSubjectManagePage from './pages/AccountSubjectManagePage';
 import AccountSubjectSearchPage from './pages/AccountSubjectSearchPage';

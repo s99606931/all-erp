@@ -31,9 +31,9 @@ export default defineConfig({
 
 ## ✅ 완료 조건
 
-- [ ] Vite 앱 생성
-- [ ] Module Federation 설정
-- [ ] 61개 페이지 구현  - erp메뉴구조참고 
+- [x] Vite 앱 생성
+- [x] Module Federation 설정
+- [x] 61개 페이지 구현  - erp메뉴구조참고 
 - [ ] Shell 앱 연동
 
 ## 🔧 실행 명령어
