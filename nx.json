@@ -73,7 +73,9 @@
         "apps/general/asset-service-e2e/**/*",
         "apps/general/supply-service-e2e/**/*",
         "apps/general/general-affairs-service-e2e/**/*",
-        "apps/ai/ai-service-e2e/**/*"
+        "apps/ai/ai-service-e2e/**/*",
+        "apps/platform/approval-service-e2e/**/*",
+        "apps/platform/report-service-e2e/**/*"
       ]
     },
     {

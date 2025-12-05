@@ -4,7 +4,7 @@ import { Connection, Channel, connect, Options } from 'amqplib';
 
 /**
  * RabbitMQ 연결 및 메시지 통신 서비스
- * 
+ *
  * 마이크로서비스 간 비동기 이벤트 통신을 담당합니다.
  * - 자동 연결 및 재연결 로직
  * - Exchange 및 Queue 설정
@@ -44,27 +44,29 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
   private async connect(): Promise<void> {
     try {
       const rabbitmqUrl = this.configService.get<string>('RABBITMQ_URL', 'amqp://localhost:5672');
-      
+
       this.logger.log(`Connecting to RabbitMQ at ${rabbitmqUrl}...`);
-      
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.connection = await connect(rabbitmqUrl) as any;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.channel = await (this.connection as any).createChannel();
-      
+
       this.reconnectAttempts = 0;
       this.logger.log('Successfully connected to RabbitMQ');
 
       // 연결 종료 이벤트 핸들러
-      this.connection.on('close', () => {
-        this.logger.warn('RabbitMQ connection closed');
-        this.reconnect();
-      });
+      if (this.connection) {
+        this.connection.on('close', () => {
+          this.logger.warn('RabbitMQ connection closed');
+          this.reconnect();
+        });
 
-      // 연결 에러 이벤트 핸들러
-      this.connection.on('error', (error) => {
-        this.logger.error('RabbitMQ connection error', error.stack);
-      });
+        // 연결 에러 이벤트 핸들러
+        this.connection.on('error', (error) => {
+          this.logger.error('RabbitMQ connection error', error.stack);
+        });
+      }
 
     } catch (error) {
       this.logger.error('Failed to connect to RabbitMQ', error instanceof Error ? error.stack : error);
@@ -185,7 +187,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
 
     try {
       const messageBuffer = Buffer.from(JSON.stringify(message));
-      
+
       const sent = this.channel.publish(exchangeName, routingKey, messageBuffer, {
         persistent: true,
         contentType: 'application/json',
@@ -240,7 +242,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
           }
         } catch (error) {
           this.logger.error(`Error processing message from queue '${queueName}'`, error instanceof Error ? error.stack : error);
-          
+
           // 메시지 처리 실패 시 NACK (재시도하지 않고 폐기)
           if (this.channel) {
             this.channel.nack(msg, false, false);

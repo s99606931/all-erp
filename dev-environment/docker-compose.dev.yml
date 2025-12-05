@@ -1,25 +1,24 @@
 # 개발 환경 - 애플리케이션 서비스만 포함
 # 인프라는 docker-compose.infra.yml 먼저 실행 필요
-# 
+#
 # 사용 예시:
 # 1. 전체 서비스 실행:
 #    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml up -d
-# 
+#
 # 2. 특정 도메인만 실행 (프로필 사용):
 #    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml --profile system up -d
 #    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml --profile hr up -d
 #    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml --profile finance up -d
 #    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml --profile general up -d
 #    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml --profile ai up -d
-# 
+#
 # 3. 여러 도메인 동시 실행:
 #    docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml --profile system --profile hr up -d
-
 
 services:
   # Auth Service (인증/인가)
   auth-service:
-    profiles: ["system"]
+    profiles: ['system']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -38,12 +37,12 @@ services:
       JWT_SECRET: ${JWT_SECRET:-super_secret_key_change_me}
       JWT_EXPIRATION: ${JWT_EXPIRATION:-1h}
     ports:
-      - "${AUTH_SERVICE_PORT:-3001}:3001"
-      - "9229:9229"  # 디버깅 포트
+      - '${AUTH_SERVICE_PORT:-3001}:3001'
+      - '9229:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
-      - /workspace/node_modules  # node_modules는 컨테이너 내부 것 사용
+      - /workspace/node_modules # node_modules는 컨테이너 내부 것 사용
     command: pnpm nx serve auth-service --host=0.0.0.0
     networks:
       - all-erp-network
@@ -51,7 +50,7 @@ services:
 
   # System Service (시스템/공통)
   system-service:
-    profiles: ["system"]
+    profiles: ['system']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -68,8 +67,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
     ports:
-      - "${SYSTEM_SERVICE_PORT:-3002}:3002"
-      - "9230:9229"  # 디버깅 포트
+      - '${SYSTEM_SERVICE_PORT:-3002}:3002'
+      - '9230:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -81,7 +80,7 @@ services:
 
   # Tenant Service (테넌트/구독 관리)
   tenant-service:
-    profiles: ["system"]
+    profiles: ['system']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -98,8 +97,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
     ports:
-      - "${TENANT_SERVICE_PORT:-3006}:3006"
-      - "9231:9229"  # 디버깅 포트
+      - '${TENANT_SERVICE_PORT:-3006}:3006'
+      - '9231:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -111,7 +110,7 @@ services:
 
   # Personnel Service (인사 정보 관리)
   personnel-service:
-    profiles: ["hr"]
+    profiles: ['hr']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -128,8 +127,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
     ports:
-      - "${PERSONNEL_SERVICE_PORT:-3011}:3011"
-      - "9232:9229"  # 디버깅 포트
+      - '${PERSONNEL_SERVICE_PORT:-3011}:3011'
+      - '9232:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -141,7 +140,7 @@ services:
 
   # Payroll Service (급여 계산 및 관리)
   payroll-service:
-    profiles: ["hr"]
+    profiles: ['hr']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -158,8 +157,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
     ports:
-      - "${PAYROLL_SERVICE_PORT:-3012}:3012"
-      - "9233:9229"  # 디버깅 포트
+      - '${PAYROLL_SERVICE_PORT:-3012}:3012'
+      - '9233:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -171,7 +170,7 @@ services:
 
   # Attendance Service (근태 관리)
   attendance-service:
-    profiles: ["hr"]
+    profiles: ['hr']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -188,8 +187,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
     ports:
-      - "${ATTENDANCE_SERVICE_PORT:-3013}:3013"
-      - "9234:9229"  # 디버깅 포트
+      - '${ATTENDANCE_SERVICE_PORT:-3013}:3013'
+      - '9234:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -201,7 +200,7 @@ services:
 
   # Budget Service (예산 관리)
   budget-service:
-    profiles: ["finance"]
+    profiles: ['finance']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -218,8 +217,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
     ports:
-      - "${BUDGET_SERVICE_PORT:-3021}:3021"
-      - "9235:9229"  # 디버깅 포트
+      - '${BUDGET_SERVICE_PORT:-3021}:3021'
+      - '9235:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -231,7 +230,7 @@ services:
 
   # Accounting Service (회계 관리)
   accounting-service:
-    profiles: ["finance"]
+    profiles: ['finance']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -248,8 +247,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
     ports:
-      - "${ACCOUNTING_SERVICE_PORT:-3022}:3022"
-      - "9236:9229"  # 디버깅 포트
+      - '${ACCOUNTING_SERVICE_PORT:-3022}:3022'
+      - '9236:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -261,7 +260,7 @@ services:
 
   # Settlement Service (결산 관리)
   settlement-service:
-    profiles: ["finance"]
+    profiles: ['finance']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -278,8 +277,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
     ports:
-      - "${SETTLEMENT_SERVICE_PORT:-3023}:3023"
-      - "9237:9229"  # 디버깅 포트
+      - '${SETTLEMENT_SERVICE_PORT:-3023}:3023'
+      - '9237:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -291,7 +290,7 @@ services:
 
   # Asset Service (자산 관리)
   asset-service:
-    profiles: ["general"]
+    profiles: ['general']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -308,8 +307,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
     ports:
-      - "${ASSET_SERVICE_PORT:-3031}:3031"
-      - "9238:9229"  # 디버깅 포트
+      - '${ASSET_SERVICE_PORT:-3031}:3031'
+      - '9238:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -321,7 +320,7 @@ services:
 
   # Supply Service (비품 관리)
   supply-service:
-    profiles: ["general"]
+    profiles: ['general']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -338,8 +337,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
     ports:
-      - "${SUPPLY_SERVICE_PORT:-3032}:3032"
-      - "9239:9229"  # 디버깅 포트
+      - '${SUPPLY_SERVICE_PORT:-3032}:3032'
+      - '9239:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -351,7 +350,7 @@ services:
 
   # General Affairs Service (총무 관리)
   general-affairs-service:
-    profiles: ["general"]
+    profiles: ['general']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -368,8 +367,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
     ports:
-      - "${GENERAL_AFFAIRS_SERVICE_PORT:-3033}:3033"
-      - "9240:9229"  # 디버깅 포트
+      - '${GENERAL_AFFAIRS_SERVICE_PORT:-3033}:3033'
+      - '9240:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -381,7 +380,7 @@ services:
 
   # AI Service (AI 기능 및 LLM 연동)
   ai-service:
-    profiles: ["ai"]
+    profiles: ['ai']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -401,8 +400,8 @@ services:
       MILVUS_HOST: milvus
       MILVUS_PORT: 19530
     ports:
-      - "${AI_SERVICE_PORT:-3007}:3007"
-      - "9241:9229"  # 디버깅 포트
+      - '${AI_SERVICE_PORT:-3007}:3007'
+      - '9241:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -412,9 +411,71 @@ services:
       - all-erp-network
     restart: unless-stopped
 
+  # Approval Service (결재 관리)
+  approval-service:
+    profiles: ['platform']
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-approval-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/approval_db?schema=public
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - '${APPROVAL_SERVICE_PORT:-3041}:3041'
+      - '9243:9229' # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve approval-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
+  # Report Service (보고서 관리)
+  report-service:
+    profiles: ["platform"]
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: all-erp-report-service-dev
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
+      DB_DATABASE: ${DB_DATABASE:-all_erp}
+      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/report_db?schema=public
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+    ports:
+      - "${REPORT_SERVICE_PORT:-3042}:3042"
+      - "9244:9229"  # 디버깅 포트
+    volumes:
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
+    command: pnpm nx serve report-service --host=0.0.0.0
+    networks:
+      - all-erp-network
+    restart: unless-stopped
+
   # Web Admin (관리자 웹 콘솔)
   web-admin:
-    profiles: ["ai"]
+    profiles: ['ai']
     build:
       context: ..
       dockerfile: Dockerfile.dev
@@ -422,8 +483,8 @@ services:
     environment:
       NODE_ENV: development
     ports:
-      - "${WEB_ADMIN_PORT:-4200}:4200"
-      - "9242:9229"  # 디버깅 포트
+      - '${WEB_ADMIN_PORT:-4200}:4200'
+      - '9242:9229' # 디버깅 포트
     volumes:
       - ../apps:/workspace/apps:cached
       - ../libs:/workspace/libs:cached
@@ -436,5 +497,5 @@ services:
 networks:
   all-erp-network:
     name: all-erp-network
-    external: true  # infra.yml에서 생성한 네트워크 사용
+    external: true # infra.yml에서 생성한 네트워크 사용
 
