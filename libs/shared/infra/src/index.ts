@@ -9,6 +9,9 @@ export * from './lib/logger/logger.service';
 export * from './lib/rabbitmq/rabbitmq.module';
 export * from './lib/rabbitmq/rabbitmq.service';
 
+// HTTP 클라이언트 모듈
+export * from './lib/http';
+
 // Tenant 미들웨어
 export * from './lib/tenant.middleware';
 
