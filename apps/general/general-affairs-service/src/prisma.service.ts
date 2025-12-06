@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '.prisma/general-affairs-client';
 import { PrismaServiceBase } from '@all-erp/shared/infra';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class PrismaService extends PrismaServiceBase {
     super('GeneralAffairsServicePrismaService');
     
     this.prismaClient = new PrismaClient({
-      datasourceUrl: process.env['DATABASE_URL'],
+      
       log: [
         { emit: 'event', level: 'query' },
         { emit: 'event', level: 'error' },

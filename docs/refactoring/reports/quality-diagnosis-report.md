@@ -1,244 +1,236 @@
 # 코드 품질 진단 종합 보고서
 
-> **작성일**: 2025-12-05  
-> **Phase**: 1 - 코드 품질 진단
+> **진단 일시**: 2025-12-06  
+> **대상**: ALL-ERP 전체 프로젝트 (49개 프로젝트)
 
 ---
 
 ## 📊 요약 (Executive Summary)
 
-| 지표                 | 결과               | 상태                |
-| -------------------- | ------------------ | ------------------- |
-| **전체 품질 등급**   | **B**              | 🟡 양호 (개선 필요) |
-| ESLint 실패 프로젝트 | 12/50              | ⚠️ 24% 실패율       |
-| `any` 타입 사용      | 37곳               | ⚠️ 중간 수준        |
-| 테스트 커버리지      | 미측정             | ⏸️ 다음 단계        |
-| 중복 코드 분석       | 완료 (45MB 보고서) | ✅                  |
-| 의존성 그래프        | 생성 완료          | ✅                  |
+| 지표                | 현황                       | 등급       |
+| ------------------- | -------------------------- | ---------- |
+| **전체 품질 등급**  | -                          | **C**      |
+| ESLint 검사         | 49개 프로젝트 중 12개 실패 | ⚠️ 주의    |
+| TypeScript any 사용 | 51개 위치                  | ⚠️ 주의    |
+| 테스트 커버리지     | 15개 서비스 실패           | 🔴 심각    |
+| 의존성 그래프       | 정상 생성                  | ✅ 양호    |
+| 중복 코드 검출      | 실행 중 (대용량 분석)      | ⏳ 진행 중 |
+
+### 🎯 핵심 발견사항
+
+1. **프론트엔드 린트 에러 집중**: 12개 프론트엔드 프로젝트에서 ESLint 에러 발생
+2. **Prisma 타입 문제**: Database per Service 전환으로 인한 타입 불일치
+3. **테스트 실패 다수**: 15개 서비스에서 테스트 실패 (대부분 Prisma 관련)
 
 ---
 
 ## 1. ESLint 검사 결과
 
-### 1.1 실패 프로젝트 목록 (12개)
+### ✅ 정리표
 
-| 프로젝트              | 에러 개수 | 경고 개수 | 주요 문제                                 |
-| --------------------- | --------- | --------- | ----------------------------------------- |
-| `events` (libs)       | -         | -         | -                                         |
-| `hr-mfe`              | -         | -         | -                                         |
-| `asset-mfe`           | 2         | 1         | no-inferrable-types                       |
-| `budget-mfe`          | 2         | 1         | no-inferrable-types                       |
-| `treasury-mfe`        | -         | -         | -                                         |
-| `attendance-mfe`      | 2         | 1         | no-inferrable-types                       |
-| `inventory-mfe`       | -         | -         | -                                         |
-| `general-affairs-mfe` | -         | -         | -                                         |
-| `accounting-mfe`      | 3         | 1         | ban-ts-comment, no-inferrable-types       |
-| `payroll-mfe`         | 2         | 1         | no-inferrable-types                       |
-| `system-mfe`          | 2         | 1         | no-inferrable-types                       |
-| `shell`               | -         | -         | ESLint config error (globals 패키지 누락) |
+**통과 프로젝트**: 37개  
+**실패 프로젝트**: 12개
 
-### 1.2 주요 문제 패턴
+### 🔴 실패 프로젝트 목록
 
-#### 패턴 1: `no-inferrable-types` (가장 빈번)
+| 프로젝트            | 에러 | 경고 | 주요 이슈                          |
+| ------------------- | ---- | ---- | ---------------------------------- |
+| hr-mfe              | 2    | 1    | `no-inferrable-types`              |
+| system-mfe          | 2    | 1    | `no-inferrable-types`              |
+| events              | 1    | 0    | 의존성 누락 (uuid, @nestjs/\*)     |
+| payroll-mfe         | 2    | 1    | `no-inferrable-types`              |
+| accounting-mfe      | 3    | 1    | `@ts-nocheck` 사용                 |
+| attendance-mfe      | 2    | 2    | `no-inferrable-types`, 미사용 변수 |
+| general-affairs-mfe | 0    | 8    | `any` 타입 과다 사용               |
+| treasury-mfe        | 2    | 1    | `no-inferrable-types`              |
+| budget-mfe          | 2    | 1    | `no-inferrable-types`              |
+| inventory-mfe       | 0    | 5    | `any` 타입 과다 사용               |
+| shell               | 2    | 0    | 모듈 누락 (globals)                |
+| asset-mfe           | 0    | 5    | `any` 타입 과다 사용               |
 
-```typescript
-// ❌ 문제
-const baseUrl: string = 'http://localhost';
+### 📌 공통 패턴
 
-// ✅ 해결
-const baseUrl = 'http://localhost'; // 타입 추론 사용
-```
-
-**영향**: 프론트엔드 MFE 앱 6개  
-**수정 방법**: `--fix` 플래그로 자동 수정 가능
-
-#### 패턴 2: `no-non-null-assertion`
-
-```typescript
-// ⚠️ 경고
-document.getElementById('root')!;
-
-// ✅ 권장
-const root = document.getElementById('root');
-if (!root) throw new Error('Root element not found');
-```
-
-**영향**: 여러 프론트엔드 앱  
-**수정 방법**: null 체크 로직 추가
-
-#### 패턴 3: `ban-ts-comment` (심각)
-
-```typescript
-// ❌ 금지
-// @ts-nocheck
-
-// ✅ 해결: 타입 에러 직접 수정
-```
-
-**영향**: `accounting-mfe`  
-**우선순위**: **높음** (타입 안전성 저하)
-
-#### 패턴 4: Shell 앱 ESLint 설정 오류
-
-```
-Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'globals'
-```
-
-**원인**: `eslint.config.js`에서 `globals` 패키지 import 실패  
-**수정 방법**: `globals/index.js`로 수정 또는 패키지 설치
+1. **프론트엔드 MFE**: `utils.ts`에서 타입 추론 문제 반복
+2. **의존성 문제**: `events` 라이브러리, `shell` 앱의 package.json 의존성 누락
+3. **타입 안전성**: 공통 컴포넌트에서 `any` 타입 과다 사용
 
 ---
 
-## 2. `any` 타입 사용 현황
+## 2. TypeScript `any` 타입 사용 현황
 
-### 2.1 통계
+### 📊 통계
 
-- **총 사용 위치**: 37곳
-- **서비스별 분포**:
-  - `libs/shared/infra`: 9곳 (24%)
-  - `apps/platform/*`: 9곳 (24%)
-  - `apps/hr/*`: 6곳 (16%)
-  - `apps/system/*`: 6곳 (16%)
-  - `apps/frontend/shell`: 2곳 (5%)
-  - 기타: 5곳 (13%)
+- **총 발견 개수**: 51개
+- **주요 발생 위치**:
+  - `libs/shared/infra`: 11개 (Prisma, Event 관련)
+  - Backend Services: 30개 (Controller, Service, Event Handler)
+  - Frontend MFE: 10개 (공통 컴포넌트)
 
-### 2.2 주요 사용 사례
+### 🎯 개선 우선순위
 
-#### 케이스 1: Prisma Transaction (libs/shared/infra)
+| 우선순위 | 위치              | 개수 | 이유               |
+| -------- | ----------------- | ---- | ------------------ |
+| **높음** | libs/shared/infra | 11   | 전체 서비스에 영향 |
+| **중간** | Backend Services  | 30   | 서비스별 고립      |
+| **낮음** | Frontend MFE      | 10   | UI 레이어          |
 
-```typescript
-// 현재
-return prismaAny.$transaction(async (tx: any) => { ... });
+### 📝 주요 파일
 
-// 개선안
-import { Prisma } from '@prisma/client';
-return prisma.$transaction(async (tx: Prisma.TransactionClient) => { ... });
-```
-
-#### 케이스 2: RabbitMQ 메시지 핸들러
-
-```typescript
-// 현재
-async (msg: any) => { ... }
-
-// 개선안
-interface EmployeeCreatedEvent {
-  id: string;
-  name: string;
-  deptId: string;
-}
-async (msg: EmployeeCreatedEvent) => { ... }
-```
-
-#### 케이스 3: DTO 타입 누락
-
-```typescript
-// 현재
-async create(@Body() dto: any) { ... }
-
-// 개선안
-async create(@Body() dto: CreateDepartmentDto) { ... }
-```
-
-### 2.3 개선 우선순위
-
-| 우선순위 | 위치                | 이유                    |
-| -------- | ------------------- | ----------------------- |
-| **높음** | DTO 파라미터 (10곳) | API 타입 안전성 직결    |
-| **중간** | 이벤트 핸들러 (8곳) | 이벤트 스키마 정의 필요 |
-| **낮음** | 유틸리티 함수 (4곳) | 제네릭으로 해결 가능    |
+1. `/libs/shared/infra/src/lib/event/outbox.repository.interface.ts` (4개)
+2. `/libs/shared/infra/src/lib/prisma/prisma.service.spec.ts` (3개)
+3. `/apps/platform/report-service/src/app/report/report-generator.service.ts` (7개)
 
 ---
 
-## 3. 중복 코드 분석
+## 3. 테스트 커버리지 분석
 
-### 3.1 결과 파일
+### 🔴 테스트 실패 서비스 (15개)
 
-- **보고서 크기**: 45MB
-- **HTML 리포트**: `docs/refactoring/reports/duplication/html/`
-- **JSON 보고서**: `docs/refactoring/reports/duplication/jscpd-report.json`
+| 서비스                  | 상태 | 주요 에러                          |
+| ----------------------- | ---- | ---------------------------------- |
+| infra (shared)          | ❌   | PrismaService 메서드 누락          |
+| tenant-service          | ❌   | `prisma.tenant` 타입 없음          |
+| asset-service           | ❌   | `prisma.asset` 타입 없음           |
+| auth-service            | ❌   | Role import 실패                   |
+| budget-service          | ❌   | Prisma 타입 누락                   |
+| accounting-service      | ❌   | journalEntry 타입 없음             |
+| general-affairs-service | ❌   | vehicleReservation 타입 없음       |
+| settlement-service      | ❌   | journalEntryLine 타입 없음         |
+| supply-service          | ❌   | inventory 타입 없음                |
+| attendance-service      | ❌   | leaveRequest, attendance 타입 없음 |
+| system-service          | ❌   | commonCode, department 타입 없음   |
+| personnel-service       | ❌   | employee 타입 없음                 |
+| payroll-service         | ❌   | employee, payroll 타입 없음        |
+| file-service            | ❌   | Jest preset 설정 오류              |
+| report-service          | ❌   | report 타입 없음                   |
 
-### 3.2 주요 중복 패턴 (node_modules 제외)
+### ✅ 테스트 통과 서비스 (7개)
 
-**분석 중**: node_modules 내 중복이 대부분이므로, 실제 소스 코드의 중복 비율을 재측정 필요.
+- config, domain, events, tenancy, util
+- approval-service, ai-service
 
-**다음 단계**:
+### 🎯 근본 원인
 
-```bash
-# apps/ 와 libs/ 만 검사
-npx jscpd apps/ --exclude "**/*.spec.ts" --exclude "**/node_modules/**" --reporters html
-```
+**Database per Service 아키텍처 전환 후 Prisma Client 타입 불일치**
+
+- 각 서비스별 독립 Prisma Client 사용 필요
+- 테스트 코드가 공통 `@prisma/client` import 사용
+- 서비스별 `.prisma/{service}-client` import로 변경 필요
 
 ---
 
 ## 4. 의존성 그래프
 
-### 4.1 생성 파일
+### ✅ 생성 결과
 
-- **HTML 그래프**: `docs/refactoring/reports/dependency-graph.html`
-- **크기**: 1.2KB
+- **파일**: [ docs/refactoring/reports/dependency-graph.html`
+- **상태**: 정상 생성 완료
+- **프로젝트 수**: 49개
 
-### 4.2 시각적 확인 필요
+### 📊 분석 (수동 확인 필요)
 
-브라우저에서 `dependency-graph.html` 열어서 다음 확인:
+다음 항목은 HTML 파일을 열어 직접 확인이 필요합니다:
 
 - [ ] 순환 참조 여부
-- [ ] 예상치 못한 의존성
-- [ ] 레이어 분리 준수 (util → domain → infra)
+- [ ] 비정상적인 의존성 패턴
+- [ ] Micro Frontend 간 의존성
 
 ---
 
-## 5. 테스트 커버리지
+## 5. 중복 코드 검출
 
-**상태**: ⏸️ **미실행**
+### ⏳ 진행 상황
 
-**이유**: Phase 1에서는 품질 진단에 집중하고, 테스트 커버리지는 Phase 3에서 상세히 측정할 예정.
+- **상태**: 백그라운드 실행 중
+- **지연 원인**: node_modules 포함한 전체 스캔
+- **예상 완료**: 진행 중
+- **산출물 경로**: `docs/refactoring/reports/duplication/`
+
+> 💡 **제안**: 다음 분석 시 apps/ libs/ 소스만 대상으로 제한
 
 ---
 
-## 6. 개선 권장사항 (우선순위)
+## 6. 개선 우선순위
 
-### 🔴 높음 (즉시 수정 필요)
+### 🔥 긴급 (High Priority)
 
-1. **Shell 앱 ESLint 설정 수정**
+1. **Database per Service 타입 문제 해결**
 
-   - `apps/frontend/shell/eslint.config.js` 내 `globals` import 수정
-   - 또는 `globals` 패키지 설치
+   - 각 서비스별 Prisma Client import 수정
+   - 테스트 코드 Prisma import 경로 수정
+   - 영향도: 15개 서비스
 
-2. **`@ts-nocheck` 제거** (`accounting-mfe`)
+2. **프론트엔드 린트 에러 수정**
 
-   - 타입 에러 직접 수정하여 타입 안전성 확보
+   - utils.ts 타입 추론 문제 (10개 MFE)
+   - shell ESLint 설정 수정 (globals 의존성)
+   - 영향도: 12개 프로젝트
 
-3. **DTO `any` 타입 제거** (10곳)
-   - 모든 Controller에서 명시적 DTO 사용
+3. **의존성 누락 해결**
+   - events 라이브러리 package.json 수정
+   - 필요 패키지: uuid, @nestjs/common, @nestjs/microservices
+   - 영향도: 전체 프로젝트
 
-### 🟡 중간 (Phase 2에서 처리)
+### ⚠️ 중요 (Medium Priority)
 
-4. **ESLint 자동 수정 실행**
+4. **any 타입 제거**
 
-   ```bash
-   pnpm nx run-many --target=lint --all --fix
-   ```
+   - libs/shared/infra 우선 처리 (11개)
+   - 타입 정의 추가 및 인터페이스 개선
+   - 점진적 마이그레이션 (단계별 적용)
 
-5. **이벤트 핸들러 타입 정의**
-   - RabbitMQ 메시지 페이로드 인터페이스 정의
+5. **테스트 커버리지 향상**
+   - 통과한 서비스 참고하여 패턴 수립
+   - Database per Service 대응 테스트 가이드 작성
 
-### 🟢 낮음 (Phase 4에서 처리)
+### 📝 일반 (Low Priority)
 
-6. **유틸리티 함수 제네릭 적용**
-7. **실제 소스 코드 중복도 재측정** (node_modules 제외)
+6. **중복 코드 리팩토링**
+
+   - jscpd 결과 확인 후 진행
+   - 공통 컴포넌트 추출
+
+7. **코드 품질 지표 모니터링**
+   - CI/CD에 품질 게이트 추가
+   - SonarQube 등 정적 분석 도구 도입 검토
 
 ---
 
 ## 7. 다음 단계
 
-- [ ] Phase 1 완료 사용자 확인
-- [ ] Phase 2 시작: 코딩 컨벤션 통일
-  - [ ] ESLint/Prettier 자동 수정
-  - [ ] 폴더 구조 점검
-  - [ ] 한국어 주석 표준화
+### 즉시 조치 항목
+
+```bash
+# 1. 프론트엔드 린트 자동 수정
+pnpm nx run-many --target=lint --all --fix
+
+# 2. 의존성 추가 (events)
+cd libs/shared/events
+pnpm add uuid @nestjs/common @nestjs/microservices
+
+#  3. shell globals 의존성 추가
+cd apps/frontend/shell
+pnpm add -D globals
+```
+
+### Phase 2 준비
+
+Phase 1 완료 후 Phase 2 (코딩 컨벤션 통일)로 진행:
+
+- 자동 포맷팅 적용
+- 폴더 구조 점검
+- 한국어 주석 추가
 
 ---
 
-**보고서 작성자**: AI Assistant  
-**검토자**: 사용자 확인 필요
+## 📎 첨부 파일
+
+- [eslint-report.txt](file:///data/all-erp/docs/refactoring/reports/eslint-report.txt)
+- [any-usage.txt](file:///data/all-erp/docs/refactoring/reports/any-usage.txt)
+- [coverage-report.txt](file:///data/all-erp/docs/refactoring/reports/coverage-report.txt)
+- [dependency-graph.html](file:///data/all-erp/docs/refactoring/reports/dependency-graph.html)
+
+---
+
+**작성자**: Gemini AI  
+**검토 필요**: ✅ 사용자 승인 필요

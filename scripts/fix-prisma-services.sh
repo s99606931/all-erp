@@ -51,7 +51,7 @@ export class PrismaService extends PrismaServiceBase {
     super('SERVICE_NAMEPrismaService');
     
     this.prismaClient = new PrismaClient({
-      datasourceUrl: process.env['DATABASE_URL'],
+      
       log: [
         { emit: 'event', level: 'query' },
         { emit: 'event', level: 'error' },

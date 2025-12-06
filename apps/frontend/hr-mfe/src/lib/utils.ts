@@ -8,7 +8,7 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
 /**
  * 날짜를 포맷팅하는 함수
  */
-export function formatDate(date: string | Date, format: string = 'YYYY-MM-DD'): string {
+export function formatDate(date: string | Date, format = 'YYYY-MM-DD'): string {
   if (!date) return '-';
   const d = typeof date === 'string' ? new Date(date) : date;
   
@@ -31,7 +31,7 @@ export function formatDate(date: string | Date, format: string = 'YYYY-MM-DD'): 
 /**
  * 숫자를 통화 형식으로 포맷팅
  */
-export function formatCurrency(amount: number, currency: string = 'KRW'): string {
+export function formatCurrency(amount: number, currency = 'KRW'): string {
   return new Intl.NumberFormat('ko-KR', {
     style: 'currency',
     currency,

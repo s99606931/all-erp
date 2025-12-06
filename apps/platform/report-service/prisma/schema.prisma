@@ -6,6 +6,7 @@ datasource db {
 
 generator client {
     provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/report-client"
 }
 
 // 보고서

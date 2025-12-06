@@ -7,7 +7,7 @@ datasource db {
 
 generator client {
     provider = "prisma-client-js"
-    output   = "../node_modules/.prisma/client"
+    output   = "../node_modules/.prisma/system-client"
 }
 
 // 공통 코드 그룹

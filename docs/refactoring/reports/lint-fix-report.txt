@@ -1,0 +1,291 @@
+
+ NX   Running target lint for 49 projects:
+
+- general-affairs-service-e2e
+- notification-service-e2e
+- general-affairs-service
+- accounting-service-e2e
+- settlement-service-e2e
+- approval-service-e2e
+- notification-service
+- general-affairs-mfe
+- accounting-service
+- budget-service-e2e
+- settlement-service
+- supply-service-e2e
+- approval-service
+- asset-service-e2e
+- attendance-service-e2e
+- system-service-e2e
+- tenant-service-e2e
+- personnel-service-e2e
+- accounting-mfe
+- attendance-mfe
+- auth-service-e2e
+- report-service
+- budget-service
+- inventory-mfe
+- payroll-service-e2e
+- supply-service
+- asset-service
+- attendance-service
+- file-service
+- system-service
+- tenant-service
+- treasury-mfe
+- payroll-mfe
+- personnel-service
+- auth-service
+- budget-mfe
+- system-mfe
+- asset-mfe
+- payroll-service
+- ai-service-e2e
+- hr-mfe
+- shell
+- tenancy
+- ai-service
+- config
+- domain
+- events
+- infra
+- util
+
+With additional flags:
+  --fix=true
+
+
+
+> nx run config:lint --fix
+
+> eslint . --fix
+
+
+> nx run domain:lint --fix
+
+> eslint . --fix
+
+
+> nx run infra:lint --fix
+
+> eslint . --fix
+
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/infra/src/lib/event/event.module.ts[24m[0m
+[0m  [2m13:49[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/infra/src/lib/event/outbox.relay.ts[24m[0m
+[0m  [2m29:60[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/infra/src/lib/event/outbox.repository.interface.ts[24m[0m
+[0m  [2m6:47[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m6:63[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m7:23[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m7:54[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/infra/src/lib/logger/logger.service.spec.ts[24m[0m
+[0m  [2m7:26[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/infra/src/lib/prisma/prisma.base.ts[24m[0m
+[0m  [2m29:36[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/libs/shared/infra/src/lib/prisma/prisma.service.spec.ts[24m[0m
+[0m   [2m90:25[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m   [2m96:18[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m100:25[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 11 problems (0 errors, 11 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+(node:49184) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 exit listeners added to [process]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> nx run supply-service:lint --fix
+
+> eslint . --fix
+
+[0m[0m
+[0m[4m/data/all-erp/apps/general/supply-service/src/app/app.module.ts[24m[0m
+[0m  [2m7:10[22m  [33mwarning[39m  'PrismaModule' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[33m[1m✖ 1 problem (0 errors, 1 warning)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run approval-service:lint --fix
+
+> eslint . --fix
+
+
+> nx run attendance-service:lint --fix
+
+> eslint . --fix
+
+[0m[0m
+[0m[4m/data/all-erp/apps/hr/attendance-service/src/app/leave/leave.controller.ts[24m[0m
+[0m  [2m12:35[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/hr/attendance-service/src/app/leave/leave.service.ts[24m[0m
+[0m  [2m8:27[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 2 problems (0 errors, 2 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run payroll-service:lint --fix
+
+> eslint . --fix
+
+[0m[0m
+[0m[4m/data/all-erp/apps/hr/payroll-service/src/app/listeners/employee-event.listener.ts[24m[0m
+[0m   [2m8:9[22m   [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m27:77[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/hr/payroll-service/src/app/payroll/payroll.service.spec.ts[24m[0m
+[0m  [2m10:7[22m  [33mwarning[39m  'calculator' is assigned a value but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[33m[1m✖ 3 problems (0 errors, 3 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+(node:49184) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 SIGINT listeners added to [process]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+(node:49184) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 SIGTERM listeners added to [process]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+(node:49184) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 SIGHUP listeners added to [process]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+
+> nx run notification-service:lint --fix
+
+> eslint . --fix
+
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/notification-service/src/app/modules/notification/dto/create-notification.dto.ts[24m[0m
+[0m  [2m40:29[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/notification-service/src/app/modules/notification/notification.event-handler.ts[24m[0m
+[0m  [2m41:48[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m65:46[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/platform/notification-service/src/app/modules/notification/notification.service.ts[24m[0m
+[0m  [2m84:63[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 4 problems (0 errors, 4 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run auth-service:lint --fix
+
+> eslint . --fix
+
+[0m[0m
+[0m[4m/data/all-erp/apps/system/auth-service/src/app/auth/auth.service.spec.ts[24m[0m
+[0m  [2m5:29[22m  [33mwarning[39m  'UnauthorizedException' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/auth-service/src/app/auth/auth.service.ts[24m[0m
+[0m  [2m40:13[22m  [33mwarning[39m  'password' is assigned a value but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/auth-service/src/app/auth/strategies/jwt.strategy.ts[24m[0m
+[0m  [2m16:27[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 3 problems (0 errors, 3 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run asset-service:lint --fix
+
+> eslint . --fix
+
+[0m[0m
+[0m[4m/data/all-erp/apps/general/asset-service/src/app/app.module.ts[24m[0m
+[0m  [2m7:10[22m  [33mwarning[39m  'PrismaModule' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[33m[1m✖ 1 problem (0 errors, 1 warning)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run accounting-service:lint --fix
+
+> eslint . --fix
+
+
+> nx run system-service:lint --fix
+
+> eslint . --fix
+
+[0m[0m
+[0m[4m/data/all-erp/apps/system/system-service/src/app/common-code/common-code.controller.ts[24m[0m
+[0m  [2m11:29[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/system-service/src/app/common-code/common-code.service.ts[24m[0m
+[0m  [2m8:21[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/system-service/src/app/department/department.controller.ts[24m[0m
+[0m  [2m11:29[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/system-service/src/app/department/department.service.ts[24m[0m
+[0m  [2m8:21[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/system-service/src/app/events/tenant-event.handler.spec.ts[24m[0m
+[0m   [2m8:7[22m   [33mwarning[39m  'rabbitmq' is assigned a value but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m44:25[22m  [33mwarning[39m  Unexpected any. Specify a different type       [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/data/all-erp/apps/system/system-service/src/app/events/tenant-event.handler.ts[24m[0m
+[0m  [2m16:19[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m24:46[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 8 problems (0 errors, 8 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run tenant-service:lint --fix
+
+> eslint . --fix
+
+[0m[0m
+[0m[4m/data/all-erp/apps/system/tenant-service/src/app/tenant/dto/tenant.dto.ts[24m[0m
+[0m  [2m1:44[22m  [33mwarning[39m  'IsEnum' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[33m[1m✖ 1 problem (0 errors, 1 warning)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run personnel-service:lint --fix
+
+> eslint . --fix
+
+
+> nx run budget-service:lint --fix
+
+> eslint . --fix
+
+
+> nx run general-affairs-service:lint --fix
+
+> eslint . --fix
+
+[0m[0m
+[0m[4m/data/all-erp/apps/general/general-affairs-service/src/app/app.module.ts[24m[0m
+[0m  [2m7:10[22m  [33mwarning[39m  'PrismaModule' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[33m[1m✖ 1 problem (0 errors, 1 warning)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run ai-service:lint --fix
+
+> eslint . --fix
+
+
+> nx run settlement-service:lint --fix
+
+> eslint . --fix
+
+[0m[0m
+[0m[4m/data/all-erp/apps/finance/settlement-service/src/app/report/report.service.ts[24m[0m
+[0m  [2m38:29[22m  [33mwarning[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[33m[1m✖ 1 problem (0 errors, 1 warning)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+
+> nx run events:lint --fix
+
+> eslint . --fix
+
+
+> nx run hr-mfe:lint --fix
+
+> eslint . --fix
+
+[0m[0m
+[0m[4m/data/all-erp/apps/frontend/hr-mfe/src/main.tsx[24m[0m
+[0m  [2m6:21[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[33m[1m✖ 1 problem (0 errors, 1 warning)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m

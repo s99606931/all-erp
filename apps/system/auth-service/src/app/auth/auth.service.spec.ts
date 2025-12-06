@@ -3,7 +3,12 @@ import { AuthService } from './auth.service';
 import { PrismaService } from '@all-erp/shared/infra';
 import { JwtService } from '@nestjs/jwt';
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
-import { Role } from '@prisma/client';
+// Role enum 정의 (Prisma schema와 동일)
+enum Role {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+  MANAGER = 'MANAGER',
+}
 
 const mockPrismaService = {
   user: {

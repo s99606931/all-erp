@@ -1,0 +1,538 @@
+
+ NX   Running target test for 22 projects:
+
+- general-affairs-service
+- accounting-service
+- settlement-service
+- approval-service
+- report-service
+- budget-service
+- supply-service
+- asset-service
+- attendance-service
+- file-service
+- system-service
+- tenant-service
+- personnel-service
+- auth-service
+- payroll-service
+- tenancy
+- ai-service
+- config
+- domain
+- events
+- infra
+- util
+
+With additional flags:
+  --coverage=true
+
+
+
+> nx run domain:test --coverage
+
+> jest --coverage
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m domain [39m[27m[0m [2msrc/lib/[22m[1mdomain.spec.ts[22m ([0m[1m[41m23.504 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m domain [39m[27m[0m [2msrc/lib/[22m[1mapi-response.dto.spec.ts[22m ([0m[1m[41m24.498 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m domain [39m[27m[0m [2msrc/lib/[22m[1mbusiness.exception.spec.ts[22m ([0m[1m[41m24.737 s[49m[22m[0m)
+[31m[Nest] 41572  - [39m2025. 12. 06. 오전 2:09:59 [31m  ERROR[39m [38;5;3m[GlobalExceptionFilter] [39m[31mRequest GET /api/test[39m
+[31m[Nest] 41572  - [39m2025. 12. 06. 오전 2:09:59 [31m  ERROR[39m [38;5;3m[GlobalExceptionFilter] [39m[31mRequest GET /api/test[39m
+[31m[Nest] 41572  - [39m2025. 12. 06. 오전 2:09:59 [31m  ERROR[39m [38;5;3m[GlobalExceptionFilter] [39m[31mRequest GET /api/test[39m
+[31m[Nest] 41572  - [39m2025. 12. 06. 오전 2:09:59 [31m  ERROR[39m [38;5;3m[GlobalExceptionFilter] [39m[31mRequest GET /api/test[39m
+[31m[Nest] 41572  - [39m2025. 12. 06. 오전 2:09:59 [31m  ERROR[39m [38;5;3m[GlobalExceptionFilter] [39m[31mRequest GET /api/test[39m
+[31m[Nest] 41572  - [39m2025. 12. 06. 오전 2:09:59 [31m  ERROR[39m [38;5;3m[GlobalExceptionFilter] [39m[31mRequest GET /api/test[39m
+[31m[Nest] 41572  - [39m2025. 12. 06. 오전 2:09:59 [31m  ERROR[39m [38;5;3m[GlobalExceptionFilter] [39m[31mRequest GET /api/test[39m
+[31m[Nest] 41572  - [39m2025. 12. 06. 오전 2:09:59 [31m  ERROR[39m [38;5;3m[GlobalExceptionFilter] [39m[31mRequest GET /api/test[39m
+[31m[Nest] 41572  - [39m2025. 12. 06. 오전 2:09:59 [31m  ERROR[39m [38;5;3m[GlobalExceptionFilter] [39m[31mUnexpected error: 예상치 못한 에러[39m
+Error: 예상치 못한 에러
+    at Object.<anonymous> (/data/all-erp/libs/shared/domain/src/lib/global-exception.filter.spec.ts:103:21)
+    at Promise.finally.completed (/data/all-erp/node_modules/.pnpm/jest-circus@30.2.0_babel-plugin-macros@3.1.0/node_modules/jest-circus/build/jestAdapterInit.js:1557:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (/data/all-erp/node_modules/.pnpm/jest-circus@30.2.0_babel-plugin-macros@3.1.0/node_modules/jest-circus/build/jestAdapterInit.js:1497:10)
+    at _callCircusTest (/data/all-erp/node_modules/.pnpm/jest-circus@30.2.0_babel-plugin-macros@3.1.0/node_modules/jest-circus/build/jestAdapterInit.js:1007:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/data/all-erp/node_modules/.pnpm/jest-circus@30.2.0_babel-plugin-macros@3.1.0/node_modules/jest-circus/build/jestAdapterInit.js:947:3)
+    at /data/all-erp/node_modules/.pnpm/jest-circus@30.2.0_babel-plugin-macros@3.1.0/node_modules/jest-circus/build/jestAdapterInit.js:849:7
+    at _runTestsForDescribeBlock (/data/all-erp/node_modules/.pnpm/jest-circus@30.2.0_babel-plugin-macros@3.1.0/node_modules/jest-circus/build/jestAdapterInit.js:862:11)
+    at _runTestsForDescribeBlock (/data/all-erp/node_modules/.pnpm/jest-circus@30.2.0_babel-plugin-macros@3.1.0/node_modules/jest-circus/build/jestAdapterInit.js:857:11)
+    at _runTestsForDescribeBlock (/data/all-erp/node_modules/.pnpm/jest-circus@30.2.0_babel-plugin-macros@3.1.0/node_modules/jest-circus/build/jestAdapterInit.js:857:11)
+    at run (/data/all-erp/node_modules/.pnpm/jest-circus@30.2.0_babel-plugin-macros@3.1.0/node_modules/jest-circus/build/jestAdapterInit.js:761:3)
+    at runAndTransformResultsToJestFormat (/data/all-erp/node_modules/.pnpm/jest-circus@30.2.0_babel-plugin-macros@3.1.0/node_modules/jest-circus/build/jestAdapterInit.js:1918:21)
+    at jestAdapter (/data/all-erp/node_modules/.pnpm/jest-circus@30.2.0_babel-plugin-macros@3.1.0/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/data/all-erp/node_modules/.pnpm/jest-runner@30.2.0/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/data/all-erp/node_modules/.pnpm/jest-runner@30.2.0/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/data/all-erp/node_modules/.pnpm/jest-runner@30.2.0/node_modules/jest-runner/build/testWorker.js:497:12)
+[31m[Nest] 41572  - [39m2025. 12. 06. 오전 2:09:59 [31m  ERROR[39m [38;5;3m[GlobalExceptionFilter] [39m[31mRequest GET /api/test[39m
+[31m[Nest] 41572  - [39m2025. 12. 06. 오전 2:09:59 [31m  ERROR[39m [38;5;3m[GlobalExceptionFilter] [39m[31mRequest GET /api/test[39m
+[31m[Nest] 41572  - [39m2025. 12. 06. 오전 2:09:59 [31m  ERROR[39m [38;5;3m[GlobalExceptionFilter] [39m[31mRequest GET /api/test[39m
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m domain [39m[27m[0m [2msrc/lib/[22m[1mglobal-exception.filter.spec.ts[22m ([0m[1m[41m25.203 s[49m[22m[0m)
+
+[1mTest Suites: [22m[1m[32m4 passed[39m[22m, 4 total
+[1mTests:       [22m[1m[32m32 passed[39m[22m, 32 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        27.068 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run config:test --coverage
+
+> jest --coverage
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m config [39m[27m[0m [2msrc/lib/[22m[1mvalidate-config.spec.ts[22m ([0m[1m[41m26.472 s[49m[22m[0m)
+  validateConfig
+    [32m✓[39m [2mshould return config if all variables are valid (68 ms)[22m
+    [32m✓[39m [2mshould apply default values for missing optional fields (14 ms)[22m
+    [32m✓[39m [2mshould use default values (9 ms)[22m
+
+[1mTest Suites: [22m[1m[32m1 passed[39m[22m, 1 total
+[1mTests:       [22m[1m[32m3 passed[39m[22m, 3 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        27.415 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run infra:test --coverage
+
+> jest --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m infra [39m[27m[0m [2msrc/lib/prisma/[22m[1mprisma.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96msrc/lib/prisma/prisma.service.spec.ts[0m:[93m88[0m:[93m15[0m - [91merror[0m[90m TS2339: [0mProperty 'setTenantId' does not exist on type 'PrismaService'.
+
+    [7m88[0m       service.setTenantId(tenantId);
+    [7m  [0m [91m              ~~~~~~~~~~~[0m
+    [96msrc/lib/prisma/prisma.service.spec.ts[0m:[93m98[0m:[93m15[0m - [91merror[0m[90m TS2339: [0mProperty 'clearTenantId' does not exist on type 'PrismaService'.
+
+    [7m98[0m       service.clearTenantId();
+    [7m  [0m [91m              ~~~~~~~~~~~~~[0m
+
+[31m[Nest] 41580  - [39m2025. 12. 06. 오전 2:10:03 [31m  ERROR[39m [38;5;3m[TenantMiddleware] [39m[31mTenant ID is required but not provided[39m
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m infra [39m[27m[0m [2msrc/lib/[22m[1mtenant.middleware.spec.ts[22m ([0m[1m[41m28.771 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m infra [39m[27m[0m [2msrc/lib/logger/[22m[1mlogger.service.spec.ts[22m ([0m[1m[41m29.095 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m infra [39m[27m[0m [2msrc/lib/http/[22m[1mbase-http.client.spec.ts[22m ([0m[1m[41m31.101 s[49m[22m[0m)
+[33mA worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.[39m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, [1m[32m3 passed[39m[22m, 4 total
+[1mTests:       [22m[1m[32m20 passed[39m[22m, 20 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        33.434 s
+[2mRan all test suites[22m[2m.[22m
+> jest --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m infra [39m[27m[0m [2msrc/lib/prisma/[22m[1mprisma.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96msrc/lib/prisma/prisma.service.spec.ts[0m:[93m88[0m:[93m15[0m - [91merror[0m[90m TS2339: [0mProperty 'setTenantId' does not exist on type 'PrismaService'.
+
+    [7m88[0m       service.setTenantId(tenantId);
+    [7m  [0m [91m              ~~~~~~~~~~~[0m
+    [96msrc/lib/prisma/prisma.service.spec.ts[0m:[93m98[0m:[93m15[0m - [91merror[0m[90m TS2339: [0mProperty 'clearTenantId' does not exist on type 'PrismaService'.
+
+    [7m98[0m       service.clearTenantId();
+    [7m  [0m [91m              ~~~~~~~~~~~~~[0m
+
+[31m[Nest] 41580  - [39m2025. 12. 06. 오전 2:10:03 [31m  ERROR[39m [38;5;3m[TenantMiddleware] [39m[31mTenant ID is required but not provided[39m
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m infra [39m[27m[0m [2msrc/lib/[22m[1mtenant.middleware.spec.ts[22m ([0m[1m[41m28.771 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m infra [39m[27m[0m [2msrc/lib/logger/[22m[1mlogger.service.spec.ts[22m ([0m[1m[41m29.095 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m infra [39m[27m[0m [2msrc/lib/http/[22m[1mbase-http.client.spec.ts[22m ([0m[1m[41m31.101 s[49m[22m[0m)
+[33mA worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.[39m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, [1m[32m3 passed[39m[22m, 4 total
+[1mTests:       [22m[1m[32m20 passed[39m[22m, 20 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        33.434 s
+[2mRan all test suites[22m[2m.[22m
+Warning: command "jest --coverage" exited with non-zero status code
+> nx run tenant-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m tenant-service [39m[27m[0m [2mapps/system/tenant-service/src/app/tenant/[22m[1mtenant.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/system/tenant-service/src/app/tenant/tenant.service.spec.ts[0m:[93m47[0m:[93m15[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+
+    [7m47[0m       (prisma.tenant.findUnique as jest.Mock).mockResolvedValue(null);
+    [7m  [0m [91m              ~~~~~~[0m
+    [96mapps/system/tenant-service/src/app/tenant/tenant.service.spec.ts[0m:[93m48[0m:[93m15[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+
+    [7m48[0m       (prisma.tenant.create as jest.Mock).mockResolvedValue(createdTenant);
+    [7m  [0m [91m              ~~~~~~[0m
+    [96mapps/system/tenant-service/src/app/tenant/tenant.service.spec.ts[0m:[93m53[0m:[93m21[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+
+    [7m53[0m       expect(prisma.tenant.create).toHaveBeenCalledWith({
+    [7m  [0m [91m                    ~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        13.047 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run asset-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m asset-service [39m[27m[0m [2mapps/general/asset-service/src/app/asset/[22m[1masset.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/general/asset-service/src/app/asset/asset.service.spec.ts[0m:[93m48[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'asset' does not exist on type 'PrismaService'.
+
+    [7m48[0m     (prisma.asset.count as jest.Mock).mockResolvedValue(5);
+    [7m  [0m [91m            ~~~~~[0m
+    [96mapps/general/asset-service/src/app/asset/asset.service.spec.ts[0m:[93m49[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'asset' does not exist on type 'PrismaService'.
+
+    [7m49[0m     (prisma.asset.create as jest.Mock).mockResolvedValue({ id: 'asset-1', assetNumber: 'AST-006' });
+    [7m  [0m [91m            ~~~~~[0m
+    [96mapps/general/asset-service/src/app/asset/asset.service.spec.ts[0m:[93m50[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'assetHistory' does not exist on type 'PrismaService'.
+
+    [7m50[0m     (prisma.assetHistory.create as jest.Mock).mockResolvedValue({});
+    [7m  [0m [91m            ~~~~~~~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        13.303 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run auth-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m auth-service [39m[27m[0m [2mapps/system/auth-service/src/app/auth/[22m[1mauth.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/system/auth-service/src/app/auth/auth.service.spec.ts[0m:[93m6[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'Role'.
+
+    [7m6[0m import { Role } from '@prisma/client';
+    [7m [0m [91m         ~~~~[0m
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m auth-service [39m[27m[0m [2mapps/system/auth-service/src/app/auth/[22m[1mauth.controller.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/system/auth-service/src/app/auth/auth.service.ts[0m:[93m5[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '.prisma/auth-client' or its corresponding type declarations.
+
+    [7m5[0m import { Role } from '.prisma/auth-client';
+    [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        19.072 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run budget-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m budget-service [39m[27m[0m [2mapps/finance/budget-service/src/app/budget/[22m[1mbudget.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/finance/budget-service/src/app/budget/budget.service.spec.ts[0m:[93m4[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'Prisma'.
+
+    [7m4[0m import { Prisma } from '@prisma/client';
+    [7m [0m [91m         ~~~~~~[0m
+    [96mapps/finance/budget-service/src/app/budget/budget.service.spec.ts[0m:[93m45[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'budget' does not exist on type 'PrismaService'.
+
+    [7m45[0m     (prisma.budget.create as jest.Mock).mockResolvedValue(created);
+    [7m  [0m [91m            ~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        12.299 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run accounting-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m accounting-service [39m[27m[0m [2mapps/finance/accounting-service/src/app/journal/[22m[1mjournal.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/finance/accounting-service/src/app/journal/journal.service.spec.ts[0m:[93m45[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'journalEntry' does not exist on type 'PrismaService'.
+
+    [7m45[0m     (prisma.journalEntry.create as jest.Mock).mockResolvedValue({ id: 'je-1' });
+    [7m  [0m [91m            ~~~~~~~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        11.774 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run approval-service:test --coverage
+
+> jest --passWithNoTests=true --coverage
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m approval-service [39m[27m[0m [2msrc/app/[22m[1mapp.service.spec.ts[22m ([0m[1m[41m13.316 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m approval-service [39m[27m[0m [2msrc/app/[22m[1mapp.controller.spec.ts[22m ([0m[1m[41m13.28 s[49m[22m[0m)
+
+[1mTest Suites: [22m[1m[32m2 passed[39m[22m, 2 total
+[1mTests:       [22m[1m[32m2 passed[39m[22m, 2 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        16.346 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run general-affairs-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m general-affairs-service [39m[27m[0m [2mapps/general/general-affairs-service/src/app/vehicle/[22m[1mvehicle.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/general/general-affairs-service/src/app/vehicle/vehicle.service.spec.ts[0m:[93m39[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicleReservation' does not exist on type 'PrismaService'.
+
+    [7m39[0m     (prisma.vehicleReservation.findFirst as jest.Mock).mockResolvedValue({ id: 'res-1' });
+    [7m  [0m [91m            ~~~~~~~~~~~~~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        8.204 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run settlement-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m settlement-service [39m[27m[0m [2mapps/finance/settlement-service/src/app/report/[22m[1mreport.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/finance/settlement-service/src/app/report/report.service.spec.ts[0m:[93m33[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'journalEntryLine' does not exist on type 'PrismaService'.
+
+    [7m33[0m     (prisma.journalEntryLine.findMany as jest.Mock).mockResolvedValue([]);
+    [7m  [0m [91m            ~~~~~~~~~~~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        8.6 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run supply-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m supply-service [39m[27m[0m [2mapps/general/supply-service/src/app/inventory/[22m[1minventory.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/general/supply-service/src/app/inventory/inventory.service.spec.ts[0m:[93m4[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'Prisma'.
+
+    [7m4[0m import { Prisma } from '@prisma/client';
+    [7m [0m [91m         ~~~~~~[0m
+    [96mapps/general/supply-service/src/app/inventory/inventory.service.spec.ts[0m:[93m41[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'inventory' does not exist on type 'PrismaService'.
+
+    [7m41[0m     (prisma.inventory.findUnique as jest.Mock).mockResolvedValue({ id: 'inv-1', quantity: new Prisma.Decimal(10) });
+    [7m  [0m [91m            ~~~~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        8.749 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run attendance-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m attendance-service [39m[27m[0m [2mapps/hr/attendance-service/src/app/leave/[22m[1mleave.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/hr/attendance-service/src/app/leave/leave.service.spec.ts[0m:[93m42[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'leaveRequest' does not exist on type 'PrismaService'.
+
+    [7m42[0m     (prisma.leaveRequest.create as jest.Mock).mockResolvedValue(created);
+    [7m  [0m [91m            ~~~~~~~~~~~~[0m
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m attendance-service [39m[27m[0m [2mapps/hr/attendance-service/src/app/attendance/[22m[1mattendance.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/hr/attendance-service/src/app/attendance/attendance.service.spec.ts[0m:[93m36[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'attendance' does not exist on type 'PrismaService'.
+
+    [7m36[0m     (prisma.attendance.create as jest.Mock).mockResolvedValue(record);
+    [7m  [0m [91m            ~~~~~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        12.677 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run system-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m system-service [39m[27m[0m [2mapps/system/system-service/src/app/events/[22m[1mtenant-event.handler.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/system/system-service/src/app/events/tenant-event.handler.spec.ts[0m:[93m46[0m:[93m21[0m - [91merror[0m[90m TS2339: [0mProperty 'commonCode' does not exist on type 'PrismaService'.
+
+    [7m46[0m       expect(prisma.commonCode.createMany).toHaveBeenCalled();
+    [7m  [0m [91m                    ~~~~~~~~~~[0m
+    [96mapps/system/system-service/src/app/events/tenant-event.handler.spec.ts[0m:[93m47[0m:[93m21[0m - [91merror[0m[90m TS2339: [0mProperty 'department' does not exist on type 'PrismaService'.
+
+    [7m47[0m       expect(prisma.department.create).toHaveBeenCalled();
+    [7m  [0m [91m                    ~~~~~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        10.748 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run personnel-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m personnel-service [39m[27m[0m [2mapps/hr/personnel-service/src/app/employee/[22m[1memployee.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/hr/personnel-service/src/app/employee/employee.service.spec.ts[0m:[93m44[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'employee' does not exist on type 'PrismaService'.
+
+    [7m44[0m     (prisma.employee.create as jest.Mock).mockResolvedValue(created);
+    [7m  [0m [91m            ~~~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        10.84 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run payroll-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m payroll-service [39m[27m[0m [2mapps/hr/payroll-service/src/app/payroll/[22m[1mpayroll.calculator.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/hr/payroll-service/src/app/payroll/payroll.calculator.spec.ts[0m:[93m3[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'Prisma'.
+
+    [7m3[0m import { Prisma } from '@prisma/client';
+    [7m [0m [91m         ~~~~~~[0m
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m payroll-service [39m[27m[0m [2mapps/hr/payroll-service/src/app/payroll/[22m[1mpayroll.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/hr/payroll-service/src/app/payroll/payroll.service.spec.ts[0m:[93m5[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'Prisma'.
+
+    [7m5[0m import { Prisma } from '@prisma/client';
+    [7m [0m [91m         ~~~~~~[0m
+    [96mapps/hr/payroll-service/src/app/payroll/payroll.service.spec.ts[0m:[93m48[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'employee' does not exist on type 'PrismaService'.
+
+    [7m48[0m     (prisma.employee.findUnique as jest.Mock).mockResolvedValue(employee);
+    [7m  [0m [91m            ~~~~~~~~[0m
+    [96mapps/hr/payroll-service/src/app/payroll/payroll.service.spec.ts[0m:[93m49[0m:[93m13[0m - [91merror[0m[90m TS2339: [0mProperty 'payroll' does not exist on type 'PrismaService'.
+
+    [7m49[0m     (prisma.payroll.create as jest.Mock).mockResolvedValue({
+    [7m  [0m [91m            ~~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        24.47 s
+[2mRan all test suites[22m[2m.[22m
+(node:41308) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 exit listeners added to [process]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> nx run ai-service:test --coverage
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m ai-service [39m[27m[0m [2mapps/ai/ai-service/src/app/[22m[1mapp.controller.spec.ts[22m ([0m[1m[41m22.744 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m ai-service [39m[27m[0m [2mapps/ai/ai-service/src/app/[22m[1mapp.service.spec.ts[22m ([0m[1m[41m23.452 s[49m[22m[0m)
+
+[1mTest Suites: [22m[1m[32m2 passed[39m[22m, 2 total
+[1mTests:       [22m[1m[32m5 passed[39m[22m, 5 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        26.082 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run util:test --coverage
+
+> jest --coverage
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m util [39m[27m[0m [2msrc/lib/[22m[1mdate-utils.spec.ts[22m ([0m[1m[41m20.223 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m util [39m[27m[0m [2msrc/lib/[22m[1mutil.spec.ts[22m ([0m[1m[41m21.088 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m util [39m[27m[0m [2msrc/lib/[22m[1mstring-utils.spec.ts[22m ([0m[1m[41m21.454 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m util [39m[27m[0m [2msrc/lib/[22m[1mvalidator-utils.spec.ts[22m ([0m[1m[41m21.503 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m util [39m[27m[0m [2msrc/lib/[22m[1mcrypto-utils.spec.ts[22m ([0m[1m[41m23.691 s[49m[22m[0m)
+
+[1mTest Suites: [22m[1m[32m5 passed[39m[22m, 5 total
+[1mTests:       [22m[1m[32m73 passed[39m[22m, 73 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        26.561 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run file-service:test --coverage
+
+> jest --passWithNoTests=true --coverage
+
+(node:44356) Warning: Failed to load the ES module: /data/all-erp/apps/platform/file-service/jest.config.cts. Make sure to set "type": "module" in the nearest package.json file or use the .mjs extension.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[31mError: [31m[1m[1m● [22m[1mValidation Error[22m:[39m[31m[39m
+[31m[31m[39m[31m[39m
+[31m[31m  Preset [1m../../../jest.preset.cjs[22m not found relative to rootDir [1m/data/all-erp/apps/platform/file-service[22m.[39m[31m[39m
+[31m[31m[39m[31m[39m
+[31m[31m  [1mConfiguration Documentation:[22m[39m[31m[39m
+[31m[31m  https://jestjs.io/docs/configuration[39m[31m[39m
+[31m[31m[39m[31m[39m
+> jest --passWithNoTests=true --coverage
+
+(node:44356) Warning: Failed to load the ES module: /data/all-erp/apps/platform/file-service/jest.config.cts. Make sure to set "type": "module" in the nearest package.json file or use the .mjs extension.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[31mError: [31m[1m[1m● [22m[1mValidation Error[22m:[39m[31m[39m
+[31m[31m[39m[31m[39m
+[31m[31m  Preset [1m../../../jest.preset.cjs[22m not found relative to rootDir [1m/data/all-erp/apps/platform/file-service[22m.[39m[31m[39m
+[31m[31m[39m[31m[39m
+[31m[31m  [1mConfiguration Documentation:[22m[39m[31m[39m
+[31m[31m  https://jestjs.io/docs/configuration[39m[31m[39m
+[31m[31m[39m[31m[39m
+Warning: command "jest --passWithNoTests=true --coverage" exited with non-zero status code
+> nx run events:test --coverage
+
+> jest --coverage
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m events [39m[27m[0m [2msrc/lib/[22m[1mshared-events.module.spec.ts[22m ([0m[1m[41m14.684 s[49m[22m[0m)
+  SharedEventsModule
+    [32m✓[39m [2m모듈이 정상적으로 로드되어야 한다 (95 ms)[22m
+    [32m✓[39m [2mEventEmitterService가 제공되어야 한다 (25 ms)[22m
+
+[1mTest Suites: [22m[1m[32m1 passed[39m[22m, 1 total
+[1mTests:       [22m[1m[32m2 passed[39m[22m, 2 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        15.635 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run tenancy:test --coverage
+
+> jest --coverage
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m util-tenancy [39m[27m[0m [2msrc/lib/[22m[1mutil-tenancy.spec.ts[22m ([0m[1m[41m11.639 s[49m[22m[0m)
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m util-tenancy [39m[27m[0m [2msrc/lib/[22m[1mtenant.middleware.spec.ts[22m ([0m[1m[41m12.292 s[49m[22m[0m)
+
+[1mTest Suites: [22m[1m[32m2 passed[39m[22m, 2 total
+[1mTests:       [22m[1m[32m4 passed[39m[22m, 4 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        15.778 s
+[2mRan all test suites[22m[2m.[22m
+
+> nx run report-service:test --coverage
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m report-service [39m[27m[0m [2mapps/platform/report-service/src/app/report/[22m[1mreport.service.spec.ts[22m
+  [1m● [22mTest suite failed to run
+
+    [96mapps/platform/report-service/src/app/report/report.service.ts[0m:[93m30[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'report' does not exist on type 'PrismaService'.
+
+    [7m30[0m     const report = await this.prisma.report.create({
+    [7m  [0m [91m                                     ~~~~~~[0m
+    [96mapps/platform/report-service/src/app/report/report.service.ts[0m:[93m64[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'report' does not exist on type 'PrismaService'.
+
+    [7m64[0m     const reports = await this.prisma.report.findMany({
+    [7m  [0m [91m                                      ~~~~~~[0m
+    [96mapps/platform/report-service/src/app/report/report.service.ts[0m:[93m79[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'report' does not exist on type 'PrismaService'.
+
+    [7m79[0m     const report = await this.prisma.report.findFirst({
+    [7m  [0m [91m                                     ~~~~~~[0m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        6.743 s
+[2mRan all test suites[22m[2m.[22m
+
+
+
+ NX   Running target test for 22 projects failed
+
+Failed tasks:
+
+- infra:test
+- tenant-service:test
+- asset-service:test
+- auth-service:test
+- budget-service:test
+- accounting-service:test
+- general-affairs-service:test
+- settlement-service:test
+- supply-service:test
+- attendance-service:test
+- system-service:test
+- personnel-service:test
+- payroll-service:test
+- file-service:test
+- report-service:test
+

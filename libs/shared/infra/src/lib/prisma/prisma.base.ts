@@ -15,7 +15,7 @@ import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/commo
  *   constructor() {
  *     super('AuthPrismaService');
  *     this.prismaClient = new PrismaClient({
- *       datasourceUrl: process.env['DATABASE_URL'],
+ *       
  *     });
  *   }
  * 
