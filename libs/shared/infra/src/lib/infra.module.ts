@@ -2,6 +2,9 @@ import { Module, Global } from '@nestjs/common';
 import { LoggerModule } from './logger/logger.module';
 import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
 import { EventModule } from './event/event.module';
+import { TerminusModule } from '@nestjs/terminus';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { HealthController } from './health/health.controller';
 
 /**
  * 공통 인프라 모듈
@@ -13,6 +16,8 @@ import { EventModule } from './event/event.module';
  * - LoggerModule: winston 기반 로깅
  * - RabbitMQModule: 이벤트 기반 통신
  * - EventModule: 이벤트 발행/구독
+ * - TerminusModule: 헬스 체크
+ * - PrometheusModule: 메트릭 수집
  */
 @Global()
 @Module({
@@ -20,11 +25,21 @@ import { EventModule } from './event/event.module';
     LoggerModule,
     RabbitMQModule,
     EventModule,
+    TerminusModule,
+    PrometheusModule.register({
+      path: '/metrics',
+      defaultMetrics: {
+        enabled: true,
+      },
+    }),
   ],
+  controllers: [HealthController],
   exports: [
     LoggerModule,
     RabbitMQModule,
     EventModule,
+    TerminusModule,
+    PrometheusModule,
   ],
 })
 export class SharedInfraModule {}

@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { LoggerService } from '../logger/logger.service';
-import { ApiResponse } from '@all-erp/shared/domain';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -20,7 +19,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let message = 'Internal server error';
-    let code = 'INTERNAL_SERVER_ERROR';
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
@@ -31,7 +29,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       } else if (typeof exceptionResponse === 'object') {
         const body = exceptionResponse as { message?: string | string[]; code?: string };
         message = Array.isArray(body.message) ? body.message[0] : (body.message || message);
-        code = body.code || code;
       }
     } else if (exception instanceof Error) {
         message = exception.message;
@@ -41,11 +38,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
         }
     }
 
-    const errorResponse = ApiResponse.error(message, code, {
-      path: request.url,
+    const errorResponse = {
+      statusCode: status,
+      message,
       timestamp: new Date().toISOString(),
-      traceId: request.headers['x-trace-id'] || 'system',
-    });
+      path: request.url,
+      traceId: request.headers['x-trace-id'] || 'unknown',
+    };
 
     response.status(status).json(errorResponse);
   }

@@ -15,9 +15,10 @@ export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = context.switchToHttp();
     const request = ctx.getRequest();
-    const { method, url } = request;
+    const { method, url, body } = request;
     const userAgent = request.get('user-agent') || '';
     const ip = request.ip;
+    const traceId = request.headers['x-trace-id'] || request.id || 'unknown'; // request.id might be set by other middlewares
 
     const now = Date.now();
 
@@ -31,6 +32,8 @@ export class LoggingInterceptor implements NestInterceptor {
           this.logger.logHttpRequest(method, url, statusCode, duration, {
             userAgent,
             ip,
+            body,
+            traceId,
           });
         },
         error: (err) => {
@@ -41,6 +44,8 @@ export class LoggingInterceptor implements NestInterceptor {
             userAgent,
             ip,
             error: err.message,
+            traceId,
+            body, // Log body on error too for debugging
           });
         },
       })
