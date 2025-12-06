@@ -2,7 +2,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { WinstonModule } from 'nest-winston';
-import { GlobalExceptionFilter } from '@all-erp/shared/domain';
+
 import { winstonConfig } from '../logger/winston.config';
 
 export interface BootstrapOptions {
@@ -30,6 +30,8 @@ export async function bootstrapService(options: BootstrapOptions) {
     logger: WinstonModule.createLogger(winstonConfig),
   });
 
+  const loggerService = app.get(LoggerService);
+
   // Global Prefix 설정
   app.setGlobalPrefix(globalPrefix);
 
@@ -42,8 +44,9 @@ export async function bootstrapService(options: BootstrapOptions) {
     })
   );
 
-  // Global Exception Filter 설정
-  app.useGlobalFilters(new GlobalExceptionFilter());
+  // Global Interceptors & Filters 설정
+  app.useGlobalInterceptors(new LoggingInterceptor(loggerService));
+  app.useGlobalFilters(new HttpExceptionFilter(loggerService));
 
   // Swagger 설정
   if (swagger) {

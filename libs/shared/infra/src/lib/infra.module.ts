@@ -28,3 +28,6 @@ import { EventModule } from './event/event.module';
   ],
 })
 export class SharedInfraModule {}
+
+export * from './interceptors/logging.interceptor';
+export * from './filters/http-exception.filter';

@@ -1,28 +1,23 @@
-/**
- * Global Exception Filter
- * 모든 예외를 표준 응답 포맷으로 변환
- */
 import {
   ExceptionFilter,
   Catch,
   ArgumentsHost,
   HttpException,
   HttpStatus,
-  Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ApiResponse } from './api-response.dto';
+import { LoggerService } from '../logger/logger.service';
+import { ApiResponse } from '@all-erp/shared/domain';
 
 @Catch()
-export class GlobalExceptionFilter implements ExceptionFilter {
-  private readonly logger = new Logger(GlobalExceptionFilter.name);
+export class HttpExceptionFilter implements ExceptionFilter {
+  constructor(private readonly logger: LoggerService) {}
 
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    this.logger.error(`Request ${request.method} ${request.url}`);
-
+    
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let message = 'Internal server error';
     let code = 'INTERNAL_SERVER_ERROR';
@@ -40,11 +35,18 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       }
     } else if (exception instanceof Error) {
         message = exception.message;
-        this.logger.error(`Unexpected error: ${exception.message}`, exception.stack);
+        // 500 에러만 로깅 (의도된 4xx 에러는 경고 수준으로 줄이거나 생략 가능)
+        if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
+            this.logger.error(`Unexpected error: ${exception.message}`, exception.stack, 'GlobalExceptionFilter');
+        }
     }
 
-    const apiResponse = ApiResponse.error(message, code);
+    const errorResponse = ApiResponse.error(message, code, {
+      path: request.url,
+      timestamp: new Date().toISOString(),
+      traceId: request.headers['x-trace-id'] || 'system',
+    });
 
-    response.status(status).json(apiResponse);
+    response.status(status).json(errorResponse);
   }
 }

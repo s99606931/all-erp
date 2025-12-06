@@ -1,0 +1,117 @@
+#!/bin/bash
+
+# ==============================================================================
+# All-ERP Unified Management Script
+# ==============================================================================
+# This script abstracts the complexity of Docker Compose commands for the All-ERP project.
+# It serves as the single entry point for starting, stopping, and managing services.
+#
+# Usage: ./erp [command] [service]
+# Example: ./erp start shell
+# ==============================================================================
+
+# Defne Compose Files
+COMPOSE_INFRA="dev-environment/docker-compose.infra.yml"
+COMPOSE_DEV="dev-environment/docker-compose.dev.yml"
+COMPOSE_FRONT="dev-environment/docker-compose.frontend.yml"
+
+# Helper function to run docker compose
+run_compose() {
+  docker compose -f "$COMPOSE_INFRA" -f "$COMPOSE_DEV" -f "$COMPOSE_FRONT" "$@"
+}
+
+# Print Usage
+print_usage() {
+  echo "Usage: $0 {start|stop|restart|logs|ps|build|pull|down} [service_name]"
+  echo ""
+  echo "Commands:"
+  echo "  start [service]   Start all services or a specific service (detached mode)"
+  echo "  stop [service]    Stop all services or a specific service"
+  echo "  restart [service] Restart all services or a specific service"
+  echo "  build [service]   Build or rebuild services"
+  echo "  logs [service]    View output from containers"
+  echo "  ps                List containers"
+  echo "  pull              Pull service images"
+  echo "  down              Stop and remove containers, networks"
+  echo ""
+  echo "Examples:"
+  echo "  $0 start              # Start everything"
+  echo "  $0 start auth-service # Start only auth-service"
+  echo "  $0 logs shell         # View logs for shell app"
+  echo "  $0 build ui-design    # Rebuild ui-design (if containerized)"
+}
+
+# Check input
+if [ $# -eq 0 ]; then
+  print_usage
+  exit 1
+fi
+
+COMMAND="$1"
+SERVICE="$2"
+
+case "$COMMAND" in
+  start|up)
+    echo "🚀 Starting All-ERP System..."
+    if [ -z "$SERVICE" ]; then
+      run_compose up -d
+    else
+      echo "   Target: $SERVICE"
+      run_compose up -d "$SERVICE"
+    fi
+    ;;
+  
+  stop)
+    echo "🛑 Stopping..."
+    if [ -z "$SERVICE" ]; then
+      run_compose stop
+    else
+      run_compose stop "$SERVICE"
+    fi
+    ;;
+
+  down)
+    echo "📉 Taking down entire system..."
+    run_compose down
+    ;;
+  
+  restart)
+    echo "🔄 Restarting..."
+    if [ -z "$SERVICE" ]; then
+      run_compose restart
+    else
+      run_compose restart "$SERVICE"
+    fi
+    ;;
+  
+  logs)
+    if [ -z "$SERVICE" ]; then
+      run_compose logs -f
+    else
+      run_compose logs -f "$SERVICE"
+    fi
+    ;;
+  
+  ps|status)
+    run_compose ps
+    ;;
+  
+  build)
+    echo "🛠 Building..."
+    if [ -z "$SERVICE" ]; then
+      run_compose build
+    else
+      run_compose build "$SERVICE"
+    fi
+    ;;
+  
+  pull)
+    run_compose pull
+    ;;
+
+  *)
+    echo "Error: Invalid command '$COMMAND'"
+    print_usage
+    exit 1
+    ;;
+esac
