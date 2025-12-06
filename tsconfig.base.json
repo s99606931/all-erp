@@ -21,7 +21,7 @@
       "@all-erp/shared/domain": ["libs/shared/domain/src/index.ts"],
       "@all-erp/shared/infra": ["libs/shared/infra/src/index.ts"],
       "@all-erp/shared/events": ["libs/shared/events/src/index.ts"],
-      "ui-design": ["libs/shared/ui-design/src/index.ts"]
+      "@all-erp/ui-design": ["libs/shared/ui-design/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
