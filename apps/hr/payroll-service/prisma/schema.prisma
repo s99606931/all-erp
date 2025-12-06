@@ -6,9 +6,10 @@ datasource db {
 }
 
 generator client {
-    provider = "prisma-client-js"
+    provider      = "prisma-client-js"
     binaryTargets = ["native", "debian-openssl-3.0.x"]
-    output   = "../node_modules/.prisma/payroll-client"
+    output        = "../node_modules/.prisma/payroll-client"
+    engineType    = "library"
 }
 
 // 급여

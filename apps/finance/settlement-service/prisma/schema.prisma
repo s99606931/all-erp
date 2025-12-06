@@ -5,9 +5,10 @@ datasource db {
 }
 
 generator client {
-    provider = "prisma-client-js"
+    provider      = "prisma-client-js"
     binaryTargets = ["native", "debian-openssl-3.0.x"]
-    output   = "../node_modules/.prisma/settlement-client"
+    output        = "../node_modules/.prisma/settlement-client"
+    engineType    = "library"
 }
 
 // 결산
