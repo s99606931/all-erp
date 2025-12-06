@@ -22,8 +22,16 @@ export interface BootstrapOptions {
  * 공통 부트스트랩 함수
  * 모든 마이크로서비스의 초기화 로직을 표준화합니다.
  */
+import { LoggerService } from '../logger/logger.service';
+import { LoggingInterceptor } from '../interceptors/logging.interceptor';
+import { HttpExceptionFilter } from '../filters/http-exception.filter';
+import { initOpenTelemetry } from '../observability/otel.sdk';
+
 export async function bootstrapService(options: BootstrapOptions) {
   const { module, globalPrefix = 'api', port = 3000, serviceName, swagger } = options;
+
+  // OpenTelemetry 초기화
+  initOpenTelemetry(serviceName);
 
   // Winston Logger 설정
   const app = await NestFactory.create(module, {

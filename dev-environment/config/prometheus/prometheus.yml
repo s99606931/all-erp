@@ -1,55 +1,36 @@
 global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
+  scrape_interval: 5s
+  evaluation_interval: 5s
 
-# Alertmanager 설정
-alerting:
-  alertmanagers:
-    - static_configs:
-        - targets: []
-
-# 스크레이핑 대상 설정
 scrape_configs:
-  # Prometheus 자체 모니터링
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
 
-  # PostgreSQL Exporter
-  - job_name: 'postgres'
-    static_configs:
-      - targets: ['postgres-exporter:9187']
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: instance
-        replacement: 'erp-postgres'
-
-  # Redis Exporter
-  - job_name: 'redis'
-    static_configs:
-      - targets: ['redis-exporter:9121']
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: instance
-        replacement: 'erp-redis'
-
-  # Node Exporter (시스템 메트릭)
-  - job_name: 'node'
-    static_configs:
-      - targets: ['node-exporter:9100']
-
-  # Docker 컨테이너 메트릭
-  - job_name: 'docker'
-    static_configs:
-      - targets: ['cadvisor:8080']
-
-  # Backend 서비스
-  - job_name: 'backend-services'
+  - job_name: 'all-erp-services'
+    metrics_path: /metrics
     static_configs:
       - targets:
-          - 'auth-service:3001'
-          - 'system-service:3002'
-    relabel_configs:
-      - source_labels: [__address__]
-        regex: '([^:]+):.*'
-        target_label: service # e.g., auth-service
+        # System Domain
+        - 'auth-service:3001'
+        - 'system-service:3002'
+        - 'tenant-service:3006'
+        # HR Domain
+        - 'personnel-service:3011'
+        - 'payroll-service:3012'
+        - 'attendance-service:3013'
+        # Finance Domain
+        - 'budget-service:3021'
+        - 'accounting-service:3022'
+        - 'settlement-service:3023'
+        # General Domain
+        - 'asset-service:3031'
+        - 'supply-service:3032'
+        - 'general-affairs-service:3033'
+        # AI Domain
+        - 'ai-service:3007'
+        # Platform Services
+        - 'approval-service:3041'
+        - 'report-service:3042'
+        - 'notification-service:3043'
+        - 'file-service:3044'

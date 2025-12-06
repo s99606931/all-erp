@@ -1,5 +1,6 @@
 import * as winston from 'winston';
 import { utilities as nestWinstonUtilities } from 'nest-winston';
+import LokiTransport from 'winston-loki';
 
 export const winstonConfig = {
   level: process.env['NODE_ENV'] === 'production' ? 'info' : 'debug',
@@ -38,5 +39,14 @@ export const winstonConfig = {
           }),
         ]
       : []),
+    // Loki Transport (중앙 로그 시스템)
+    new LokiTransport({
+      host: process.env['LOKI_URL'] || 'http://localhost:3100',
+      labels: { service: process.env['SERVICE_NAME'] || 'all-erp' },
+      json: true,
+      format: winston.format.json(),
+      replaceTimestamp: true,
+      onConnectionError: (err: any) => console.error('Loki Connection Error', err),
+    }),
   ],
 };

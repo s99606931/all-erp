@@ -132,9 +132,6 @@ services:
     depends_on:
       - etcd
       - minio
-    networks:
-      - all-erp-network
-
 networks:
   all-erp-network:
     name: all-erp-network
