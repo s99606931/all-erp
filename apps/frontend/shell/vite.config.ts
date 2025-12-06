@@ -48,8 +48,14 @@ export default defineConfig({
     cssCodeSplit: false,
   },
   server: {
-    port: 3000,
-    strictPort: true,
-    host: true, // Docker 환경을 위한 설정
+    port: 4200,
+    host: 'localhost',
+    proxy: {
+      '/api/ai': {
+        target: 'http://localhost:3007',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 });

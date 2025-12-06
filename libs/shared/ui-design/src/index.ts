@@ -7,3 +7,7 @@ export * from './lib/components/ui/form';
 export * from './lib/components/data-grid/data-grid';
 export * from './lib/components/erp-form/erp-form';
 export * from './lib/layouts/shell-layout';
+export * from './lib/components/ui/dropdown-menu';
+export * from './lib/components/ui/scroll-area';
+export * from './lib/components/ui/avatar';
+export * from './lib/components/ai/ai-chat-panel';
