@@ -1,4 +1,4 @@
-import uiDesignConfig from '../../libs/shared/ui-design/tailwind.config.js';
+import uiDesignConfig from '../../libs/shared/ui-design/tailwind.config.cjs';
 import { createGlobPatternsForDependencies } from '@nx/react/tailwind';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
