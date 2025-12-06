@@ -177,8 +177,9 @@ cd /data/all-erp
 
 ```bash
 cd /data/all-erp
+
 # 환경 변수 설정
-cp .env.example .env
+./dev-environment/init-envs.sh
 
 cd /data/all-erp/dev-environment
 # 실행 권한 부여
