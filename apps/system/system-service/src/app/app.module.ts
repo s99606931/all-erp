@@ -7,7 +7,7 @@ import { AppService } from './app.service';
 import { CommonCodeModule } from './common-code/common-code.module';
 import { PrismaModule } from '../prisma.module';
 import { DepartmentModule } from './department/department.module';
-import { PrismaModule } from '../prisma.module';
+
 import { TenantEventHandler } from './events/tenant-event.handler';
 
 /**

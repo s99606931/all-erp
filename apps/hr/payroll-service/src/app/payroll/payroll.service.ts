@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 import { PayrollCalculator } from './payroll.calculator';
 
 @Injectable()

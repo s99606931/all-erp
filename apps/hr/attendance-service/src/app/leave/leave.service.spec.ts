@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LeaveService } from './leave.service';
-import { PrismaService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 
 describe('LeaveService', () => {
   let service: LeaveService;

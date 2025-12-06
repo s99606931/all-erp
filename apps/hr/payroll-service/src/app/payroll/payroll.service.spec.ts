@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PayrollService } from './payroll.service';
-import { PrismaService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 import { PayrollCalculator } from './payroll.calculator';
 import { Prisma } from '@prisma/client';
 

@@ -45,19 +45,19 @@ for entry in "${APPS[@]}"; do
     ports:
       - "${port}:80"
     networks:
-      - erp-network
+      - all-erp-network
     restart: always
 
 EOF
 done
 
-# Network Definition (**Correction: erp-network must match existing definitions**)
-# Step 202 showed 'networks: erp-network: external: true'.
+# Network Definition (**Correction: all-erp-network must match existing definitions**)
+# Step 202 showed 'networks: all-erp-network: external: true'.
 # Just use 'erp-network'.
 
 cat >> "$OUTPUT_FILE" <<EOF
 networks:
-  erp-network:
+  all-erp-network:
     external: true
 EOF
 

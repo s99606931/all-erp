@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ReportService } from './report.service';
 import { ReportGeneratorService } from './report-generator.service';
-import { PrismaService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 import { CreateReportDto, ReportType, ReportFormat } from './dto/create-report.dto';
 import { ReportStatus } from './dto/report-response.dto';
 import { NotFoundException } from '@nestjs/common';

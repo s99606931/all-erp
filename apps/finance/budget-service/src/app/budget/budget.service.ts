@@ -1,5 +1,5 @@
 import { Injectable, ConflictException, BadRequestException } from '@nestjs/common';
-import { PrismaService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 import { CreateBudgetDto, UpdateSpentDto } from './dto/budget.dto';
 import { Prisma } from '@prisma/client';
 

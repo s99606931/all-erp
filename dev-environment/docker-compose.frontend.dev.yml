@@ -15,12 +15,13 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ../apps/frontend/shell:/app
-      - /app/node_modules
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
     env_file:
       - ../apps/frontend/shell/.env
     networks:
-      - erp-network
+      - all-erp-network
     # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # ============================================
@@ -36,12 +37,13 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ../apps/frontend/system-mfe:/app
-      - /app/node_modules
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
     env_file:
       - ../apps/frontend/system-mfe/.env
     networks:
-      - erp-network
+      - all-erp-network
     # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # HR MFE
@@ -53,12 +55,13 @@ services:
     ports:
       - "3101:3101"
     volumes:
-      - ../apps/frontend/hr-mfe:/app
-      - /app/node_modules
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
     env_file:
       - ../apps/frontend/hr-mfe/.env
     networks:
-      - erp-network
+      - all-erp-network
     # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Payroll MFE
@@ -70,12 +73,13 @@ services:
     ports:
       - "3102:3102"
     volumes:
-      - ../apps/frontend/payroll-mfe:/app
-      - /app/node_modules
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
     env_file:
       - ../apps/frontend/payroll-mfe/.env
     networks:
-      - erp-network
+      - all-erp-network
     # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Attendance MFE
@@ -87,12 +91,13 @@ services:
     ports:
       - "3103:3103"
     volumes:
-      - ../apps/frontend/attendance-mfe:/app
-      - /app/node_modules
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
     env_file:
       - ../apps/frontend/attendance-mfe/.env
     networks:
-      - erp-network
+      - all-erp-network
     # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Budget MFE
@@ -104,12 +109,13 @@ services:
     ports:
       - "3104:3104"
     volumes:
-      - ../apps/frontend/budget-mfe:/app
-      - /app/node_modules
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
     env_file:
       - ../apps/frontend/budget-mfe/.env
     networks:
-      - erp-network
+      - all-erp-network
     # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Treasury MFE
@@ -121,12 +127,13 @@ services:
     ports:
       - "3105:3105"
     volumes:
-      - ../apps/frontend/treasury-mfe:/app
-      - /app/node_modules
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
     env_file:
       - ../apps/frontend/treasury-mfe/.env
     networks:
-      - erp-network
+      - all-erp-network
     # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Accounting MFE
@@ -138,12 +145,13 @@ services:
     ports:
       - "3106:3106"
     volumes:
-      - ../apps/frontend/accounting-mfe:/app
-      - /app/node_modules
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
     env_file:
       - ../apps/frontend/accounting-mfe/.env
     networks:
-      - erp-network
+      - all-erp-network
     # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Asset MFE
@@ -155,12 +163,13 @@ services:
     ports:
       - "3107:3107"
     volumes:
-      - ../apps/frontend/asset-mfe:/app
-      - /app/node_modules
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
     env_file:
       - ../apps/frontend/asset-mfe/.env
     networks:
-      - erp-network
+      - all-erp-network
     # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Inventory MFE
@@ -172,12 +181,13 @@ services:
     ports:
       - "3108:3108"
     volumes:
-      - ../apps/frontend/inventory-mfe:/app
-      - /app/node_modules
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
     env_file:
       - ../apps/frontend/inventory-mfe/.env
     networks:
-      - erp-network
+      - all-erp-network
     # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # General Affairs MFE
@@ -189,14 +199,15 @@ services:
     ports:
       - "3109:3109"
     volumes:
-      - ../apps/frontend/general-affairs-mfe:/app
-      - /app/node_modules
+      - ../apps:/workspace/apps:cached
+      - ../libs:/workspace/libs:cached
+      - /workspace/node_modules
     env_file:
       - ../apps/frontend/general-affairs-mfe/.env
     networks:
-      - erp-network
+      - all-erp-network
     # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
 networks:
-  erp-network:
+  all-erp-network:
     external: true

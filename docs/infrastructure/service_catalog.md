@@ -87,7 +87,7 @@ AI 관련 서비스는 **Python/FastAPI** 기반으로 구성됩니다.
 
 ```yaml
 networks:
-  erp-network:
+  all-erp-network:
     driver: bridge
     ipam:
       config:

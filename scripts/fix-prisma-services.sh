@@ -1,92 +1,129 @@
 #!/bin/bash
 
-# 모든 prisma.service.ts 파일을 올바른 형식으로 수정하는 스크립트
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-set -e
+echo "🚀 Starting PrismaService Fix..."
 
-WORKSPACE_ROOT="/data/all-erp"
+# Apps directory
+APPS_DIR="$PROJECT_ROOT/apps"
 
-# 수정이 필요한 서비스 목록
-SERVICES=(
-  "system/system-service"
-  "system/tenant-service"
-  "hr/personnel-service"
-  "hr/payroll-service"
-  "hr/attendance-service"
-  "finance/budget-service"
-  "finance/accounting-service"
-  "finance/settlement-service"
-  "general/asset-service"
-  "general/supply-service"
-  "general/general-affairs-service"
-  "platform/approval-service"
-  "platform/report-service"
-  "platform/file-service"
-  "platform/notification-service"
-)
+# Iterate over categories (system, hr, finance, general, platform, ai)
+for category in "$APPS_DIR"/*; do
+  if [ -d "$category" ]; then
+    for service in "$category"/*; do
+      if [ -d "$service" ] && [ -f "$service/src/prisma.service.ts" ]; then
+        SERVICE_NAME=$(basename "$service")
+        echo "Processing $SERVICE_NAME..."
 
-for service_path in "${SERVICES[@]}"; do
-  service_name=$(basename "$service_path")
-  service_dir="$WORKSPACE_ROOT/apps/$service_path"
-  prisma_service_file="$service_dir/src/prisma.service.ts"
-  
-  if [ ! -f "$prisma_service_file" ]; then
-    echo "⚠️  파일 없음: $service_name"
-    continue
-  fi
-  
-  echo "🔧 수정 중: $service_name"
-  
-  # 올바른 내용으로 재작성
-  cat > "$prisma_service_file" << 'EOF'
-import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { PrismaServiceBase } from '@all-erp/shared/infra';
+        PRISMA_SERVICE_FILE="$service/src/prisma.service.ts"
+        
+        # 1. Extract Client Package Name
+        CLIENT_PKG=$(grep "from '.prisma/" "$PRISMA_SERVICE_FILE" | cut -d"'" -f2)
+        
+        if [ -z "$CLIENT_PKG" ]; then
+             echo "  ⚠️  Could not find client package in $PRISMA_SERVICE_FILE. Skipping rewrite."
+        else
+             echo "  ✅ Found client: $CLIENT_PKG"
+
+             # 2. Rewrite prisma.service.ts
+             cat > "$PRISMA_SERVICE_FILE" <<EOF
+import { Injectable, OnModuleInit, OnModuleDestroy, Logger } from '@nestjs/common';
+import { PrismaClient } from '$CLIENT_PKG';
 
 @Injectable()
-export class PrismaService extends PrismaServiceBase {
-  protected prismaClient: PrismaClient;
+export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+  private readonly logger = new Logger(PrismaService.name);
 
   constructor() {
-    super('SERVICE_NAMEPrismaService');
-    
-    this.prismaClient = new PrismaClient({
-      
+    super({
       log: [
         { emit: 'event', level: 'query' },
         { emit: 'event', level: 'error' },
         { emit: 'event', level: 'warn' },
       ],
     });
+  }
 
-    if (process.env['NODE_ENV'] !== 'production') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.prismaClient.$on('query' as never, (e: any) => {
-        this.logger.debug(`Query: ${e.query} | Duration: ${e.duration}ms`);
-      });
+  async onModuleInit() {
+    try {
+      await this.\$connect();
+      this.logger.log('Database connected successfully');
+    } catch (error) {
+      this.logger.error('Failed to connect to database', error);
+      throw error;
     }
   }
 
-  get $queryRaw() {
-    return this.prismaClient.$queryRaw.bind(this.prismaClient);
-  }
-
-  get $connect() {
-    return this.prismaClient.$connect.bind(this.prismaClient);
-  }
-
-  get $disconnect() {
-    return this.prismaClient.$disconnect.bind(this.prismaClient);
+  async onModuleDestroy() {
+    await this.\$disconnect();
+    this.logger.log('Database disconnected successfully');
   }
 }
 EOF
+             echo "  ✨ Rewrote prisma.service.ts"
+        fi
 
-  # 서비스명으로 치환 (PascalCase)
-  service_pascal=$(echo "$service_name" | sed 's/-\([a-z]\)/\U\1/g' | sed 's/^\([a-z]\)/\U\1/')
-  sed -i "s/SERVICE_NAME/${service_pascal}/g" "$prisma_service_file"
-  
-  echo "✅ $service_name 완료"
+        # 3. Fix Imports in src/app/**/*
+        # Find files using shared PrismaService
+        grep -l "import { PrismaService } from '@all-erp/shared/infra';" -r "$service/src/app" | while read -r file; do
+            # Calculate depth relative to src/
+            # file is absolute or relative from root? grep -r from $service/src/app returns finding path relative to CWD if not absolute path given?
+            # actually grep -r "$service/src/app" returns full path provided.
+            
+            # Determine replacement based on depth
+            REL_PATH="${file#$service/src/}"
+            DEPTH=$(echo "$REL_PATH" | tr -cd '/' | wc -c)
+            
+            # depth 1 (src/app/foo.ts) -> ../prisma.service
+            # depth 2 (src/app/foo/bar.ts) -> ../../prisma.service
+            # depth 3 (src/app/foo/bar/baz.ts) -> ../../../prisma.service
+            
+            IMPORT_PATH=""
+            if [ "$DEPTH" -eq 1 ]; then
+                IMPORT_PATH="../prisma.service"
+            elif [ "$DEPTH" -eq 2 ]; then
+                IMPORT_PATH="../../prisma.service"
+            elif [ "$DEPTH" -eq 3 ]; then
+                IMPORT_PATH="../../../prisma.service"
+            else
+                IMPORT_PATH="../../prisma.service" # Default fallback
+            fi
+            
+            # Replace the import line
+            # Using | as delimiter to avoid conflict with /
+            sed -i "s|import { PrismaService } from '@all-erp/shared/infra';|import { PrismaService } from '$IMPORT_PATH';|g" "$file"
+            echo "  🔧 Fixed import in $REL_PATH"
+        done
+        
+        # Also check for RabbitMQ service combined import
+        # import { RabbitMQService, PrismaService } from '@all-erp/shared/infra';
+        grep -l "import {.*PrismaService.*} from '@all-erp/shared/infra';" -r "$service/src/app" | while read -r file; do
+             # This is harder to regex safely with sed. 
+             # We assume standard structure "RabbitMQService, PrismaService" or swapped.
+             # We will just warn for manual check if complex
+             echo "  ⚠️  Complex import found in $file. Attempting crude fix."
+             
+             REL_PATH="${file#$service/src/}"
+             DEPTH=$(echo "$REL_PATH" | tr -cd '/' | wc -c)
+             if [ "$DEPTH" -eq 2 ]; then
+                IMPORT_PATH="../../prisma.service"
+             else
+                IMPORT_PATH="../prisma.service"
+             fi
+
+             # If RabbitMQService is also there
+             if grep -q "RabbitMQService" "$file"; then
+                 # Remove PrismaService from the list
+                 sed -i "s/, PrismaService//g" "$file"
+                 sed -i "s/PrismaService, //g" "$file"
+                 # Add new import line after the shared/infra line
+                 sed -i "/@all-erp\/shared\/infra/a import { PrismaService } from '$IMPORT_PATH';" "$file"
+             fi
+        done
+
+      fi
+    done
+  fi
 done
 
-echo ""
-echo "🎉 모든 서비스 수정 완료!"
+echo "🎉 Fix complete."

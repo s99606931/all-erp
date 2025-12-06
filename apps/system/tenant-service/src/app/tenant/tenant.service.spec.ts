@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TenantService } from './tenant.service';
-import { PrismaService, RabbitMQService } from '@all-erp/shared/infra';
+import { RabbitMQService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 
 describe('TenantService', () => {
   let service: TenantService;

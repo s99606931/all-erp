@@ -1,40 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit, OnModuleDestroy, Logger } from '@nestjs/common';
 import { PrismaClient } from '.prisma/payroll-client';
-import { PrismaServiceBase } from '@all-erp/shared/infra';
 
 @Injectable()
-export class PrismaService extends PrismaServiceBase {
-  protected prismaClient: PrismaClient;
+export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+  private readonly logger = new Logger(PrismaService.name);
 
   constructor() {
-    super('PayrollServicePrismaService');
-    
-    this.prismaClient = new PrismaClient({
-      
+    super({
       log: [
         { emit: 'event', level: 'query' },
         { emit: 'event', level: 'error' },
         { emit: 'event', level: 'warn' },
       ],
     });
+  }
 
-    if (process.env['NODE_ENV'] !== 'production') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.prismaClient.$on('query' as never, (e: any) => {
-        this.logger.debug(`Query: ${e.query} | Duration: ${e.duration}ms`);
-      });
+  async onModuleInit() {
+    try {
+      await this.$connect();
+      this.logger.log('Database connected successfully');
+    } catch (error) {
+      this.logger.error('Failed to connect to database', error);
+      throw error;
     }
   }
 
-  get $queryRaw() {
-    return this.prismaClient.$queryRaw.bind(this.prismaClient);
-  }
-
-  get $connect() {
-    return this.prismaClient.$connect.bind(this.prismaClient);
-  }
-
-  get $disconnect() {
-    return this.prismaClient.$disconnect.bind(this.prismaClient);
+  async onModuleDestroy() {
+    await this.$disconnect();
+    this.logger.log('Database disconnected successfully');
   }
 }

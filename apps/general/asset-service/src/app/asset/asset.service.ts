@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 import { CreateAssetDto } from './dto/asset.dto';
 import { Prisma } from '@prisma/client';
 

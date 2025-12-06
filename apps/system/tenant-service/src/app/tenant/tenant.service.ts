@@ -1,5 +1,6 @@
 import { Injectable, ConflictException, Logger } from '@nestjs/common';
-import { PrismaService, RabbitMQService } from '@all-erp/shared/infra';
+import { RabbitMQService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 import { CreateTenantDto } from './dto/tenant.dto';
 
 @Injectable()

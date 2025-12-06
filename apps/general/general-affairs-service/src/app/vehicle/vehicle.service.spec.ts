@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { VehicleService } from './vehicle.service';
-import { PrismaService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 import { ConflictException } from '@nestjs/common';
 
 describe('VehicleService', () => {

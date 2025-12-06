@@ -1,8 +1,10 @@
-import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
-import { RabbitMQService, PrismaService } from '@all-erp/shared/infra';
+import { Injectable, Logger } from '@nestjs/common';
+import { OnEvent } from '@nestjs/event-emitter';
+import { RabbitMQService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 
 @Injectable()
-export class TenantEventHandler implements OnModuleInit {
+export class TenantEventHandler {
   private readonly logger = new Logger(TenantEventHandler.name);
 
   constructor(

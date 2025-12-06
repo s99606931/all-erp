@@ -38,8 +38,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
-.nx/cache
-.nx/workspace-data
+.nx/
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
 
@@ -64,3 +63,4 @@ dev-environment/.env
 .next
 out
 vite.config.*.timestamp*
+.pnpm-store

@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TenantEventHandler } from './tenant-event.handler';
-import { PrismaService, RabbitMQService } from '@all-erp/shared/infra';
+import { RabbitMQService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 
 describe('TenantEventHandler', () => {
   let handler: TenantEventHandler;

@@ -13,7 +13,7 @@ services:
     ports:
       - "3000:80"
     networks:
-      - erp-network
+      - all-erp-network
     restart: always
 
   system-mfe:
@@ -26,7 +26,7 @@ services:
     ports:
       - "3100:80"
     networks:
-      - erp-network
+      - all-erp-network
     restart: always
 
   hr-mfe:
@@ -39,7 +39,7 @@ services:
     ports:
       - "3101:80"
     networks:
-      - erp-network
+      - all-erp-network
     restart: always
 
   payroll-mfe:
@@ -52,7 +52,7 @@ services:
     ports:
       - "3102:80"
     networks:
-      - erp-network
+      - all-erp-network
     restart: always
 
   attendance-mfe:
@@ -65,7 +65,7 @@ services:
     ports:
       - "3103:80"
     networks:
-      - erp-network
+      - all-erp-network
     restart: always
 
   budget-mfe:
@@ -78,7 +78,7 @@ services:
     ports:
       - "3104:80"
     networks:
-      - erp-network
+      - all-erp-network
     restart: always
 
   treasury-mfe:
@@ -91,7 +91,7 @@ services:
     ports:
       - "3105:80"
     networks:
-      - erp-network
+      - all-erp-network
     restart: always
 
   accounting-mfe:
@@ -104,7 +104,7 @@ services:
     ports:
       - "3106:80"
     networks:
-      - erp-network
+      - all-erp-network
     restart: always
 
   asset-mfe:
@@ -117,7 +117,7 @@ services:
     ports:
       - "3107:80"
     networks:
-      - erp-network
+      - all-erp-network
     restart: always
 
   inventory-mfe:
@@ -130,7 +130,7 @@ services:
     ports:
       - "3108:80"
     networks:
-      - erp-network
+      - all-erp-network
     restart: always
 
   general-affairs-mfe:
@@ -143,9 +143,9 @@ services:
     ports:
       - "3109:80"
     networks:
-      - erp-network
+      - all-erp-network
     restart: always
 
 networks:
-  erp-network:
+  all-erp-network:
     external: true

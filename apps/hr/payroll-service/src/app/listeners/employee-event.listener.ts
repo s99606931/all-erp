@@ -1,5 +1,6 @@
 import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
-import { RabbitMQService, PrismaService } from '@all-erp/shared/infra';
+import { RabbitMQService } from '@all-erp/shared/infra';
+import { PrismaService } from '../../prisma.service';
 
 interface StandardEvent {
   eventId: string;
