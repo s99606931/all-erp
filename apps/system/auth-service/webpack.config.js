@@ -9,6 +9,15 @@ module.exports = {
       devtoolModuleFilenameTemplate: '[absolute-resource-path]',
     }),
   },
+  // Explicitly externalize Prisma Client to avoid bundling issues (Prisma 7)
+  externals: [
+    function ({ context, request }, callback) {
+      if (/^\.prisma/.test(request) || /^@prisma/.test(request)) {
+        return callback(null, 'commonjs ' + request);
+      }
+      callback();
+    },
+  ],
   plugins: [
     new NxAppWebpackPlugin({
       target: 'node',
