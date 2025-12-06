@@ -21,22 +21,10 @@ services:
     profiles: ['system']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/system/auth-service/Dockerfile.dev
     container_name: all-erp-auth-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/auth_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
-      JWT_SECRET: ${JWT_SECRET:-super_secret_key_change_me}
-      JWT_EXPIRATION: ${JWT_EXPIRATION:-1h}
+    env_file:
+      - ../apps/system/auth-service/.env
     ports:
       - '${AUTH_SERVICE_PORT:-3001}:3001'
       - '9229:9229' # 디버깅 포트
@@ -54,20 +42,10 @@ services:
     profiles: ['system']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/system/system-service/Dockerfile.dev
     container_name: all-erp-system-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/system_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/system/system-service/.env
     ports:
       - '${SYSTEM_SERVICE_PORT:-3002}:3002'
       - '9230:9229' # 디버깅 포트
@@ -85,20 +63,10 @@ services:
     profiles: ['system']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/system/tenant-service/Dockerfile.dev
     container_name: all-erp-tenant-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/tenant_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/system/tenant-service/.env
     ports:
       - '${TENANT_SERVICE_PORT:-3006}:3006'
       - '9231:9229' # 디버깅 포트
@@ -116,20 +84,10 @@ services:
     profiles: ['hr']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/hr/personnel-service/Dockerfile.dev
     container_name: all-erp-personnel-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/personnel_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/hr/personnel-service/.env
     ports:
       - '${PERSONNEL_SERVICE_PORT:-3011}:3011'
       - '9232:9229' # 디버깅 포트
@@ -147,20 +105,10 @@ services:
     profiles: ['hr']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/hr/payroll-service/Dockerfile.dev
     container_name: all-erp-payroll-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/payroll_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/hr/payroll-service/.env
     ports:
       - '${PAYROLL_SERVICE_PORT:-3012}:3012'
       - '9233:9229' # 디버깅 포트
@@ -178,20 +126,10 @@ services:
     profiles: ['hr']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/hr/attendance-service/Dockerfile.dev
     container_name: all-erp-attendance-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/attendance_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/hr/attendance-service/.env
     ports:
       - '${ATTENDANCE_SERVICE_PORT:-3013}:3013'
       - '9234:9229' # 디버깅 포트
@@ -209,20 +147,10 @@ services:
     profiles: ['finance']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/finance/budget-service/Dockerfile.dev
     container_name: all-erp-budget-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/budget_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/finance/budget-service/.env
     ports:
       - '${BUDGET_SERVICE_PORT:-3021}:3021'
       - '9235:9229' # 디버깅 포트
@@ -240,20 +168,10 @@ services:
     profiles: ['finance']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/finance/accounting-service/Dockerfile.dev
     container_name: all-erp-accounting-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/accounting_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/finance/accounting-service/.env
     ports:
       - '${ACCOUNTING_SERVICE_PORT:-3022}:3022'
       - '9236:9229' # 디버깅 포트
@@ -271,20 +189,10 @@ services:
     profiles: ['finance']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/finance/settlement-service/Dockerfile.dev
     container_name: all-erp-settlement-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/settlement_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/finance/settlement-service/.env
     ports:
       - '${SETTLEMENT_SERVICE_PORT:-3023}:3023'
       - '9237:9229' # 디버깅 포트
@@ -302,20 +210,10 @@ services:
     profiles: ['general']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/general/asset-service/Dockerfile.dev
     container_name: all-erp-asset-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/asset_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/general/asset-service/.env
     ports:
       - '${ASSET_SERVICE_PORT:-3031}:3031'
       - '9238:9229' # 디버깅 포트
@@ -333,20 +231,10 @@ services:
     profiles: ['general']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/general/supply-service/Dockerfile.dev
     container_name: all-erp-supply-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/supply_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/general/supply-service/.env
     ports:
       - '${SUPPLY_SERVICE_PORT:-3032}:3032'
       - '9239:9229' # 디버깅 포트
@@ -364,20 +252,10 @@ services:
     profiles: ['general']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/general/general-affairs-service/Dockerfile.dev
     container_name: all-erp-general-affairs-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/general_affairs_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/general/general-affairs-service/.env
     ports:
       - '${GENERAL_AFFAIRS_SERVICE_PORT:-3033}:3033'
       - '9240:9229' # 디버깅 포트
@@ -395,22 +273,10 @@ services:
     profiles: ['ai']
     build:
       context: ..
-      dockerfile: Dockerfile.ai.dev
+      dockerfile: apps/ai/ai-service/Dockerfile.dev
     container_name: all-erp-ai-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
-      # Vector DB (Milvus) 설정
-      MILVUS_HOST: milvus
-      MILVUS_PORT: 19530
+    env_file:
+      - ../apps/ai/ai-service/.env
     ports:
       - '${AI_SERVICE_PORT:-3007}:3007'
       - '9241:9229' # 디버깅 포트
@@ -428,20 +294,10 @@ services:
     profiles: ['platform']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/platform/approval-service/Dockerfile.dev
     container_name: all-erp-approval-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/approval_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/platform/approval-service/.env
     ports:
       - '${APPROVAL_SERVICE_PORT:-3041}:3041'
       - '9243:9229' # 디버깅 포트
@@ -460,20 +316,10 @@ services:
     profiles: ["platform"]
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/platform/report-service/Dockerfile.dev
     container_name: all-erp-report-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/report_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/platform/report-service/.env
     ports:
       - "${REPORT_SERVICE_PORT:-3042}:3042"
       - "9244:9229"  # 디버깅 포트
@@ -491,26 +337,10 @@ services:
     profiles: ["platform"]
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/platform/file-service/Dockerfile.dev
     container_name: all-erp-file-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/file_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
-      # Minio 설정
-      MINIO_ENDPOINT: minio
-      MINIO_PORT: 9000
-      MINIO_USE_SSL: false
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
+    env_file:
+      - ../apps/platform/file-service/.env
     ports:
       - "${FILE_SERVICE_PORT:-3044}:3044"
       - "9246:9229"  # 디버깅 포트 (9245에서 9246으로 변경)
@@ -528,20 +358,10 @@ services:
     profiles: ['platform']
     build:
       context: ..
-      dockerfile: Dockerfile.backend.dev
+      dockerfile: apps/platform/notification-service/Dockerfile.dev
     container_name: all-erp-notification-service-dev
-    environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-devpassword123}
-      DB_DATABASE: ${DB_DATABASE:-all_erp}
-      DATABASE_URL: postgresql://${DB_USERNAME:-postgres}:${DB_PASSWORD:-devpassword123}@postgres:5432/notification_db?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
+    env_file:
+      - ../apps/platform/notification-service/.env
     ports:
       - '${NOTIFICATION_SERVICE_PORT:-3043}:3043'
       - '9245:9229' # 디버깅 포트

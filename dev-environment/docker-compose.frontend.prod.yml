@@ -1,0 +1,151 @@
+# [Frontend Production Simulation] 운영 환경 시뮬레이션
+# 각 앱은 Nginx 기반의 Prod Dockerfile로 빌드됩니다.
+# 사용법: docker compose -f docker-compose.infra.yml -f docker-compose.frontend.prod.yml up -d --build
+
+services:
+  shell:
+    build:
+      context: ..
+      dockerfile: apps/frontend/shell/Dockerfile
+    container_name: all-erp-shell-prod
+    env_file:
+      - ../apps/frontend/shell/.env
+    ports:
+      - "3000:80"
+    networks:
+      - erp-network
+    restart: always
+
+  system-mfe:
+    build:
+      context: ..
+      dockerfile: apps/frontend/system-mfe/Dockerfile
+    container_name: all-erp-system-mfe-prod
+    env_file:
+      - ../apps/frontend/system-mfe/.env
+    ports:
+      - "3100:80"
+    networks:
+      - erp-network
+    restart: always
+
+  hr-mfe:
+    build:
+      context: ..
+      dockerfile: apps/frontend/hr-mfe/Dockerfile
+    container_name: all-erp-hr-mfe-prod
+    env_file:
+      - ../apps/frontend/hr-mfe/.env
+    ports:
+      - "3101:80"
+    networks:
+      - erp-network
+    restart: always
+
+  payroll-mfe:
+    build:
+      context: ..
+      dockerfile: apps/frontend/payroll-mfe/Dockerfile
+    container_name: all-erp-payroll-mfe-prod
+    env_file:
+      - ../apps/frontend/payroll-mfe/.env
+    ports:
+      - "3102:80"
+    networks:
+      - erp-network
+    restart: always
+
+  attendance-mfe:
+    build:
+      context: ..
+      dockerfile: apps/frontend/attendance-mfe/Dockerfile
+    container_name: all-erp-attendance-mfe-prod
+    env_file:
+      - ../apps/frontend/attendance-mfe/.env
+    ports:
+      - "3103:80"
+    networks:
+      - erp-network
+    restart: always
+
+  budget-mfe:
+    build:
+      context: ..
+      dockerfile: apps/frontend/budget-mfe/Dockerfile
+    container_name: all-erp-budget-mfe-prod
+    env_file:
+      - ../apps/frontend/budget-mfe/.env
+    ports:
+      - "3104:80"
+    networks:
+      - erp-network
+    restart: always
+
+  treasury-mfe:
+    build:
+      context: ..
+      dockerfile: apps/frontend/treasury-mfe/Dockerfile
+    container_name: all-erp-treasury-mfe-prod
+    env_file:
+      - ../apps/frontend/treasury-mfe/.env
+    ports:
+      - "3105:80"
+    networks:
+      - erp-network
+    restart: always
+
+  accounting-mfe:
+    build:
+      context: ..
+      dockerfile: apps/frontend/accounting-mfe/Dockerfile
+    container_name: all-erp-accounting-mfe-prod
+    env_file:
+      - ../apps/frontend/accounting-mfe/.env
+    ports:
+      - "3106:80"
+    networks:
+      - erp-network
+    restart: always
+
+  asset-mfe:
+    build:
+      context: ..
+      dockerfile: apps/frontend/asset-mfe/Dockerfile
+    container_name: all-erp-asset-mfe-prod
+    env_file:
+      - ../apps/frontend/asset-mfe/.env
+    ports:
+      - "3107:80"
+    networks:
+      - erp-network
+    restart: always
+
+  inventory-mfe:
+    build:
+      context: ..
+      dockerfile: apps/frontend/inventory-mfe/Dockerfile
+    container_name: all-erp-inventory-mfe-prod
+    env_file:
+      - ../apps/frontend/inventory-mfe/.env
+    ports:
+      - "3108:80"
+    networks:
+      - erp-network
+    restart: always
+
+  general-affairs-mfe:
+    build:
+      context: ..
+      dockerfile: apps/frontend/general-affairs-mfe/Dockerfile
+    container_name: all-erp-general-affairs-mfe-prod
+    env_file:
+      - ../apps/frontend/general-affairs-mfe/.env
+    ports:
+      - "3109:80"
+    networks:
+      - erp-network
+    restart: always
+
+networks:
+  erp-network:
+    external: true

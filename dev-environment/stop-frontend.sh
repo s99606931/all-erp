@@ -1,36 +1,21 @@
 #!/bin/bash
-# ALL-ERP 프론트엔드 중지
+# ALL-ERP 프론트엔드 중지 (Docker Compose 기반)
 
 echo "=================================================="
 echo " ALL-ERP 프론트엔드 중지"
 echo "=================================================="
 echo ""
 
-PID_FILE="dev-environment/.frontend-pids"
+# 고아 컨테이너 경고 숨기기
+export COMPOSE_IGNORE_ORPHANS=True
 
-if [ -f "$PID_FILE" ]; then
-    PIDS=$(cat "$PID_FILE")
-    
-    if [ -n "$PIDS" ]; then
-        echo "프론트엔드 프로세스 종료 중..."
-        for PID in $PIDS; do
-            if ps -p $PID > /dev/null 2>&1; then
-                kill $PID
-                echo "  ✅ PID $PID 종료"
-            else
-                echo "  ℹ️  PID $PID 이미 종료됨"
-            fi
-        done
-        rm "$PID_FILE"
-    else
-        echo "실행 중인 프론트엔드 프로세스가 없습니다."
-    fi
+echo "프론트엔드 컨테이너 종료 중..."
+
+# Frontend Compose 파일만 내림
+docker compose -f docker-compose.frontend.dev.yml down
+
+if [ $? -eq 0 ]; then
+    echo "✅ 프론트엔드 중지 완료"
 else
-    echo "PID 파일을 찾을 수 없습니다."
-    echo "수동으로 프로세스를 종료하거나 다음 명령을 실행하세요:"
-    echo "  pkill -f 'pnpm dev'"
+    echo "❌ 중지 실패"
 fi
-
-echo ""
-echo "✅ 프론트엔드 중지 완료"
-echo ""

@@ -34,15 +34,20 @@ docker compose -f docker-compose.infra.yml -f docker-compose.dev.yml stop
 
 ```
 dev-environment/
-├── docker-compose.infra.yml   # 인프라 (PostgreSQL, Redis 등)
-├── docker-compose.devops.yml  # DevOps 도구 (GitLab, Grafana 등)
-├── docker-compose.dev.yml     # 개발 환경 (애플리케이션)
-├── docker-compose.prod.yml    # 운영 환경 (빌드된 이미지)
-├── config/                    # 서비스 설정 (Git 관리)
-├── volumes/                   # 데이터 저장소 (Git 제외)
-├── start-dev.sh               # 시작 스크립트
-├── stop-dev.sh                # 중지 스크립트
-└── GETTING-STARTED.md         # ⭐ 전체 구축 가이드
+dev-environment/
+├── docker-compose.infra.yml          # 인프라 (PostgreSQL, Redis 등)
+├── docker-compose.devops.yml         # DevOps 도구 (GitLab, Grafana 등)
+├── docker-compose.dev.yml            # 백엔드 개발 환경
+├── docker-compose.prod.yml           # 백엔드 운영 환경
+├── docker-compose.frontend.dev.yml   # 프론트엔드 개발 환경
+├── docker-compose.frontend.prod.yml  # 프론트엔드 운영 환경
+├── config/                           # 서비스 설정 (Git 관리)
+├── volumes/                          # 데이터 저장소 (Git 제외)
+├── start-dev.sh                      # 백엔드 시작 스크립트
+├── stop-dev.sh                       # 백엔드 중지 스크립트
+├── start-frontend.sh                 # 프론트엔드 시작 스크립트
+├── stop-frontend.sh                  # 프론트엔드 중지 스크립트
+└── GETTING-STARTED.md                # ⭐ 전체 구축 가이드
 ```
 
 ---

@@ -10,19 +10,18 @@ services:
   shell:
     build:
       context: ..
-      dockerfile: Dockerfile.frontend.dev
+      dockerfile: apps/frontend/shell/Dockerfile.dev
     container_name: shell
     ports:
       - "3000:3000"
     volumes:
       - ../apps/frontend/shell:/app
       - /app/node_modules
-    environment:
-      - VITE_API_GATEWAY_URL=http://localhost:8080
-      - VITE_ENV=development
+    env_file:
+      - ../apps/frontend/shell/.env
     networks:
       - erp-network
-    command: pnpm dev --host
+    # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # ============================================
   # Remote 앱들
@@ -32,181 +31,171 @@ services:
   system-mfe:
     build:
       context: ..
-      dockerfile: Dockerfile.frontend.dev
+      dockerfile: apps/frontend/system-mfe/Dockerfile.dev
     container_name: system-mfe
     ports:
       - "3100:3100"
     volumes:
       - ../apps/frontend/system-mfe:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:3001
-      - VITE_ENV=development
+    env_file:
+      - ../apps/frontend/system-mfe/.env
     networks:
       - erp-network
-    command: pnpm dev --host
+    # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # HR MFE
   hr-mfe:
     build:
       context: ..
-      dockerfile: Dockerfile.frontend.dev
+      dockerfile: apps/frontend/hr-mfe/Dockerfile.dev
     container_name: hr-mfe
     ports:
       - "3101:3101"
     volumes:
       - ../apps/frontend/hr-mfe:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:3002
-      - VITE_ENV=development
+    env_file:
+      - ../apps/frontend/hr-mfe/.env
     networks:
       - erp-network
-    command: pnpm dev --host
+    # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Payroll MFE
   payroll-mfe:
     build:
       context: ..
-      dockerfile: Dockerfile.frontend.dev
+      dockerfile: apps/frontend/payroll-mfe/Dockerfile.dev
     container_name: payroll-mfe
     ports:
       - "3102:3102"
     volumes:
       - ../apps/frontend/payroll-mfe:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:3003
-      - VITE_ENV=development
+    env_file:
+      - ../apps/frontend/payroll-mfe/.env
     networks:
       - erp-network
-    command: pnpm dev --host
+    # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Attendance MFE
   attendance-mfe:
     build:
       context: ..
-      dockerfile: Dockerfile.frontend.dev
+      dockerfile: apps/frontend/attendance-mfe/Dockerfile.dev
     container_name: attendance-mfe
     ports:
       - "3103:3103"
     volumes:
       - ../apps/frontend/attendance-mfe:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:3004
-      - VITE_ENV=development
+    env_file:
+      - ../apps/frontend/attendance-mfe/.env
     networks:
       - erp-network
-    command: pnpm dev --host
+    # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Budget MFE
   budget-mfe:
     build:
       context: ..
-      dockerfile: Dockerfile.frontend.dev
+      dockerfile: apps/frontend/budget-mfe/Dockerfile.dev
     container_name: budget-mfe
     ports:
       - "3104:3104"
     volumes:
       - ../apps/frontend/budget-mfe:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:3005
-      - VITE_ENV=development
+    env_file:
+      - ../apps/frontend/budget-mfe/.env
     networks:
       - erp-network
-    command: pnpm dev --host
+    # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Treasury MFE
   treasury-mfe:
     build:
       context: ..
-      dockerfile: Dockerfile.frontend.dev
+      dockerfile: apps/frontend/treasury-mfe/Dockerfile.dev
     container_name: treasury-mfe
     ports:
       - "3105:3105"
     volumes:
       - ../apps/frontend/treasury-mfe:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:3006
-      - VITE_ENV=development
+    env_file:
+      - ../apps/frontend/treasury-mfe/.env
     networks:
       - erp-network
-    command: pnpm dev --host
+    # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Accounting MFE
   accounting-mfe:
     build:
       context: ..
-      dockerfile: Dockerfile.frontend.dev
+      dockerfile: apps/frontend/accounting-mfe/Dockerfile.dev
     container_name: accounting-mfe
     ports:
       - "3106:3106"
     volumes:
       - ../apps/frontend/accounting-mfe:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:3007
-      - VITE_ENV=development
+    env_file:
+      - ../apps/frontend/accounting-mfe/.env
     networks:
       - erp-network
-    command: pnpm dev --host
+    # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Asset MFE
   asset-mfe:
     build:
       context: ..
-      dockerfile: Dockerfile.frontend.dev
+      dockerfile: apps/frontend/asset-mfe/Dockerfile.dev
     container_name: asset-mfe
     ports:
       - "3107:3107"
     volumes:
       - ../apps/frontend/asset-mfe:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:3008
-      - VITE_ENV=development
+    env_file:
+      - ../apps/frontend/asset-mfe/.env
     networks:
       - erp-network
-    command: pnpm dev --host
+    # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # Inventory MFE
   inventory-mfe:
     build:
       context: ..
-      dockerfile: Dockerfile.frontend.dev
+      dockerfile: apps/frontend/inventory-mfe/Dockerfile.dev
     container_name: inventory-mfe
     ports:
       - "3108:3108"
     volumes:
       - ../apps/frontend/inventory-mfe:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:3009
-      - VITE_ENV=development
+    env_file:
+      - ../apps/frontend/inventory-mfe/.env
     networks:
       - erp-network
-    command: pnpm dev --host
+    # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
   # General Affairs MFE
   general-affairs-mfe:
     build:
       context: ..
-      dockerfile: Dockerfile.frontend.dev
+      dockerfile: apps/frontend/general-affairs-mfe/Dockerfile.dev
     container_name: general-affairs-mfe
     ports:
       - "3109:3109"
     volumes:
       - ../apps/frontend/general-affairs-mfe:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:3010
-      - VITE_ENV=development
+    env_file:
+      - ../apps/frontend/general-affairs-mfe/.env
     networks:
       - erp-network
-    command: pnpm dev --host
+    # command: pnpm dev --host (Delegated to Dockerfile CMD)
 
 networks:
   erp-network:

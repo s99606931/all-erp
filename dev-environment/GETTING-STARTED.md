@@ -41,8 +41,6 @@ VS Code 마켓플레이스(`Ctrl+Shift+X`)에서 **ID**로 검색하여 설치�
 |              | **YAML**                      | `redhat.vscode-yaml`                | YAML 파일 검증 및 자동 완성 |
 | **Docs**     | **Markdown All in One**       | `yzhang.markdown-all-in-one`        | 마크다운 작성 보조          |
 
-
-
 ---
 
 ### 2단계: WSL2 Ubuntu 24.04 설치
@@ -126,12 +124,14 @@ exit
 ```
 
 **Windows PowerShell**:
+
 ```powershell
 wsl --shutdown
 wsl
 ```
 
 **WSL Ubuntu**:
+
 ```bash
 # Docker 서비스 시작 및 확인
 sudo systemctl start docker
@@ -165,6 +165,7 @@ git config --global core.eol lf
 ### 6단계: 프로젝트 복사
 
 **Git 클론**:
+
 ```bash
 git clone https://github.com/s99606931/all-erp.git /data/all-erp
 cd /data/all-erp
@@ -228,6 +229,7 @@ pnpm nx serve auth-service
 ### 방법 1: 심볼릭 링크 (권장)
 
 **PowerShell (관리자 권한)**:
+
 ```powershell
 New-Item -ItemType SymbolicLink -Path "D:\wsl-all-erp" -Target "\\wsl$\Ubuntu-24.04\data\all-erp"
 ```
@@ -235,6 +237,7 @@ New-Item -ItemType SymbolicLink -Path "D:\wsl-all-erp" -Target "\\wsl$\Ubuntu-24
 ### 방법 2: 직접 UNC 경로
 
 Windows 탐색기 주소창:
+
 ```
 \\wsl$\Ubuntu-24.04\data\all-erp
 ```
@@ -245,11 +248,17 @@ Windows 탐색기 주소창:
 
 ### 시작 시
 
+### 시작 시
+
 ```bash
 wsl                                   # WSL 실행
 cd /data/all-erp/dev-environment     # 디렉토리 이동
-./start-dev.sh                        # 인프라 시작
-cd .. && pnpm nx serve auth-service   # 개발 시작
+./start-dev.sh                        # 백엔드/인프라 시작
+
+# 프론트엔드 시작 (Docker Compose)
+./start-frontend.sh
+# 또는 수동 실행:
+# docker compose -f docker-compose.frontend.dev.yml up -d
 ```
 
 ### 종료 시
@@ -265,12 +274,12 @@ cd /data/all-erp/dev-environment
 
 ### 기본 인프라
 
-| 서비스 | 주소 | 계정 |
-|---------|------|------|
-| PostgreSQL | `localhost:5432` | postgres/devpassword123 |
-| Redis | `localhost:6379` | - |
-| RabbitMQ | `http://localhost:15672` | admin/admin |
-| MinIO | `http://localhost:9001` | minioadmin/minioadmin |
+| 서비스     | 주소                     | 계정                    |
+| ---------- | ------------------------ | ----------------------- |
+| PostgreSQL | `localhost:5432`         | postgres/devpassword123 |
+| Redis      | `localhost:6379`         | -                       |
+| RabbitMQ   | `http://localhost:15672` | admin/admin             |
+| MinIO      | `http://localhost:9001`  | minioadmin/minioadmin   |
 
 ### DevOps 도구 (선택적)
 
@@ -278,12 +287,12 @@ cd /data/all-erp/dev-environment
 docker compose --profile devops up -d
 ```
 
-| 서비스 | 주소 | 계정 |
-|---------|------|------|
-| GitLab | `http://localhost:8980` | root/changeme123! |
-| Prometheus | `http://localhost:9090` | - |
-| Grafana | `http://localhost:3000` | admin/admin |
-| Kibana | `http://localhost:5601` | - |
+| 서비스     | 주소                    | 계정              |
+| ---------- | ----------------------- | ----------------- |
+| GitLab     | `http://localhost:8980` | root/changeme123! |
+| Prometheus | `http://localhost:9090` | -                 |
+| Grafana    | `http://localhost:3000` | admin/admin       |
+| Kibana     | `http://localhost:5601` | -                 |
 
 ---
 
@@ -306,6 +315,7 @@ newgrp docker
 ### WSL 메모리 부족
 
 Windows에서 `C:\Users\<Username>\.wslconfig`:
+
 ```ini
 [wsl2]
 memory=8GB
@@ -313,21 +323,26 @@ processors=4
 ```
 
 적용:
+
 ```powershell
 wsl --shutdown
 wsl
 ```
 
 ### Milvus 컨테이너 재시작 문제
+
 `docker-compose.yml`에 실행 명령어가 누락된 경우 발생합니다.
+
 ```yaml
 milvus:
   command: milvus run standalone
 ```
 
 ### Nginx Gateway 시작 실패
+
 연결된 백엔드 서비스(`erp-auth` 등)가 실행 중이지 않으면 Nginx가 시작되지 않을 수 있습니다.
 이를 방지하려면 `nginx.conf`에서 `upstream` 블록 대신 변수와 `resolver`를 사용해야 합니다.
+
 ```nginx
 resolver 127.0.0.11 valid=30s;
 set $upstream_endpoint http://erp-auth:3001;

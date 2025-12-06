@@ -1,0 +1,315 @@
+# [Production Simulation] 운영 환경 시뮬레이션
+# 각 서비스는 독립적인 Dockerfile(Production)로 빌드됩니다.
+# 사용법: docker compose -f docker-compose.infra.yml -f docker-compose.prod.yml up -d --build
+
+services:
+  auth-service:
+    build:
+      context: ..
+      dockerfile: apps/system/auth-service/Dockerfile
+    container_name: all-erp-auth-service-prod
+    env_file:
+      - ../apps/system/auth-service/.env
+    ports:
+      - "3001:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3001:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  system-service:
+    build:
+      context: ..
+      dockerfile: apps/system/system-service/Dockerfile
+    container_name: all-erp-system-service-prod
+    env_file:
+      - ../apps/system/system-service/.env
+    ports:
+      - "3002:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3002:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  tenant-service:
+    build:
+      context: ..
+      dockerfile: apps/system/tenant-service/Dockerfile
+    container_name: all-erp-tenant-service-prod
+    env_file:
+      - ../apps/system/tenant-service/.env
+    ports:
+      - "3006:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3006:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  personnel-service:
+    build:
+      context: ..
+      dockerfile: apps/hr/personnel-service/Dockerfile
+    container_name: all-erp-personnel-service-prod
+    env_file:
+      - ../apps/hr/personnel-service/.env
+    ports:
+      - "3011:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3011:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  payroll-service:
+    build:
+      context: ..
+      dockerfile: apps/hr/payroll-service/Dockerfile
+    container_name: all-erp-payroll-service-prod
+    env_file:
+      - ../apps/hr/payroll-service/.env
+    ports:
+      - "3012:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3012:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  attendance-service:
+    build:
+      context: ..
+      dockerfile: apps/hr/attendance-service/Dockerfile
+    container_name: all-erp-attendance-service-prod
+    env_file:
+      - ../apps/hr/attendance-service/.env
+    ports:
+      - "3013:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3013:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  budget-service:
+    build:
+      context: ..
+      dockerfile: apps/finance/budget-service/Dockerfile
+    container_name: all-erp-budget-service-prod
+    env_file:
+      - ../apps/finance/budget-service/.env
+    ports:
+      - "3021:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3021:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  accounting-service:
+    build:
+      context: ..
+      dockerfile: apps/finance/accounting-service/Dockerfile
+    container_name: all-erp-accounting-service-prod
+    env_file:
+      - ../apps/finance/accounting-service/.env
+    ports:
+      - "3022:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3022:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  settlement-service:
+    build:
+      context: ..
+      dockerfile: apps/finance/settlement-service/Dockerfile
+    container_name: all-erp-settlement-service-prod
+    env_file:
+      - ../apps/finance/settlement-service/.env
+    ports:
+      - "3023:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3023:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  asset-service:
+    build:
+      context: ..
+      dockerfile: apps/general/asset-service/Dockerfile
+    container_name: all-erp-asset-service-prod
+    env_file:
+      - ../apps/general/asset-service/.env
+    ports:
+      - "3031:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3031:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  supply-service:
+    build:
+      context: ..
+      dockerfile: apps/general/supply-service/Dockerfile
+    container_name: all-erp-supply-service-prod
+    env_file:
+      - ../apps/general/supply-service/.env
+    ports:
+      - "3032:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3032:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  general-affairs-service:
+    build:
+      context: ..
+      dockerfile: apps/general/general-affairs-service/Dockerfile
+    container_name: all-erp-general-affairs-service-prod
+    env_file:
+      - ../apps/general/general-affairs-service/.env
+    ports:
+      - "3033:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3033:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  approval-service:
+    build:
+      context: ..
+      dockerfile: apps/platform/approval-service/Dockerfile
+    container_name: all-erp-approval-service-prod
+    env_file:
+      - ../apps/platform/approval-service/.env
+    ports:
+      - "3041:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3041:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  report-service:
+    build:
+      context: ..
+      dockerfile: apps/platform/report-service/Dockerfile
+    container_name: all-erp-report-service-prod
+    env_file:
+      - ../apps/platform/report-service/.env
+    ports:
+      - "3042:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3042:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  notification-service:
+    build:
+      context: ..
+      dockerfile: apps/platform/notification-service/Dockerfile
+    container_name: all-erp-notification-service-prod
+    env_file:
+      - ../apps/platform/notification-service/.env
+    ports:
+      - "3043:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3043:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  file-service:
+    build:
+      context: ..
+      dockerfile: apps/platform/file-service/Dockerfile
+    container_name: all-erp-file-service-prod
+    env_file:
+      - ../apps/platform/file-service/.env
+    ports:
+      - "3044:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3044:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+  ai-service:
+    build:
+      context: ..
+      dockerfile: apps/ai/ai-service/Dockerfile
+    container_name: all-erp-ai-service-prod
+    env_file:
+      - ../apps/ai/ai-service/.env
+    ports:
+      - "3007:3000"
+      # Note: Production app usually listens on 3000 inside, but our .env sets PORT=3000.
+      # However, we must map host_port:container_port.
+      # If .env has PORT=3000, container listens on 3000.
+      # So mapping should be "3007:3000".
+      # Let's fix .env PORT variable assumption.
+    networks:
+      - all-erp-network
+    restart: always
+
+networks:
+  all-erp-network:
+    name: all-erp-network
+    external: true
